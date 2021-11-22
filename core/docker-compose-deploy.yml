@@ -1,0 +1,36 @@
+version: '3'
+services:
+  appseed-app:
+    restart: always
+    env_file: .env
+    build: .
+    ports:
+      - "8000:8000"
+    networks:
+      - db_network
+      - web_network
+  nginx:
+    restart: always
+    image: "nginx:latest"
+    ports:
+      - "8000:8000"
+    volumes:
+      - static_data:/vol/web
+    environment:
+    - SECRET_KEY=samplesecretkey123
+    - ALLOWED_HOSTS=127.0.0.1,localhost
+  proxy:
+  build:
+  context: ./proxy
+  volumes:
+  - static_data:/vol/static
+    networks:
+      - web_network
+    depends_on:
+      - appseed-app
+networks:
+  db_network:
+    driver: bridge
+  web_network:
+    driver: bridge
+

@@ -1,0 +1,25 @@
+<html>
+	<head>
+		<title> Send SMS in JavaScript</title>
+	</head>
+
+	<body>
+	<button onclick="sendSMS()">Send SMS</button>
+
+	<script>
+		var sendSMS = function(){
+			var xhttp = new XMLHttpRequest();
+			  xhttp.onreadystatechange = function() {
+				debugger;
+				if (this.readyState == 4 && this.status == 0) {
+					var responseText = JSON.parse(this.responseText);
+					alert('It worked');
+					console.log(responseText);
+				}
+			  };
+			  xhttp.open("GET", "http://192.168.1.101:8090/SendSMS?username=abcd&password=1234&phone=9497204277&message=hello+test", true);
+			  xhttp.send();
+		}
+	</script>
+	</body>
+</html>

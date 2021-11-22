@@ -1,0 +1,88 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} UI Tables {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<style>
+.tab {
+  overflow: hidden;
+ 
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+ text-align: center;
+ display: inline-block;
+ border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+.container-sm{
+  padding-left: 100px;
+  padding-right: 100px;
+}
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+ 
+  border-top: none;
+}
+</style>
+</head>
+<div class="container" style="padding-right: 100px;padding-left: 100px;">
+    <div class="row">
+    
+        <div class="col-sm-3">
+          <form method="post" enctype="multipart/form-data" >
+            {% csrf_token %}
+            <div class="col-sm-3">
+              <div style="padding-right:30px">  {{cs.as_p}}</div>
+            </div>
+                <button class="btn btn-primary my-4" type="submit">Submit</button>
+          </form>
+
+
+</div>
+<script>
+function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+</script>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}
+
+  
+
+{% endblock javascripts %}

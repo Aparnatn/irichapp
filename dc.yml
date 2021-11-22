@@ -1,0 +1,34 @@
+version: '3.4'
+services:
+  appseed-app:
+    container_name: django-app
+    restart: always
+    env_file: .env.dev
+    command: python manage.py runserver 0.0.0.0:8000
+    build: .
+    ports:
+      - "5005:5005"
+      - "8000:8000"
+    volumes:
+      - ./app:/app:rw,cached
+      - ./authentication:/authentication:rw,cached
+      - ./core:/core:rw,cached
+    networks:
+      - net
+
+  # nginx:
+  #   restart: always
+  #   image: "nginx:latest"
+  #   ports:
+  #     - "8585:85"
+  #   volumes:
+  #     - ./nginx:/etc/nginx/conf.d
+  #   networks:
+  #     - net
+  #   depends_on:
+  #     - appseed-app
+
+networks:
+  net:
+    external:
+      name: platform_net

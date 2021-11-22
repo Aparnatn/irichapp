@@ -1,0 +1,97 @@
+/* Media quries */
+
+@media screen and (max-width: 767px) {
+    .navigation ul li a .icon .fas{
+        font-size: 18px;
+    }
+    .navigation ul li a .title {
+        line-height: 50px;
+    }
+    .navigation ul li a .icon{
+        line-height: 50px;
+    }
+    .main .topbar .search{
+        width: 80%;
+    }
+    .notification-cardcontent h4{
+        font-size: 16px;
+    }
+    .notification-cardcontent p{
+        font-size: 13px;
+    }
+    .add-business-col-2{
+        margin-top: -40px !important;
+    }
+    .tab button{
+        padding: 0px 10px;
+        font-size: 16px;
+
+    }
+
+}
+
+@media screen and (max-width: 992px) {
+  .navigation{
+      width: 70px;
+      overflow: hidden;
+      z-index: 11;
+  }
+ .main{
+     position: relative;
+    width: calc(100% - 70px);
+    left: 70px;
+ }
+ .navigation.active{
+     width: 300px;
+ }
+ /* .main.active{
+     left: 300px;
+ } */
+    
+}
+/* @media (min-width: 411px) and (max-width: 767px){
+    .navigation.active{
+        width: 414px;
+    }
+    .main.active{
+        left: 414px;
+    }
+}
+@media screen and (max-width: 410px){
+    .navigation.active{
+        width: 375px;
+    }
+    .main.active{
+        left: 375px;
+    }
+} */
+
+@media (min-width: 300px) and (max-width: 359px){
+    .navigation ul{
+        top: 75px;
+    }
+    .navigation ul li{
+
+        padding: 8px 13px;
+    }
+    .topbar-backto .fa-long-arrow-alt-left {
+        font-size: 18px;
+    }
+    .main .topbar .topbar-heading h3{
+        font-size: 18px;
+        margin-bottom: 0;
+    }
+    .main .topbar .right-options{
+       
+        padding: 10px 12px;
+        width: 60px;
+     }
+     .main .topbar .right-options a{
+         font-size: 18px;
+     }
+     .main .topbar .right-options .topbar-icons{
+         position: relative;
+         right: 0;
+         margin-top: 0;
+     }
+}

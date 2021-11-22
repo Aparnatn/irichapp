@@ -1,0 +1,200 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} UI Tables {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+<style>
+.tab {
+  overflow: hidden;
+ 
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+ text-align: center;
+ display: inline-block;
+ border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+.container-sm{
+  padding-left: 100px;
+  padding-right: 100px;
+}
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+ 
+  border-top: none;
+}
+</style>
+</head>
+
+<div class="container-sm">
+<div class="tab">
+  <button class="tablinks" style="padding-right: 13%;padding-left:13%" onclick="openCity(event, 'London')">Details</button>
+  <button class="tablinks" style="padding-right: 13%;padding-left:13%" onclick="openCity(event, 'Paris')">Deals</button>
+  <button class="tablinks"  style="padding-right: 13%;padding-left:13%" onclick="openCity(event, 'Tokyo')">Transactions</button>
+</div>
+</div>
+
+<div id="London" class="tabcontent">
+  <div class="container" style="padding-right: 100px;padding-left: 100px;">
+  <div class="row">
+   <div class="col-sm-4">
+        <img src="static/assets/img/team-1.jpg" class="media-object" style="width:300px">
+      </div>
+      <div class="col-sm-5">
+        <h4 class="media-heading">Media Middle</h4>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+      </div>
+    </div>
+  
+    
+    
+   
+  </div>
+  
+</div>
+
+<div id="Paris" class="tabcontent">
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="card">
+        <img src="static/assets/img/home-decor-1.jpg" alt="Avatar" style="width:100%">
+        <div class="container">
+          <h4><b>Jane Doe</b></h4> 
+          <p>Interior Designer</p> 
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-sm-4">
+      <div class="card">
+        <img src="static/assets/img/home-decor-2.jpg" alt="Avatar" style="width:100%">
+        <div class="container">
+          <h4><b>Jane Doe</b></h4> 
+          <p>Interior Designer</p> 
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-sm-4">
+      <div class="card">
+        <img src="static/assets/img/home-decor-3.jpg" alt="Avatar" style="width:100%">
+        <div class="container">
+          <h4><b>Jane Doe</b></h4> 
+          <p>Interior Designer</p> 
+        </div>
+      </div>
+    </div>
+   
+    <div class="col-sm-4" style="padding-top: 20px;">
+      <div class="card">
+        <img src="static/assets/img/home-decor-1.jpg" alt="Avatar" style="width:100%">
+        <div class="container">
+          <h4><b>Jane Doe</b></h4> 
+          <p>Interior Designer</p> 
+        </div>
+      </div>
+    </div>
+  
+    <div class="col-sm-4"  style="padding-top: 20px;">
+      <div class="card">
+        <img src="static/assets/img/home-decor-2.jpg" alt="Avatar" style="width:100%">
+        <div class="container">
+          <h4><b>Jane Doe</b></h4> 
+          <p>Interior Designer</p> 
+        </div>
+      </div>
+    </div>
+    
+    <div class="col-sm-4" style="padding-top: 20px;">
+      <div class="card">
+        <img src="static/assets/img/home-decor-3.jpg" alt="Avatar" style="width:100%">
+        <div class="container">
+          <h4><b>Jane Doe</b></h4> 
+          <p>Interior Designer</p> 
+        </div>
+      </div>
+    </div>
+  </div>
+  
+</div>
+
+<div id="Tokyo" class="tabcontent">
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="card">
+        <h3>Card 1</h3>
+        <p>Some text</p>
+        <p>Some text</p>
+      </div>
+    </div>
+  
+    <div class="col-sm-4">
+      <div class="card">
+        <h3>Card 2</h3>
+        <p>Some text</p>
+        <p>Some text</p>
+      </div>
+    </div>
+    
+    <div class="col-sm-4">
+      <div class="card">
+        <h3>Card 3</h3>
+        <p>Some text</p>
+        <p>Some text</p>
+      </div>
+    </div>
+    
+   
+  </div>
+  
+</div>
+
+<script>
+function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+</script>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}
+
+  
+
+{% endblock javascripts %}

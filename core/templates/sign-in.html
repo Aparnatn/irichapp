@@ -1,0 +1,96 @@
+{% extends 'layouts/base.html' %}
+
+{% block title %} UI Tables {% endblock title %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<style>
+  div {
+    margin-bottom: 15px;
+    padding: 4px 12px;
+  }
+  
+  .danger {
+    background-color: #ffdddd;
+    border-left: 6px solid #f44336;
+  }
+  
+  .success {
+    background-color: #ddffdd;
+    border-left: 6px solid #04AA6D;
+  }
+  
+  .info {
+    background-color: #e7f3fe;
+    border-left: 6px solid #2196F3;
+  }
+  
+  
+  .warning {
+    background-color: #ffffcc;
+    border-left: 6px solid #ffeb3b;
+  }
+  </style>
+  </head>
+  <body>
+  
+  <h2>Notifications</h2>
+  <div class="danger">
+    <p><strong>Danger!</strong> Some text...</p>
+  </div>
+  
+  <div class="success">
+    <p><strong>Success!</strong> Some text...</p>
+  </div>
+  
+  <div class="info">
+    <p><strong>Info!</strong> Some text...</p>
+  </div>
+  
+  <div class="warning">
+    <p><strong>Warning!</strong> Some text...</p>
+  </div>
+  <div class="danger">
+    <p><strong>Danger!</strong> Some text...</p>
+  </div>
+  
+  <div class="success">
+    <p><strong>Success!</strong> Some text...</p>
+  </div>
+  
+  <div class="info">
+    <p><strong>Info!</strong> Some text...</p>
+  </div>
+  
+  <div class="warning">
+    <p><strong>Warning!</strong> Some text...</p>
+  </div>
+</body>
+
+<script>
+function openCity(evt, cityName) {
+  var i, tabcontent, tablinks;
+  tabcontent = document.getElementsByClassName("tabcontent");
+  for (i = 0; i < tabcontent.length; i++) {
+    tabcontent[i].style.display = "none";
+  }
+  tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  document.getElementById(cityName).style.display = "block";
+  evt.currentTarget.className += " active";
+}
+</script>
+
+{% endblock content %}
+
+<!-- Specific JS goes HERE --> 
+{% block javascripts %}
+
+  
+
+{% endblock javascripts %}

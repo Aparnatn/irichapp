@@ -1,0 +1,155 @@
+  if request.POST:
+             ob=business_details()
+             category=request.POST('category')
+             print("category",category)
+         return render(request, "tables.html")
+         def mobile_login(request):
+    form = MobileLoginForm(request.POST or None)
+
+    msg = None
+
+    if request.method == "POST":
+
+        if form.is_valid():
+           phone = form.cleaned_data.get("phone")
+
+           user = authenticate(phone=phone)
+           if user is not None:
+                login(request, user)
+                return redirect("/")
+           else:
+                msg = 'Invalid credentials'
+        else:
+            msg = 'Error validating the form'
+
+    return render(request, "accounts/mobile.html", {"form": form, "msg" : msg})
+
+    return render(request, "accounts/login.html", {"form": form, "msg" : msg})
+def update_view(request, id):
+    # dictionary for initial data with
+    # field names as keys
+    context ={}
+ 
+    # fetch the object related to passed id
+    obj = get_object_or_404(mobile, id = id)
+ 
+    # pass the object as instance in form
+    form = mobile(request.POST or None, instance = obj)
+ 
+    # save the data from the form and
+    # redirect to detail_view
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect("/"+id)
+ 
+    # add form dictionary to context
+    context["form"] = form
+ 
+    return render(request, "update_view.html", context)
+def delete_view(request, id):
+    # dictionary for initial data with
+    # field names as keys
+    context ={}
+ 
+    # fetch the object related to passed id
+    obj = get_object_or_404(mobile, id = id)
+ 
+ 
+    if request.method =="POST":
+        # delete object
+        obj.delete()
+        # after deleting redirect to
+        # home page
+        return HttpResponseRedirect("/")
+ 
+    return render(request, "delete_view.html", context)
+def login_view(request):
+    form = LoginForm(request.POST or None)
+
+    msg = None
+
+    if request.method == "POST":
+
+        if form.is_valid():
+            username = form.cleaned_data.get("username")
+            password = form.cleaned_data.get("password")
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect("/")
+            else:
+                msg = 'Invalid credentials'
+        else:
+            msg = 'Error validating the form'
+
+    return render(request, "accounts/login.html", {"form": form, "msg" : msg})
+
+def register_user(request):
+
+    msg     = None
+    success = False
+
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get("username")
+            raw_password = form.cleaned_data.get("password")
+            user = authenticate(username=username, password=raw_password)
+
+            msg     = 'User created - please <a href="/login">login</a>.'
+            success = True
+
+            #return redirect("/login/")
+
+        else:
+            msg = 'Form is not valid'
+    else:
+        form = SignUpForm()
+
+    return render(request, "accounts/register.html", {"form": form, "msg" : msg, "success" : success })
+def business_details(request):
+    msg     = None
+    success = False
+    context ={}
+    if request.method == "POST":
+        form = BusinessForm(request.POST or None)
+        if form.is_valid():
+          
+            category=form.cleaned_data.get("category")
+            account_number=form.cleaned_data.get("account_number")
+            Account_holder=form.cleaned_data.get("Account_holder")
+            subcategory=form.cleaned_data.get("subcategory")
+            Abin=form.cleaned_data.get("Abin"),
+            email=form.cleaned_data.get("email")
+            business_address=form.cleaned_data.get("business_address")
+            business_desc=form.cleaned_data.get("business_desc"),
+            business_name=form.cleaned_data.get("business_name")
+            bsb = form.cleaned_data.get("bsb")
+            bank_name=form.cleaned_data.get("bank_name")
+            user = authenticate(category=category,
+            account_number=account_number,
+            Account_holder=Account_holder,
+            subcategory=subcategory,
+            Abin=Abin,
+            email=email,
+            business_address=business_address,
+            business_desc=business_desc,
+            business_name=business_name,
+            bsb = bsb,
+            bank_name=bank_name)
+            form.save()
+            msg     = 'User created - please <a href="/tables">submit</a>.'
+            success = True
+
+            #return redirect("/login/")
+
+        else:
+            msg = 'Form is not valid'
+    else:
+       context ={}
+ 
+    # add the dictionary during initialization
+    context["dataset"] = business_details.objects.all()
+         
+    return render(request, "tables.html", context)

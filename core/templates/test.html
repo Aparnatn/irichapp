@@ -1,0 +1,26 @@
+{% for currentGoal in goals %}
+    {% for cur in currentGoal.currentSpending.all %}
+        {{cur.price}}
+    {% endfor %}
+    <p>test</p>
+{% endfor %}
+<!-- 
+
+
+{% for i in spendingList %}
+    {% for j in i %}
+        {{j.price}} - {{j.item}}
+        <br>
+    {% endfor %}
+
+{% endfor %} -->
+
+<div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+    <header class="masthead mb-auto">
+        <div class="inner">
+            <h3 class="masthead-brand">{{user.username}}'s Spending</h3>
+            <!--Show if user is authenticated-->
+            <a href="#"><u>Logout</u></a>
+        </div>
+    </header>
+</div>
