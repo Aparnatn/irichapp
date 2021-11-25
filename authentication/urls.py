@@ -25,7 +25,7 @@ urlpatterns = [
     path('profile', views.profile),
   
     path("logout/", LogoutView.as_view(), name="logout"),
-    path('home',views.Home,name="home"),
+    path('home/',views.Home,name="home"),
     path('qr',views.qr,name="qr"),
     path('list',views.tablelist,name="list"),
     path('category',views.categories,name="category"),

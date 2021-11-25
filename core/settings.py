@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app', # Enable the inner app
     'authentication',
-    'phone_verify',
+   
     'rest_framework',
     'corsheaders',
      'channels',
