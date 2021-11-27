@@ -363,7 +363,16 @@ def index(request):
         print(e)
         return HttpResponse("Please login from admin site for sending messages from this view")
 
-
+def transactions(request):
+    return render(request,'transactions.html')
+def business_list(request):
+    return render(request,'business_details.html')
+def payment(request):
+    return render(request,'payment.html')
+def notification(request):
+    return render(request,'notification.html')
+def setting(request):
+    return render(request,'payment.html')
 
 
 
@@ -498,37 +507,27 @@ def login_view(request):
 
 def register_user(request):
 
-    msg     = None
-    success = False
-
-    if request.method == "POST":
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get("username")
-            raw_password = form.cleaned_data.get("password1")
-            user = authenticate(username=username, password=raw_password)
-
-            msg     = 'User created - please <a href="/login">login</a>.'
-            success = True
-            
-            #return redirect("/login/")
-
-        else:
-            msg = 'Form is not valid'    
-    else:
-        form = SignUpForm()
-
-    return render(request, "accounts/register.html", {"form": form, "msg" : msg, "success" : success })
-
-def getAccessToken(request):
-    consumer_key = 'a7JkcgUxkzLBzwA21bsJY729WvcvZZjE'
-    consumer_secret = 'JiNn7eulo6gNNxCG'
-    api_URL = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
-
-    r = requests.get(api_URL, auth=HTTPBasicAuth(consumer_key, consumer_secret))
-    mpesa_access_token = json.loads(r.text)
-    validated_mpesa_access_token = mpesa_access_token['access_token']
+     if request.method=="POST":
+        username =request.POST['username'],
+        lastname=request.POST['lastname'],
+        phone=request.POST['phone'],
+        email=request.POST['email'],
+        password1=request.POST['password1'],
+        password2=request.POST['password2'],
+        customercode=request.POST['customercode'],
+        communitycode=request.POST['communitycode'],
+        salescode=request.POST['salescode'],
+        obj=User.objects.create(username =username,
+        lastname=lastname,
+        phone=phone,
+        email=email,
+        password1=password1,
+        password2=password2,
+        customercode=customercode,
+        communitycode=communitycode,
+        salescode=salescode,)
+        obj.save()
+        return redirect('/notification.html',{'obj':obj})
 from django.shortcuts import render
 
 

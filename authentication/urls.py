@@ -13,7 +13,8 @@ from .views import (HomepageView, BillListView,
                             )
 
 urlpatterns = [
-    path('login/', login_view, name="login"),
+  # path('index',views.index,name='index'),
+    path('', login_view, name="login"),
     path('homepage', HomepageView.as_view(), name='homepage'),
 
     path('bills/', BillListView.as_view(), name='bills_view'),
@@ -23,7 +24,12 @@ urlpatterns = [
     path('register/', register_user, name="register"),
     path('getbooks', views.get_books),
     path('profile', views.profile),
-  
+    path('transactions', views.transactions,name="transactions"),
+    path('business_list', views.business_list,name="business_list"),
+ path('', views.register_user,name="register_user"),
+  path('payment', views.payment,name="payment"),
+   path('setting', views.setting,name="setting"),
+    path('notification', views.notification,name="notification"),
     path("logout/", LogoutView.as_view(), name="logout"),
     path('home/',views.Home,name="home"),
     path('qr',views.qr,name="qr"),
@@ -33,7 +39,7 @@ urlpatterns = [
     path('categories',views.apis,name="categories"),
     path('location', views.location , name="home"),
     path('api/get/' , views.api , name="api"),
-    path('api/v1/', views.getAccessToken, name="api/v1/"),
+   
     
       path('main-view', main_view, name='main-view'),
     path('sign/', signup_view, name='signup-view'),

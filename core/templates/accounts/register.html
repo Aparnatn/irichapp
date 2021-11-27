@@ -1,122 +1,172 @@
-{% extends 'layouts/base-fullscreen.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Irich-Dashboard</title>
 
-{% block title %} Sign UP {% endblock title %}
-
-<!-- Specific CSS goes HERE -->
-{% block stylesheets %}{% endblock stylesheets %}
-
-{% block content %}
-
-  <section>
-    <div class="page-header section-height-75">
-      <div class="container">
+    <!-- Links -->
+    <link rel="stylesheet" type="text/css" href="/static/assets/styles/style.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+<body>
+   
         <div class="row">
-          <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
-            <div class="card card-plain mt-8">
-              <div class="card-header pb-0 text-left bg-transparent">
-               
-                <p class="mb-0">
-                    {% if msg %}
-                        {{ msg | safe }}
-                    {% else %}
-                        Add your credentials
-                    {% endif %}                 
-                </p>
-              </div>
-              <div class="card-body">
-                <form role="form text-left" method="post" action="">
-                  
-                  {% csrf_token %}
-
-                  <label>Firstname</label>
-                  <div class="mb-3">
-                    {{ form.username }}
-                  </div>
-                  <span class="text-error">{{ form.username.errors }}</span>
-                  <label>Lastname</label>
-                  <div class="mb-3">
-                    {{ form.lastname }}
-                  </div>
-                  <span class="text-error">{{ form.lastname.errors }}</span>
-                  <label>Mobile</label>
-                  <div class="mb-3">
-                    {{ form.phone }}
-                  </div>
-                  <span class="text-error">{{ form.mobile.errors }}</span>
-
-                  <label>Email</label>
-                  <div class="mb-3">
-                    {{ form.email }}
-                  </div>
-                  <span class="text-error">{{ form.email.errors }}</span>
-                  
-                  <label>Password</label>
-                  <div class="mb-3">
-                    {{ form.password1 }}
-                  </div>
-                  <span class="text-error">{{ form.password1.errors }}</span>
-
-                  <label>Password Check</label>
-                  <div class="mb-3">
-                    {{ form.password2 }}
-                  </div>
-                  <span class="text-error">{{ form.password2.errors }}</span>
-                  <label>Customer Code</label>
-                  <div class="mb-3">
-                    {{ form.customercode }}
-                  </div>
-                  <span class="text-error">{{ form.customercode.errors }}</span>
-                  <label>Community Code</label>
-                  <div class="mb-3">
-                    {{ form.communitycode }}
-                  </div>
-                  <span class="text-error">{{ form.communitycode.errors }}</span>
-                  <label>Sales code</label>
-                  <div class="mb-3">
-                    {{ form.salescode }}
-                  </div>
-                  <span class="text-error">{{ form.salescode.errors }}</span>
-                  <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="rememberMe" checked="">
-                    <label class="form-check-label" for="rememberMe">Terms</label>
-                  </div>
-                  <div class="text-center">
-                    <button type="submit" name="register" class="btn bg-gradient-info w-100 mt-4 mb-0">Sign UP</button>
-                  </div>
-                </form>
-              </div>
-              <div class="card-footer text-center pt-0 px-lg-2 px-1">
-                <p class="mb-4 text-sm mx-auto">
-                  Already have an account?
-                  <a href="{% url 'login' %}" 
-                     class="text-info text-gradient font-weight-bold">Sign IN</a>
-                </p>
-              </div>
+            <div class="col-12 col-md-7 ">
+                <div class="login-form">
+                    <div class="form">
+                        <img src="/static/assets/images/irich-logo-mini.png" alt="login-logo">
+                        <h3>Proceed with your</h3>
+                        <h1>Registration</h1>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                              <div class="input">
+                                <div class="inputBox">
+                                  <label for="fname">First Name</label>
+                                  <div class="d-flex">
+                                      <input type="text" id="fname" name="username" placeholder="IRICH NAME" required>
+                                      <i class="far fa-user"></i>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="input">
+                                  <div class="inputBox">
+                                      <label for="lname">Last Name</label>
+                                      <div class="d-flex">
+                                      <input type="text" id="lname" name="lastname" placeholder="IRICH NAME" required>
+                                      <i class="far fa-user"></i>
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="input">
+                                  <div class="inputBox">
+                                      <label for="email">Email</label>
+                                      <div class="d-flex">
+                                       <input type="email" id="email" name="email" placeholder="abc@abc.com" required>
+                                       <i class="far fa-envelope"></i>
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-12 col-md-6">
+                                <div class="input">
+                                  <div class="inputBox">
+                                      <label for="phone">Mobile</label>
+                                      <div class="d-flex">
+                                        <input type="tel" id="phone" name="phone" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required>
+                                      <i class="fas fa-mobile-alt"></i>
+                                      </div>
+                                    </div>
+                                </div>
+                              </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="input">
+                                  <div class="inputBox">
+                                      <label for="pwd">Password</label>
+                                      <div class="d-flex">
+                                      <input type="password" id="pwd" name="password1" minlength="8" placeholder="••••••••" required>
+                                      <i class="fas fa-key"></i>
+                                      </div>
+                                    </div>
+                                </div>
+                              </div>
+                              <div class="col-12 col-md-6">
+                                <div class="input">
+                                  <div class="inputBox">
+                                      <label for="pwd">Confirm Passsword</label>
+                                      <div class="d-flex">
+                                      <input type="password" id="pwd" name="password2"minlength="8" placeholder="••••••••" required>
+                                      <i class="fas fa-key"></i>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div> 
+                        </div>    
+                        <div class="row">
+                            <div class="col-12 col-md-6">
+                                <div class="input">
+                                  <div class="inputBox">
+                                      <label for="num">Customer Code</label>
+                                      <div class="d-flex">
+                                      <input type="text" name="customercode" id="num" placeholder="1234" required>
+                                      <div class="community-verify">
+                                        <a href="">verify</a>
+                                      </div>
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-12 col-md-6">
+                                <div class="input">
+                                  <div class="inputBox">
+                                      <label for="num">Community Code</label>
+                                      <div class="d-flex">
+                                      <input type="text" name="communitycode" id="num" placeholder="1234" required>
+                                      <div class="community-verify">
+                                        <a href="">verify</a>
+                                      </div>
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+                        </div>  
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="input">
+                                  <div class="inputBox">
+                                      <label for="num">Sales Code</label>
+                                      <div class="d-flex">
+                                      <input type="text" name="salescode" id="num" placeholder="1234" required>
+                                      <div class="community-verify">
+                                        <a href="">verify</a>
+                                      </div>
+                                      </div>
+                                  </div>
+                                </div>
+                              </div>
+                        </div> 
+                        <div class="row">
+                          <div class="col-12">
+                            <div class="input">
+                              <input type="checkbox" id="check" name="check" value="true">
+                              <label for="check"> I agree to the term and conditions.</label> 
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-12">
+                            <div class="input">
+                              <a href="add-business.html">
+                              <input type="submit" name="submit" value="Sign Up"> 
+                            </a>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+               <div class="login-signin">
+                   <p>Already Have an account? <a href="login.html">Sign in</a></p>
+                </div>
             </div>
-          </div>
-          <div class="col-md-6">
-            <div class="oblique position-absolute top-0 h-100 d-md-block d-none me-n8">
-              <div class="oblique-image bg-cover position-absolute fixed-top ms-auto h-100 z-index-0 ms-n6" style="background-image:url('/static/assets/img/curved-images/curved6.jpg')"></div>
+            <div class="col-12 col-md-5 login-image">
+                <img src="/static/assets/images/employee-shaded.jpg" alt="Login-image">
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </section>
 
-{% endblock content %}
-
-<!-- Specific JS goes HERE --> 
-{% block javascripts %}
-
-  <script>
-    var win = navigator.platform.indexOf('Win') > -1;
-    if (win && document.querySelector('#sidenav-scrollbar')) {
-      var options = {
-        damping: '0.5'
-      }
-      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
-    }
-  </script>
-
-{% endblock javascripts %}
+<!-- Scripts -->
+    <script src="/static/assets/scripts/script.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+</body>
+</html>
