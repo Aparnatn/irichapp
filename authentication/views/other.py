@@ -4,7 +4,7 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 from django.http.request import HttpRequest
-from serializers import business_detailsSerializer, categorySerializer
+from serializers import business_detailsSerializer, categorySerializer,transSerializer
 from ..models import business_details, category
 from rest_framework import status
 from django.http import response
@@ -366,8 +366,11 @@ def apis(request):
 @api_view(["GET"])
 @csrf_exempt
 # Create your views here.
-def location(request):
-    return render(request, 'location.html')
+def trans(request):
+    transact=Transactions.objects.all()
+    serializer = transSerializer(transact, many=True)
+    return JsonResponse({serializer.data}, safe=False, status=status.HTTP_200_OK)
+   
 
 
 # Create your views here.

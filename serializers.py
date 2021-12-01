@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from authentication.models import business_details,category
+from authentication.models import Transactions, business_details,category
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 class business_detailsSerializer(serializers.ModelSerializer):
@@ -23,6 +23,10 @@ class categorySerializer(serializers.ModelSerializer):
     class Meta:
         model = category
         fields=('add_category',)
+class transSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Transactions
+        fields='__all__'
 # class ProfileSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = Profile

@@ -25,6 +25,7 @@ urlpatterns = [
     path('reports/', report_view, name='reports_view'),
     path('register/', register_user, name="register"),
     path('getbooks', views.get_books),
+     path('trans', views.trans),
     # path('profile', views.profile),
     path('transactions', views.transactions, name="transactions"),
     path('business_list', views.business_list, name="business_list"),
