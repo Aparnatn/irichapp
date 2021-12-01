@@ -40,7 +40,7 @@ urlpatterns = [
     path('category', views.categories, name="category"),
     path('show_category', views.show_category, name="show_category"),
     path('categories', views.apis, name="categories"),
-    path('location', views.location, name="home"),
+   
     path('api/get/', views.api, name="api"),
 
 
