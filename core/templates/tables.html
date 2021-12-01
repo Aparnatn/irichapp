@@ -121,7 +121,7 @@
                       Business Address {{ data.business_address }}<br />
                       <br />
                       <hr />
-                      <a href="{{host|add:'/checkout-session'}}?item_id={{data.id}}">checkout</a>
+                      <a href="{{http://13.232.49.240:8000|add:'/checkout-session'}}?item_id={{data.id}}">checkout</a>
                       {% load qr_code %}
 {% qr_from_text host|add:"/checkout-session?item_id="|add:data.id size="m" image_format="png" error_correction="L" %}
 
