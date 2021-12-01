@@ -369,7 +369,7 @@ def apis(request):
 def trans(request):
     transact=Transactions.objects.all()
     serializer = transSerializer(transact, many=True)
-    return JsonResponse({serializer.data}, safe=False, status=status.HTTP_200_OK)
+    return JsonResponse({'transact': serializer.data}, safe=False, status=status.HTTP_200_OK)
    
 
 
