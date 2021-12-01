@@ -22,7 +22,7 @@ DEBUG = config('DEBUG', default=True, cast=bool)
 
 # load production server froim .env
 #ALLOWED_HOSTS = ['localhost', '127.0.0.1', '13.232.49.240' config('SERVER', default='13.232.49.240')]
-ALLOWED_HOSTS = ['0.0.0.0']
+ALLOWED_HOSTS = ['*']
 # Application definition
 AWS_ACCESS_KEY_ID = 'AKIARVG45XWQYPC3KPYN'
 AWS_SECRET_ACCESS_KEY= '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'
@@ -219,5 +219,6 @@ MEDIA_ROOT = os.path.join(CORE_DIR, 'media')
 print("++++++++++++++++", MEDIA_ROOT)
 MEDIA_URL = '/media/'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
+PAYMENT_API_KEY = 'pk_test_51K1UzDC28elAkKFnzO563cwDKV7RESRNiNaP9Zb6ORvd8l3H8shfU4ootf3bKii3xD7G39wty93wqu6pRNEiqDFZ00xvV7Tdmo'
+PAYMENT_API_SECRET = 'sk_test_51K1UzDC28elAkKFn4MGLA1ogZ0XS1bdPp1a9KBTB24gpi6l0PhDOVcoUq7OxjMcNjspxsADfrZshFyN36rT9iwGn00k42geJ35'
 #############################################################

@@ -259,23 +259,16 @@ class GenericExpense(DefaultExpenseModel):
     def tag_category(self):
         return f'{self.category}'
 class Transactions(models.Model):      
-    contact = models.IntegerField(default=0)
-    amount = models.IntegerField(default=0)
-    code = models.ImageField(upload_to='qr_codes', blank=True)
-    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    item=models.ImageField(upload_to='qr_codes', blank=True)
-    def save(self, *args, **kwargs):
-        link =  'http://0.0.0.0:8000/api/v1/transaction/complete/'+self.uuid.hex+'/'
-        qrcode_img = qrcode.make(link)       
-        canvas = Image.new('RGB', (440,440), 'white')    
-        canvas.paste(qrcode_img)
-        fname = f'qr_code-{self.item}.png'
-        buffer = BytesIO() 
-        canvas.save(buffer,'PNG')
-        self.code.save(fname,File(buffer), save=False) 
-        canvas.close()
-        super().save(*args, **kwargs)
+        price = models.CharField(max_length=200)
+        session_id = models.CharField(max_length=200)
+     
+        status = models.CharField(max_length=20,default='pending')
+class Meta:
+        verbose_name_plural = 'price'
+def __str__(self):
+        return self.price
 
+    
 class Restraunt(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()

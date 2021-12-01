@@ -10,8 +10,8 @@ admin.site.register(mobile)
 admin.site.register(business_details)
 admin.site.register(category)
 admin.site.register(Restraunt)
-admin.site.register(Profile)
-from .models import  Transactions,Profile
+
+from .models import  Transactions
 
 
 

@@ -12,6 +12,39 @@
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
+<script>
+    $(document).ready(function(){
+    
+        $('#tab_logic tbody').on('keyup change',function(){
+            calc();
+        });
+        $('#discount').on('keyup change',function(){
+            calc_total();
+        });
+    
+    
+    
+    });
+    
+    function calc()
+    {
+        $('#tab_logic tbody tr').each(function(i, element) {
+            var html = $(this).html();
+            if(html!='')
+            {
+                var qty = $(this).find('.qty').val();
+                var price = $(this).find('.price').val();
+                $(this).find('.total').val(price*price);
+    
+                calc_total();
+            }
+        });
+    }
+    
+    
+    
+    
+    </script>
 <body>
         <div class="navigation">
             <div class="user-info">
@@ -108,272 +141,32 @@
                       <div id="transactiondetail-1" class="tabcontent2">
                          <div class="tab-content-cards">
                             <div class="row">
-                                <div class="col-12 col-md-4">
-                                    <div class="card">
-                                        <div class="card-body">
-                                          <div class="row">
-                                              <div class="col-12 transaction-section-1">
-                                                  <div class="transaction-id">
-                                                      <p><b>Transaction id: 0312879</b></p>
-                                                      <p>02:05:00 PM 23 Nov 2017 </p>
-                                                  </div>
-                                                  <div class="transaction-amount">
-                                                      <h2><b>$10</b></h2>
-                                                      <button type="button">Received</button>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                          <div class="row">
-                                            <div class="col-12 transaction-section-2">
-                                                <div class="transaction-image">
-                                                    <img src="/static/assets/images/car-accessories.jpg" alt="logo">
-                                                </div>
-                                                <div class="transaction-company-name">
-                                                    <h3>Domino's Pizza</h3>
-                                                    <p>Fast Food</p>
-                                                </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
+                             {% for item in transact%}
+                             <div class="row">
+                                <div class="col-12 transaction-section-1">
+                                    <div class="transaction-id">
+                                        <div class="card">
+                                            <div class="card-body">
+                                        <p><b> {{item.id}}</b></p>
+                                        <p> transaction_id :  {{item.session_id}} </p>
+                                   
+                                    <div class="transaction-amount">
+                                        <h2><b>{{item.price}}</b></h2>
+                                        <button type="button">Received</button>
+                                    {{items}}
+                                    </div>
                                 </div>
-                                <div class="col-12 col-md-4">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-12 transaction-section-1">
-                                                    <div class="transaction-id">
-                                                        <p><b>Transaction id: 0312879</b></p>
-                                                        <p>02:05:00 PM 23 Nov 2017 </p>
-                                                    </div>
-                                                    <div class="transaction-amount">
-                                                        <h2><b>$10</b></h2>
-                                                        <button type="button">Received</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                              <div class="col-12 transaction-section-2">
-                                                  <div class="transaction-image">
-                                                      <img src="/static/assets/images/car-accessories.jpg" alt="logo">
-                                                  </div>
-                                                  <div class="transaction-company-name">
-                                                      <h3>Domino's Pizza</h3>
-                                                      <p>Fast Food</p>
-                                                  </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                      </div>
                                 </div>
-                                <div class="col-12 col-md-4">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-12 transaction-section-1">
-                                                    <div class="transaction-id">
-                                                        <p><b>Transaction id: 0312879</b></p>
-                                                        <p>02:05:00 PM 23 Nov 2017 </p>
-                                                    </div>
-                                                    <div class="transaction-amount">
-                                                        <h2><b>$10</b></h2>
-                                                        <button type="button">Received</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                              <div class="col-12 transaction-section-2">
-                                                  <div class="transaction-image">
-                                                      <img src="/static/assets/images/car-accessories.jpg" alt="logo">
-                                                  </div>
-                                                  <div class="transaction-company-name">
-                                                      <h3>Domino's Pizza</h3>
-                                                      <p>Fast Food</p>
-                                                  </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                      </div>
                                 </div>
+                            
+                             
+                            
+                             {%endfor%}
                             </div>
-                            <div class="row">
-                                <div class="col-12 col-md-4">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-12 transaction-section-1">
-                                                    <div class="transaction-id">
-                                                        <p><b>Transaction id: 0312879</b></p>
-                                                        <p>02:05:00 PM 23 Nov 2017 </p>
-                                                    </div>
-                                                    <div class="transaction-amount">
-                                                        <h2><b>$10</b></h2>
-                                                        <button type="button">Received</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                              <div class="col-12 transaction-section-2">
-                                                  <div class="transaction-image">
-                                                      <img src="/static/assets/images/car-accessories.jpg" alt="logo">
-                                                  </div>
-                                                  <div class="transaction-company-name">
-                                                      <h3>Domino's Pizza</h3>
-                                                      <p>Fast Food</p>
-                                                  </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                      </div>
-                                </div>
-                                <div class="col-12 col-md-4">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-12 transaction-section-1">
-                                                    <div class="transaction-id">
-                                                        <p><b>Transaction id: 0312879</b></p>
-                                                        <p>02:05:00 PM 23 Nov 2017 </p>
-                                                    </div>
-                                                    <div class="transaction-amount">
-                                                        <h2><b>$10</b></h2>
-                                                        <button type="button">Received</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                              <div class="col-12 transaction-section-2">
-                                                  <div class="transaction-image">
-                                                      <img src="/static/assets/images/car-accessories.jpg" alt="logo">
-                                                  </div>
-                                                  <div class="transaction-company-name">
-                                                      <h3>Domino's Pizza</h3>
-                                                      <p>Fast Food</p>
-                                                  </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                      </div>
-                                </div>
-                                <div class="col-12 col-md-4">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-12 transaction-section-1">
-                                                    <div class="transaction-id">
-                                                        <p><b>Transaction id: 0312879</b></p>
-                                                        <p>02:05:00 PM 23 Nov 2017 </p>
-                                                    </div>
-                                                    <div class="transaction-amount">
-                                                        <h2><b>$10</b></h2>
-                                                        <button type="button">Received</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                              <div class="col-12 transaction-section-2">
-                                                  <div class="transaction-image">
-                                                      <img src="/static/assets/images/car-accessories.jpg" alt="logo">
-                                                  </div>
-                                                  <div class="transaction-company-name">
-                                                      <h3>Domino's Pizza</h3>
-                                                      <p>Fast Food</p>
-                                                  </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                      </div>
-                                </div>
+                             
                             </div>
-                            <div class="row">
-                                <div class="col-12 col-md-4">
-                                    <div class="card">
-                                        <div class="card-body">
-                                          <div class="row">
-                                              <div class="col-12 transaction-section-1">
-                                                  <div class="transaction-id">
-                                                      <p><b>Transaction id: 0312879</b></p>
-                                                      <p>02:05:00 PM 23 Nov 2017 </p>
-                                                  </div>
-                                                  <div class="transaction-amount">
-                                                      <h2><b>$10</b></h2>
-                                                      <button type="button">Received</button>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                          <div class="row">
-                                            <div class="col-12 transaction-section-2">
-                                                <div class="transaction-image">
-                                                    <img src="/static/assets/images/car-accessories.jpg" alt="logo">
-                                                </div>
-                                                <div class="transaction-company-name">
-                                                    <h3>Domino's Pizza</h3>
-                                                    <p>Fast Food</p>
-                                                </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                </div>
-                                <div class="col-12 col-md-4">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-12 transaction-section-1">
-                                                    <div class="transaction-id">
-                                                        <p><b>Transaction id: 0312879</b></p>
-                                                        <p>02:05:00 PM 23 Nov 2017 </p>
-                                                    </div>
-                                                    <div class="transaction-amount">
-                                                        <h2><b>$10</b></h2>
-                                                        <button type="button">Received</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                              <div class="col-12 transaction-section-2">
-                                                  <div class="transaction-image">
-                                                      <img src="/static/assets/images/car-accessories.jpg" alt="logo">
-                                                  </div>
-                                                  <div class="transaction-company-name">
-                                                      <h3>Domino's Pizza</h3>
-                                                      <p>Fast Food</p>
-                                                  </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                      </div>
-                                </div>
-                                <div class="col-12 col-md-4">
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-12 transaction-section-1">
-                                                    <div class="transaction-id">
-                                                        <p><b>Transaction id: 0312879</b></p>
-                                                        <p>02:05:00 PM 23 Nov 2017 </p>
-                                                    </div>
-                                                    <div class="transaction-amount">
-                                                        <h2><b>$10</b></h2>
-                                                        <button type="button">Received</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                              <div class="col-12 transaction-section-2">
-                                                  <div class="transaction-image">
-                                                      <img src="/static/assets/images/car-accessories.jpg" alt="logo">
-                                                  </div>
-                                                  <div class="transaction-company-name">
-                                                      <h3>Domino's Pizza</h3>
-                                                      <p>Fast Food</p>
-                                                  </div>
-                                              </div>
-                                            </div>
-                                          </div>
-                                      </div>
-                                </div>
-                            </div>
+                            
+                           
                          </div>
                       </div>
                       
@@ -562,16 +355,7 @@
                                     <div class="card">
                                         <div class="card-body">
                                           <div class="row">
-                                              <div class="col-12 transaction-section-1">
-                                                  <div class="transaction-id">
-                                                      <p><b>Transaction id: 0312879</b></p>
-                                                      <p>02:05:00 PM 23 Nov 2017 </p>
-                                                  </div>
-                                                  <div class="transaction-amount">
-                                                      <h2><b>$10</b></h2>
-                                                      <button type="button">Received</button>
-                                                  </div>
-                                              </div>
+                                             
                                           </div>
                                           <div class="row">
                                             <div class="col-12 transaction-section-2">
@@ -834,16 +618,7 @@
                                     <div class="card">
                                         <div class="card-body">
                                           <div class="row">
-                                              <div class="col-12 transaction-section-1">
-                                                  <div class="transaction-id">
-                                                      <p><b>Transaction id: 0312879</b></p>
-                                                      <p>02:05:00 PM 23 Nov 2017 </p>
-                                                  </div>
-                                                  <div class="transaction-amount">
-                                                      <h2><b>$10</b></h2>
-                                                      <button type="button">Received</button>
-                                                  </div>
-                                              </div>
+                                             
                                           </div>
                                           <div class="row">
                                             <div class="col-12 transaction-section-2">

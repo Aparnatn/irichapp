@@ -93,7 +93,8 @@
                     </div>
                   </div>
             </div>
-
+            <form action="/home" method="post" enctype="multipart/form-data">
+                {%csrf_token%}
             <div class="main-content">
                 <div class="container">
                     <div class="row">
@@ -101,108 +102,150 @@
                          <div class="add-business-image">
                             <img src="/static/assets/images/hotel-image-addbusiness.jpg" alt="hotel-image">
                          </div>
-                         <div class="form">
+                       
                             <div class="input">
                                 <div class="inputBox">
                                   <label for="fname">Category</label>
+                                  <br>
                                   <div class="d-flex">
                                       <input type="text" id="cname" name="category" placeholder="CATEGORY" required>
-                                      <i class="far fa-user"></i>
+                                   
                                   </div>
                                 </div>
+                                <br>
                                 <div class="inputBox">
                                   <label for="fname">Bank Name</label>
+                                  <br>
                                   <div class="d-flex">
                                       <input type="text" id="bankname" name="bank_name" placeholder="CATEGORY" required>
-                                      <i class="fas fa-university"></i>
+                                     
                                   </div>
                                 </div>
+                                <br>
                                 <div class="inputBox">
                                   <label for="fname">BSB Number</label>
+                                  <br>
                                   <div class="d-flex">
                                       <input type="text" id="bsbnumber" name="bsb" placeholder="CATEGORY" required>
-                                      <i class="fas fa-list-ol"></i>
+                                    
                                   </div>
                                 </div>
-                              </div>
+                              <!-- </div> -->
                          </div>
                         </div>
+                        
                         <div class="col-12 col-md-6 add-business-col-2">
-                            <div class="form">
+                            
                                   <div class="input">
                                     <div class="inputBox">
                                       <label for="fname">Business Name</label>
+                                     <br>
                                       <div class="d-flex">
                                           <input type="text" id="bname" name="business_name" placeholder="BUSINESS NAME" required>
-                                          <i class="far fa-user"></i>
+                                         
                                       </div>
                                     </div>
+                                    <br>
                                     <div class="inputBox">
                                       <label for="fname">Business Description</label>
                                       <div class="d-flex">
                                           <input type="text" id="bdescription" name="business_desc" placeholder="BUSINESS DESCRIPTION" required>
-                                          <i class="fas fa-edit"></i>
+                                         
                                       </div>
                                     </div>
+                                    <br>
                                     <div class="inputBox">
                                       <label for="fname">Business Address</label>
                                       <div class="d-flex">
                                           <input type="text" id="baddress" name="business_address" placeholder="BUSINESS ADDRESS" required>
-                                          <i class="far fa-address-card"></i>
+                                         
                                       </div>
                                     </div>
+                                    <br>
                                     <div class="inputBox">
                                       <label for="fname">Business Manager Email</label>
+                                     <br>
                                       <div class="d-flex">
                                           <input type="text" id="businessemail" name="email" placeholder="EMAIL" required>
-                                          <i class="far fa-envelope"></i>
+                                        
                                       </div>
                                     </div>
+                                    <br>
                                     <div class="inputBox">
-                                      <label for="fname">ABN Number</label>
+                                      <label for="fname">IN Number</label>
+                                     <br>
                                       <div class="d-flex">
                                           <input type="text" id="abnnumber" name="In" placeholder="1234" required>
-                                          <i class="far fa-user"></i>
+                                        
                                       </div>
                                     </div>
+                                    <br>
                                     <div class="inputBox">
                                       <label for="fname">Sub Category</label>
+                                      <br>
                                       <div class="d-flex">
                                           <input type="text" id="subcategory" name="subcategory" placeholder="CATEGORY" required>
-                                          <i class="fas fa-mail-bulk"></i>
+                                        
                                       </div>
                                     </div>
+                                    <br>
                                     <div class="inputBox">
                                       <label for="fname">Account Holder Name</label>
+                                     <br>
                                       <div class="d-flex">
                                           <input type="text" id="acname" name="Account_holder" placeholder="ACCOUNT HOLDER NAME" required>
-                                          <i class="far fa-user"></i>
+                                          
                                       </div>
                                     </div>
+                                    <br>
                                     <div class="inputBox">
                                       <label for="fname">Account Number</label>
+                                     <br>
                                       <div class="d-flex">
                                           <input type="text" id="acnumber" name="account_number" placeholder="ACCOUNT NUMBER" required>
-                                          <i class="far fa-address-book"></i>
+                                        
                                       </div>
+                                    </div>
+                                    <br>
                                       <div class="inputBox">
-                                        <label for="fname">Add Offer</label>
+                                        <label for="fname">Business Contact</label>
+                                        <br>
                                         <div class="d-flex">
-                                            <input type="text" id="acnumber" name="add_offer" placeholder="ACCOUNT NUMBER" required>
-                                            <i class="far fa-address-book"></i>
+                                            <input type="text" id="acnumber" name="business_contact" placeholder="" required>
+                                            
                                         </div>
                                     </div>
+                                    <br>
+                                      <div class="inputBox">
+                                        <label for="fname">Add Offer</label>
+                                       <br>
+                                        <div class="d-flex">
+                                            <input type="text" id="acnumber" name="add_offer" placeholder="" required>
+                                           
+                                        </div>
+                                    </div>
+                                    <br>
+                                        <div class="inputBox">
+                                            <label for="fname">Add Image</label>
+                                            <br>
+                                            <div class="d-flex">
+                                                <input type="file" id="acnumber" name="image1"  required>
+                                              
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br>
                                   <div class="inputBox">
                                     <input type="submit" name="addbusiness" value="Add Business"> 
                                 </div>
                             </div>
-                             </div>
+                      
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
+    </form>
 
 
 <!-- Scripts -->

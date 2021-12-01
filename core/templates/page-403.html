@@ -6,7 +6,7 @@
 {% block stylesheets %}{% endblock stylesheets %}
 
 {% block content %}
-{% load qr_code %}
+
   <section>
     <!doctype html>
     <head>
@@ -72,7 +72,7 @@
     </body>
   </html>
   </section>
-  {% qr_from_text "https://securegw-stage.paytm.in/paymentservices/qr/create" size="m" image_format="png" error_correction="L" %}
+ 
 {% endblock content %}
 
 <!-- Specific JS goes HERE --> 

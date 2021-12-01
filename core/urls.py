@@ -23,7 +23,7 @@ urlpatterns = [
     path("", include("app.urls")),
     url(r'getbooks', include(router.urls)),
     # path('index', views.index, name='index'),
-    path('paymenthandler/', views.paymenthandler, name='paymenthandler'),
+   
     
   
     # path('homepage', HomepageView.as_view(), name='homepage'),

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from authentication.models import business_details,category,Profile
+from authentication.models import business_details,category
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 class business_detailsSerializer(serializers.ModelSerializer):
@@ -23,15 +23,15 @@ class categorySerializer(serializers.ModelSerializer):
     class Meta:
         model = category
         fields=('add_category',)
-class ProfileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Profile
-        fields=('user',
-    'bio',
-    'code',
-    'recommended_by', 
-    'updated', 
-    'created',)
+# class ProfileSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Profile
+#         fields=('user',
+#     'bio',
+#     'code',
+#     'recommended_by', 
+#     'updated', 
+#     'created',)
 # class UserSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = User
