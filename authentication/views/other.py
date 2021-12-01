@@ -535,7 +535,7 @@ def tablelist(request):
     movies = business_details.objects.all()
     codes = Transactions.objects.all()
     
-    context = {"movie": movies, "codes": codes, "host": HttpRequest.get_host(request)}
+    context = {"movie": movies, "codes": codes, "host": 'http://13.232.49.240:8000'}
 
 
     return render(request, "tables.html", context)
