@@ -33,8 +33,8 @@ def create_checkout_session(request):
             'quantity': quantity,
         }],
         mode='payment',
-        success_url='http://13.232.49.240:8000' + HttpRequest.get_host(request) + '/payment-success?session_id={CHECKOUT_SESSION_ID}',
-        cancel_url='http://13.232.49.240:8000' + HttpRequest.get_host(request) + '/payment-cancel',
+        success_url='http://13.232.49.240:8000' + '/payment-success?session_id={CHECKOUT_SESSION_ID}',
+        cancel_url='http://13.232.49.240:8000' + '/payment-cancel',
     )
 
     Transactions(
