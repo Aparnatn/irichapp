@@ -41,6 +41,7 @@ def create_checkout_session(request):
         price = (unit_price * quantity),
         session_id = session.id,
         status='pending',
+        Customer='Customer',
     ).save()
 
     return redirect(session.url, code=303)

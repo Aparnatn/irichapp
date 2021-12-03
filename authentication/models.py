@@ -261,7 +261,7 @@ class GenericExpense(DefaultExpenseModel):
 class Transactions(models.Model):      
         price = models.CharField(max_length=200)
         session_id = models.CharField(max_length=200)
-     
+        Customer=models.CharField(max_length=200)
         status = models.CharField(max_length=20,default='pending')
 class Meta:
         verbose_name_plural = 'price'

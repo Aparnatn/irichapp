@@ -438,7 +438,7 @@ def shuffle(request):
             "order": count,
             "share": int(item.price),
             "id": item.id,
-            "name": "customer_{item.id}",
+            "name": item.Customer,
             "to_give": 0,
             "multiplier": 0,
             "factor": factor,
