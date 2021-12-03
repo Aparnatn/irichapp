@@ -422,6 +422,42 @@ def transactions(request):
         'transact': transact,
         'give_back': give_back
     })
+def shuffle(request):
+    transact=Transactions.objects.all()
+    transactions = Transactions.objects.filter().order_by('-price')
+
+    count = len(transactions)
+    total = 0
+    shares = []
+    factor = sum(range(count+1))
+    
+    for i, item in enumerate(transactions, start=1):
+        total += int(item.price)
+        shares.append({
+            "sl": i,
+            "order": count,
+            "share": int(item.price),
+            "id": item.id,
+            "name": "customer_{item.id}",
+            "to_give": 0,
+            "multiplier": 0,
+            "factor": factor,
+        })
+        count -= 1
+
+    multiplier = (total * 0.5)/factor
+
+    give_back = []
+    for item in shares:
+        item['to_give'] = item['order'] * multiplier
+        item['multiplier'] = multiplier
+        give_back.append(item)
+
+   
+    return render(request, 'shuffle.html', {
+        'transact': transact,
+        'give_back': give_back
+    })
 
 
 def business_list(request):

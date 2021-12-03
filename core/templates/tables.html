@@ -46,6 +46,12 @@
         </a>
       </li>
       <li>
+        <a href="/shuffle">
+        <span class="icon"><i class="fas fa-exchange-alt"></i></span>
+        <span class="title">Shuffle</span>
+    </a>
+    </li>
+      <li>
         <a href="/business_list">
           <span class="icon"><i class="fas fa-money-check"></i></span>
           <span class="title">All Deals</span>
@@ -107,14 +113,13 @@
           </div>
         </div>
 
-        <div class="tab-details">
-          <div id="details" class="tabcontent">
-            <div class="tab-content-cards">
+      
               <div class="row">
-                <div class="col-12 col-md-4">
+              
                   {% for data in movie %}
+                  <div class="col-12 col-md-4">
                   <div class="card">
-                    <img src="{{data.image1.url}}" width="357" />
+                    <img src="{{data.image1.url}}" width="363" />
                     <div class="card-body">
                       Category Name: {{ data.category }}<br />
                       Business Description: {{ data.business_desc }}<br />
@@ -128,9 +133,10 @@
 
                     </div>
                   </div>
+                </div>
                   {% endfor %}
                 </div>
-              </div>
+              
                       <!-- </div> 
 </div> -->
                    
@@ -144,89 +150,7 @@
                      
 
 
-                      <div id="details-one" class="tabcontent">
-                        <div class="tab-content-cards">
-                          <div class="row">
-                            <div class="col-12 col-md-4">
-                              <div class="card">
-                                <img src="/static/assets/images/entertainment-store.jpg" class="card-img-top"
-                                  alt="entertainment">
-                                <div class="card-body">
-                                  <h5 class="card-title">Entertainment and Media</h5>
-                                  <p class="card-text">Category: <b>Ethnic</b></p>
-                                  <p class="card-text"><i class="fas fa-map-marker-alt"></i> Plot No: 122. Lorem ipsum
-                                    dolor sit amet consectetur, adipisicing elit.</p>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-12 col-md-4">
-                              <div class="card">
-                                <img src="/static/assets/images/electronics-image.jpg" class="card-img-top"
-                                  alt="electronics">
-                                <div class="card-body">
-                                  <h5 class="card-title">Electronics and Communication</h5>
-                                  <p class="card-text">Category: <b>Ethnic</b></p>
-                                  <p class="card-text"><i class="fas fa-map-marker-alt"></i> Plot No: 122. Lorem ipsum
-                                    dolor sit amet consectetur, adipisicing elit.</p>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-12 col-md-4">
-                              <div class="card">
-                                <img src="/static/assets/images/cafe-images.jpg" class="card-img-top" alt="cafe-image">
-                                <div class="card-body">
-                                  <h5 class="card-title">Entertainment and Media</h5>
-                                  <p class="card-text">Category: <b>Ethnic</b></p>
-                                  <p class="card-text"><i class="fas fa-map-marker-alt"></i> Plot No: 122. Lorem ipsum
-                                    dolor sit amet consectetur, adipisicing elit.</p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div class="row">
-                            <div class="col-12 col-md-4">
-                              <div class="card">
-                                <img src="/static/assets/images/electronics-image.jpg" class="card-img-top"
-                                  alt="electronics">
-                                <div class="card-body">
-                                  <h5 class="card-title">Electronics and Communication</h5>
-                                  <p class="card-text">Category: <b>Ethnic</b></p>
-                                  <p class="card-text"><i class="fas fa-map-marker-alt"></i> Plot No: 122. Lorem ipsum
-                                    dolor sit amet consectetur, adipisicing elit.</p>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-12 col-md-4">
-                              <div class="card">
-                                <img src="/static/assets/images/hotel-image-1.jpg" class="card-img-top" alt="hotel">
-                                <div class="card-body">
-                                  <h5 class="card-title">Entertainment and Media</h5>
-                                  <p class="card-text">Category: <b>Ethnic</b></p>
-                                  <p class="card-text"><i class="fas fa-map-marker-alt"></i> Plot No: 122. Lorem ipsum
-                                    dolor sit amet consectetur, adipisicing elit.</p>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-12 col-md-4">
-                              <div class="card">
-                                <img src="/static/assets/images/entertainment-store.jpg" class="card-img-top"
-                                  alt="entertainment">
-                                <div class="card-body">
-                                  <h5 class="card-title">Electronics and Communication</h5>
-                                  <p class="card-text">Category: <b>Ethnic</b></p>
-                                  <p class="card-text"><i class="fas fa-map-marker-alt"></i> Plot No: 122. Lorem ipsum
-                                    dolor sit amet consectetur, adipisicing elit.</p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
+                      
 
               <!-- Scripts -->
               <script src="/static/assets/scripts/script.js" type="text/javascript"></script>

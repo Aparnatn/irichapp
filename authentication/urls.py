@@ -40,6 +40,7 @@ urlpatterns = [
     path('category', views.categories, name="category"),
     path('show_category', views.show_category, name="show_category"),
     path('categories', views.apis, name="categories"),
+    path('shuffle', views.shuffle, name="shuffle"),
    
     path('api/get/', views.api, name="api"),
 
