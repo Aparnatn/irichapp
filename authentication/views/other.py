@@ -4,7 +4,7 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 from django.http.request import HttpRequest
-from serializers import business_detailsSerializer, categorySerializer,transSerializer
+from serializers import business_detailsSerializer,ProfileSerializer, categorySerializer,transSerializer
 from ..models import business_details, category
 from rest_framework import status
 from django.http import response
@@ -64,50 +64,49 @@ from django.contrib.auth.models import User
 from django.shortcuts import render
 from authentication.models import Transactions
 
-# from .models import Profile
+
 # Create your views here.
 
-# def my_recommendations_view(request):
-#     profile = Profile.objects.get(user=request.user)
-#     my_recs = profile.get_recommened_profiles()
-#     context = {'my_recs': my_recs}
-#     return render(request, 'profiles/main.html', context)
-# def signup_view(request):
-#     profile_id = request.session.get('ref_profile')
-#     print('profile_id', profile_id)
-#     form = UserCreationForm(request.POST or None)
-#     if form.is_valid():
-#         if profile_id is not None:
-#             recommended_by_profile = Profile.objects.get(id=profile_id)
+def my_recommendations_view(request):
+    user = request.user.is_authenticated
+    profile = Profile.objects.filter(user=request.user)
+    
+    context = {'profile': profile}
+    return render(request, 'profiles/main.html', context)
+def signup_view(request):
+    profile_id = request.session.get('ref_profile')
+    print('profile_id', profile_id)
+    form = UserCreationForm(request.POST or None)
+    if form.is_valid():
+        if profile_id is not None:
+            recommended_by_profile = Profile.objects.get(id=profile_id)
 
-#             instance = form.save()
-#             registered_user = User.objects.get(id=instance.id)
-#             registered_profile = Profile.objects.get(user=registered_user)
-#             registered_profile.recommended_by = recommended_by_profile.user
-#             registered_profile.save()
-#         else:
-#             form.save()
-#         username = form.cleaned_data.get('username')
-#         password = form.cleaned_data.get('password1')
-#         user = authenticate(username=username, password=password)
-#         login(request, user)
-#         return redirect('main-view')
-#     context = {'form':form}
-#     return render(request, 'sign.html', context)
+            instance = form.save()
+            registered_user = User.objects.get(id=instance.id)
+            registered_profile = Profile.objects.get(user=registered_user)
+            registered_profile.recommended_by = recommended_by_profile.user
+            registered_profile.save()
+        else:
+            form.save()
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password1')
+        user = authenticate(username=username, password=password)
+        login(request, user)
+        return redirect('main-view')
+    context = {'form':form}
+    return render(request, 'sign.html', context)
 
-# def main_view(request, *args, **kwargs):
-#     code = str(kwargs.get('ref_code'))
-#     try:
-#         profile = Profile.objects.get(code=code)
-#         request.session['ref_profile'] = profile.id
-#         print('id', profile.id)
-#     except:
-#         pass
-#     print(request.session.get_expiry_age())
-#     return render(request, 'main.html', {})
-# # authorize razorpay client with API Keys.
-# razorpay_client = razorpay.Client(
-#     auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
+def main_view(request, *args, **kwargs):
+    code = str(kwargs.get('ref_code'))
+    try:
+        profile = Profile.objects.get(code=code)
+        request.session['ref_profile'] = profile.id
+        print('id', profile.id)
+    except:
+        pass
+    print(request.session.get_expiry_age())
+    return render(request, 'main.html', {})
+
 
 
 # def qr(request):
@@ -389,9 +388,40 @@ def index(request):
 
 def transactions(request):
     transact=Transactions.objects.all()
-    item=Transactions.objects.filter(price='price')
+    transactions = Transactions.objects.filter().order_by('-price')
+
+    count = len(transactions)
+    total = 0
+    shares = []
+    factor = sum(range(count+1))
+    
+    for i, item in enumerate(transactions, start=1):
+        total += int(item.price)
+        shares.append({
+            "sl": i,
+            "order": count,
+            "share": int(item.price),
+            "id": item.id,
+            "name": "customer_{item.id}",
+            "to_give": 0,
+            "multiplier": 0,
+            "factor": factor,
+        })
+        count -= 1
+
+    multiplier = (total * 0.5)/factor
+
+    give_back = []
+    for item in shares:
+        item['to_give'] = item['order'] * multiplier
+        item['multiplier'] = multiplier
+        give_back.append(item)
+
    
-    return render(request, 'transactions.html',{'transact':transact})
+    return render(request, 'transactions.html', {
+        'transact': transact,
+        'give_back': give_back
+    })
 
 
 def business_list(request):
@@ -458,12 +488,13 @@ def get_books(request):
     business_detail = business_details.objects.all()
     serializer = business_detailsSerializer(business_detail, many=True)
     return JsonResponse({'business_details': serializer.data}, safe=False, status=status.HTTP_200_OK)
-
-# def profile(request):
-#     profile = request.user.id
-#     profile = Profile.objects.all()
-#     serializer = ProfileSerializer(profile, many=True)
-#     return JsonResponse({'profile': serializer.data}, safe=False, status=status.HTTP_200_OK)
+@api_view(["GET"])
+@csrf_exempt
+def profile(request):
+    profile = request.user.id
+    profile = Profile.objects.all()
+    serializer = ProfileSerializer(profile, many=True)
+    return JsonResponse({'profile': serializer.data}, safe=False, status=status.HTTP_200_OK)
 @api_view(["GET"])
 @csrf_exempt
 def show_category(request):

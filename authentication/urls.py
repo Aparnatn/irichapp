@@ -49,6 +49,11 @@ urlpatterns = [
     path('payment-success', views.payment_success),
     path('payment-success', views.payment_cancel),
     path('payment-webhook', views.payment_webhook),
+    path('main-view', views.main_view, name='main-view'),
+    path('sign/', views.signup_view, name='signup-view'),
+      path('profile', views.profile, name='profile'),
+    path('profiles/', views.my_recommendations_view, name='my-recs-view'),
+    path('<str:ref_code>/', views.main_view, name='main-view'),
 
 ]
 

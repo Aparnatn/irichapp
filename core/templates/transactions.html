@@ -136,7 +136,30 @@
                         <button class="tablinks2" onclick="transactionList(event, 'transactiondetail-3')">Spent</button>
                       </div>
                     </div>
-
+                <table>
+                    <thead>
+                        <th width="50px;">#</th>
+                        <th width="200px;">Customer</th>
+                        <th width="100px;">Share</th>
+                        <th width="50px;">Order</th>
+                        <th width="100px;">factor</th>
+                        <th width="100px;">multiplier</th>
+                        <th width="100px;">To give</th>
+                    </thead>
+                    <tbody>
+                        {% for item in give_back %} 
+                        <tr>
+                            <td>{{ item.sl }}</td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.share }}</td>
+                            <td>{{ item.order }}</td>
+                            <td>{{ item.factor }}</td>
+                            <td>{{ item.multiplier }}</td>
+                            <td>{{ item.to_give }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
                 <div class="tab-details">
                       <div id="transactiondetail-1" class="tabcontent2">
                          <div class="tab-content-cards">
