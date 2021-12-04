@@ -461,7 +461,8 @@ def shuffle(request):
 
 
 def business_list(request):
-    return render(request, 'business_details.html')
+    movies = business_details.objects.all()
+    return render(request, 'business_details.html',{"movies":movies})
 
 
 def payment(request):
@@ -635,34 +636,44 @@ def login_view(request):
 
 def register_user(request):
 
-    if request.method == "POST":
-        username = request.POST['username'],
-        lastname = request.POST['lastname'],
-        phone = request.POST['phone'],
-        email = request.POST['email'],
-        password1 = request.POST['password1'],
-        password2 = request.POST['password2'],
-        customercode = request.POST['customercode'],
-        communitycode = request.POST['communitycode'],
-        salescode = request.POST['salescode'],
-        obj = User.objects.create(username=username,
-                                  lastname=lastname,
-                                  phone=phone,
-                                  email=email,
-                                  password1=password1,
-                                  password2=password2,
-                                  customercode=customercode,
-                                  communitycode=communitycode,
-                                  salescode=salescode,)
-        obj.save()
-        return redirect('/notification.html', {'obj': obj})
+    if request.method=="POST":
+        fm = SignUpForm(request.POST)
+        if fm.is_valid():
+            fm.save()
+            return HttpResponseRedirect("login/")
+    else:
+        fm = SignUpForm()
+    return render(request,'accounts/register.html',{"fm":fm})
+def edit(request,id):
+    business = get_object_or_404(business_details, pk=id)
+    # business = Company.objects.get(id = id)
 
+    if request.method == 'POST':
+        form = business_detailsForm(request.POST, request.FILES, instance=business)
+        if form.is_valid():
+            form.save()
+            return redirect('tables.html')
+            # return redirect('/')
+    else:
+        form = business_detailsForm(instance = business)
 
-# def my_view(request):
-#     # Build context for rendering QR codes.
-#     context = dict(
-#         my_options=QRCodeOptions(size='t', border=6, error_correction='L'),
-#     )
-
-#     # Render the view.
-#     return render(request, 'page-403.html', context=context)
+    return render(request,'edit.html')
+def update(request,id):
+        cust = business_details.objects.get(id=id)
+        cust.category = request.POST.get('category'),
+        cust.bank_name = request.POST.get('bank_name'),
+        cust.bsb = request.POST.get('bsb'),
+        cust.business_name = request.POST.get('business_name'),
+        cust.business_desc = request.POST.get('business_desc'),
+        cust.business_address = request.POST.get('business_address'),
+        cust.email = request.POST.get('email'),
+        cust.In = request.POST.get('In'),
+        cust.subcategory = request.POST.get('subcategory'),
+        cust.Account_holder = request.POST.get('Account_holder'),
+        cust.account_number = request.POST.get('account_number'),
+        cust.business_contact = request.POST.get('business_contact'),
+        cust.image1 = request.FILES.get('image1'),
+        cust.add_offer = request.POST.get('add_offer')
+        cust.save()
+    
+        return render(request, 'business_details.html')

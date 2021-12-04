@@ -26,6 +26,7 @@ from django.dispatch import receiver
 CURRENCY = '€'
 class User(models.Model):
     username=models.CharField(max_length=150)
+   
     email=models.CharField(max_length=150) 
     password1=models.CharField(max_length=150)
     password2=models.CharField(max_length=150)

@@ -17,14 +17,18 @@
             <div class="col-12 col-md-7 ">
                 <div class="login-form">
                     <div class="form">
+                     
                         <img src="/static/assets/images/irich-logo-mini.png" alt="login-logo">
                         <h3>Proceed with your</h3>
                         <h1>Registration</h1>
+                       
                         <div class="row">
                             <div class="col-12 col-md-6">
                               <div class="input">
                                 <div class="inputBox">
                                   <label for="fname">First Name</label>
+                                  <form action="/login" method="POST">
+                                    {%csrf_token%}
                                   <div class="d-flex">
                                       <input type="text" id="fname" name="username" placeholder="IRICH NAME" required>
                                       <i class="far fa-user"></i>
@@ -50,7 +54,7 @@
                                   <div class="inputBox">
                                       <label for="email">Email</label>
                                       <div class="d-flex">
-                                       <input type="email" id="email" name="email" placeholder="abc@abc.com" required>
+                                       <input type="email" id="email" name="email" placeholder="abc@abc.com">
                                        <i class="far fa-envelope"></i>
                                       </div>
                                   </div>
@@ -61,7 +65,7 @@
                                   <div class="inputBox">
                                       <label for="phone">Mobile</label>
                                       <div class="d-flex">
-                                        <input type="tel" id="phone" name="phone" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required>
+                                        <input type="tel" id="phone" name="phone" placeholder="123-45-678" required>
                                       <i class="fas fa-mobile-alt"></i>
                                       </div>
                                     </div>
@@ -85,7 +89,7 @@
                                   <div class="inputBox">
                                       <label for="pwd">Confirm Passsword</label>
                                       <div class="d-flex">
-                                      <input type="password" id="pwd" name="password2"minlength="8" placeholder="••••••••" required>
+                                      <input type="password" id="pwd" name="password2" minlength="8" placeholder="••••••••" required>
                                       <i class="fas fa-key"></i>
                                       </div>
                                     </div>
@@ -99,9 +103,9 @@
                                       <label for="num">Customer Code</label>
                                       <div class="d-flex">
                                       <input type="text" name="customercode" id="num" placeholder="1234" required>
-                                      <div class="community-verify">
+                                      <!-- <div class="community-verify">
                                         <a href="">verify</a>
-                                      </div>
+                                      </div> -->
                                       </div>
                                   </div>
                                 </div>
@@ -112,9 +116,9 @@
                                       <label for="num">Community Code</label>
                                       <div class="d-flex">
                                       <input type="text" name="communitycode" id="num" placeholder="1234" required>
-                                      <div class="community-verify">
+                                      <!-- <div class="community-verify">
                                         <a href="">verify</a>
-                                      </div>
+                                      </div> -->
                                       </div>
                                   </div>
                                 </div>
@@ -127,9 +131,9 @@
                                       <label for="num">Sales Code</label>
                                       <div class="d-flex">
                                       <input type="text" name="salescode" id="num" placeholder="1234" required>
-                                      <div class="community-verify">
+                                      <!-- <div class="community-verify">
                                         <a href="">verify</a>
-                                      </div>
+                                      </div> -->
                                       </div>
                                   </div>
                                 </div>
@@ -152,7 +156,8 @@
                             </div>
                           </div>
                         </div>
-                    </div>
+                      </form>
+                      </div>
                 </div>
                <div class="login-signin">
                    <p>Already Have an account? <a href="login.html">Sign in</a></p>

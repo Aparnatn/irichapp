@@ -16,14 +16,14 @@ from django.views.static import serve
 
 urlpatterns = [
     # path('index',views.index,name='index'),
-    path('', login_view, name="login"),
+    path('login', login_view, name="login"),
     path('homepage', HomepageView.as_view(), name='homepage'),
-
+    path('edit/<int:id>',views.edit,name="edit"),
     path('bills/', BillListView.as_view(), name='bills_view'),
     path('payroll/', PayrollListView.as_view(), name='payroll_view'),
     path('expenses/', ExpensesListView.as_view(), name='expenses_view'),
     path('reports/', report_view, name='reports_view'),
-    path('register/', register_user, name="register"),
+    path('', register_user, name="register"),
     path('getbooks', views.get_books),
      path('trans', views.trans,name='trans'),
     # path('profile', views.profile),
