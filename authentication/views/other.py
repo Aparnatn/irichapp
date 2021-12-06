@@ -27,7 +27,7 @@ from django.http import HttpResponse
 from ..forms import LoginForm, SignUpForm
 from authentication.models import mobile
 from authentication.models import business_details
-from authentication.forms import MobileLoginForm, BusinessForm, categoryForm
+from authentication.forms import MobileLoginForm, BusinessForm, categoryForm,paymentForm
 from ..forms import business_detailsForm
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
@@ -462,15 +462,35 @@ def shuffle(request):
 
 def business_list(request):
     movies = business_details.objects.all()
-    return render(request, 'business_details.html',{"movies":movies})
+    cat = category.objects.all()
+    return render(request, 'business_details.html',{"movies":movies,"cat":cat})
 
 
+def paymentss(request):
+    
+    if request.method=="POST":
+        form = paymentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect("/payment")
+    else:
+        form = paymentForm()
+    return render(request,'payments.html',{"form":form})
+    
 def payment(request):
-    transact=Transactions.objects.all()
-    item=Transactions.objects.filter(price='price')
-    a= (200*15/100)
-    b =a
-    return render(request, 'payment.html',{'transact':transact,'b':b})
+    if request.GET.get('busi_id',False):
+        busi_id= request.GET.get('busi_id',False)
+        movies=business_details.objects.filter(business_name=busi_id)
+    else:
+
+     movies = business_details.objects.all()
+   
+    cat=Users.objects.all()
+    context = {"movies": movies,"cat":cat}
+    
+
+    return render(request, "payment.html", context)
+       
     
     
 def notification(request):
@@ -542,24 +562,15 @@ def show_category(request):
 
 
 def categories(request):
-    if request.method == "POST":
-        cs = categoryForm(request.POST, request.FILES)
-
-        if cs.is_valid():
-            cs.save()
-            messages.success(request, ('Your movie was successfully added!'))
-        else:
-            messages.error(request, 'Error saving form')
-            return redirect("category")
-    cs = categoryForm()
-    # movies = business_details.objects.all()
-    context = {"cs": cs}
-    return render(request, "category.html", context)
-
+    cat = category.objects.all() 
+    return render(request,'categories.html',{"cat":cat})
 
 def Home(request):
+      
+    
     if request.method == "POST":
-        category = request.POST.get('category'),
+        
+        categories= request.POST.get('categories_id'),
         bank_name = request.POST.get('bank_name'),
         bsb = request.POST.get('bsb'),
         business_name = request.POST.get('business_name'),
@@ -567,13 +578,14 @@ def Home(request):
         business_address = request.POST.get('business_address'),
         email = request.POST.get('email'),
         In = request.POST.get('In'),
-        subcategory = request.POST.get('subcategory'),
+     
         Account_holder = request.POST.get('Account_holder'),
         account_number = request.POST.get('account_number'),
         business_contact = request.POST.get('business_contact'),
         image1 = request.FILES.get('image1'),
-        add_offer = request.POST.get('add_offer')
-        obj = business_details(category=request.POST['category'],
+        add_offer = request.POST.get('add_offer'),
+        
+        obj = business_details(categories_id=request.POST['categories_id'],
                                bank_name=request.POST['bank_name'],
                                bsb=request.POST['bsb'],
                                business_name=request.POST['business_name'],
@@ -581,17 +593,35 @@ def Home(request):
                                business_address=request.POST['business_address'],
                                email=request.POST['email'],
                                In=request.POST['In'],
-                               subcategory=request.POST['subcategory'],
+                              
                                Account_holder=request.POST['Account_holder'],
                                account_number=request.POST['account_number'],
                                business_contact=request.POST['business_contact'],
                                image1=request.FILES['image1'],
                                add_offer=request.POST['add_offer'],
                                )
+       
         obj.save()
-    # return redirect('/home')
-    return render(request, "business.html")
+    cat = category.objects.all()   
+    return render(request,'business.html',{"cat":cat})
+    
+    
+@api_view(["GET"]) 
+def Categoryapi(request):
+    categories=category.objects.all()
+    serializer = categorySerializer(categories, many=True)
+    return JsonResponse({"categories":serializer.data}, safe=False, status=status.HTTP_200_OK)
 
+def Category(request):
+    if request.method=="POST":
+        form = categoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect("categories/")
+    else:
+        form = categoryForm()
+    return render(request,'category.html',{"form":form})
+    
 
 def percentage(part, whole):
     return 100 * float(part)/float(whole)
@@ -601,13 +631,28 @@ def percentage(part, whole):
     print('{:.2f}'.format(percentage(5, 7)))
     return render(request, "tables.html")
 
+@api_view(["GET"])
+def business(request):
+    if request.GET.get('category_id',False):
+        category_id= request.GET.get('category_id',False)
+        movies=business_details.objects.filter(categories_id=category_id)
+    else:
+         movies=business_details.objects.all()
+
+    serializer =  business_detailsSerializer(movies, many=True)
+    return JsonResponse({"movies":serializer.data}, safe=False, status=status.HTTP_200_OK)
 
 def tablelist(request):
-    movies = business_details.objects.all()
-    codes = Transactions.objects.all()
-    
-    context = {"movie": movies, "codes": codes, "host": 'http://13.232.49.240:8000'}
+    if request.GET.get('category_id',False):
+        category_id= request.GET.get('category_id',False)
+        movies=business_details.objects.filter(categories_id=category_id)
+    else:
 
+     movies = business_details.objects.all()
+    codes = Transactions.objects.all()
+    cat=category.objects.all()
+    context = {"movie": movies,"cat":cat, "codes": codes, "host": 'http://13.232.49.240:8000'}
+    
 
     return render(request, "tables.html", context)
 
@@ -636,28 +681,28 @@ def login_view(request):
 
 def register_user(request):
 
-    if request.method=="POST":
-        fm = SignUpForm(request.POST)
-        if fm.is_valid():
-            fm.save()
-            return HttpResponseRedirect("login/")
+    if request.method == "POST":
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect("/login")
     else:
-        fm = SignUpForm()
-    return render(request,'accounts/register.html',{"fm":fm})
+        form = SignUpForm()
+    return render(request,'accounts/register.html',{"form":form})
 def edit(request,id):
+   
     business = get_object_or_404(business_details, pk=id)
-    # business = Company.objects.get(id = id)
 
     if request.method == 'POST':
         form = business_detailsForm(request.POST, request.FILES, instance=business)
         if form.is_valid():
             form.save()
-            return redirect('tables.html')
+            return redirect('business_details.html')
             # return redirect('/')
     else:
         form = business_detailsForm(instance = business)
 
-    return render(request,'edit.html')
+    return render(request,'edit.html',{'form':form})
 def update(request,id):
         cust = business_details.objects.get(id=id)
         cust.category = request.POST.get('category'),

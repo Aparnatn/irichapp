@@ -24,7 +24,7 @@ crontab = {}
 
 from django.dispatch import receiver
 CURRENCY = '€'
-class User(models.Model):
+class Users(models.Model):
     username=models.CharField(max_length=150)
    
     email=models.CharField(max_length=150) 
@@ -294,7 +294,10 @@ class mobile(models.Model):
     sId=models.IntegerField()
     phone=models.CharField(max_length=50)
 class business_details(models.Model):
-    category=models.CharField(max_length=100)
+    categories=models.ForeignKey('category',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True)
     bank_name=models.CharField(max_length=50)
     bsb=models.CharField(max_length=50)
     business_name=models.CharField(max_length=50)
@@ -302,43 +305,23 @@ class business_details(models.Model):
     business_address=models.CharField(max_length=200)
     email=models.EmailField(max_length=50)
     In=models.CharField(max_length=50)
-    subcategory=models.CharField(max_length=50)
+    
     Account_holder=models.CharField(max_length=50)
     account_number=models.CharField(max_length=50)
     business_contact=models.CharField(max_length=50)
     image1= models.ImageField(upload_to='images',blank= True,null=True)
     add_offer=models.CharField(max_length=50)
+    
 
 class category(models.Model):
-    add_category=models.CharField(max_length=500)
-class Meta:
-    db_table = "django"
-    model = mobile
-    model = business_details
-    
-    fields = [
-          'sId',
-          'phone',
-      ]
-    
-    fields = [
-          
-         'category',
-         'bank_name',
-          'bsb',
-            'business_name',
-            'business_desc',
-            'business_address',
-            'email',
-            'In',
-            'subcategory',
-            'Account_holder',
-            'account_number',
-            'image1',
-            'business_contact',
-            'add_offer'
-            
-      ]
+    name=models.CharField(max_length=500)
+class payments(models.Model):
+    amount=models.IntegerField()
+    business=models.ForeignKey('business_details',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True)
+
 # Create your models here.
 from django.contrib.auth.models import User
 from django.db import models

@@ -5,11 +5,12 @@ Copyright (c) 2019 - present AppSeed.us
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+
 from django.db.models import fields
 from django.forms import widgets
+from authentication import models
 from authentication.models import mobile
-from authentication.models import business_details,category
+from authentication.models import business_details,category,Users,payments
 from authentication.forms import mobile
 
 class MobileLoginForm(forms.Form):
@@ -121,82 +122,36 @@ class LoginForm(forms.Form):
             }
         ))
 
-class SignUpForm(UserCreationForm):
-    username = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "placeholder" : "Firstname",
-                "class": "form-control"
-            }
-        ))
-    lastname = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "placeholder" : "Lastname",
-                "class": "form-control"
-            }
-        ))
-
-    email = forms.EmailField(
-        widget=forms.EmailInput(
-            attrs={
-                "placeholder" : "Email",
-                "class": "form-control"
-            }
-        ))
-    phone = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "placeholder" : "Mobile",
-                "class": "form-control"
-            }
-        ))
-    password1 = forms.CharField(
-        widget=forms.PasswordInput(
-            attrs={
-                "placeholder" : "Password",
-                "class": "form-control"
-            }
-        ))
-    password2 = forms.CharField(
-        widget=forms.PasswordInput(
-            attrs={
-                "placeholder" : "Password check",
-                "class": "form-control"
-            }
-        ))
-    customercode = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "placeholder" : "customer code",
-                "class": "form-control"
-            }
-        ))
-    communitycode = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "placeholder" : "community code",
-                "class": "form-control"
-            }
-        ))
-    salescode = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "placeholder" : "sales code",
-                "class": "form-control"
-            }
-        ))
-    class Meta:
-        model = User
-        fields = '__all__'
+class SignUpForm(forms.ModelForm):
+  class Meta:
+    model=Users
+    fields ="__all__"
+class paymentForm(forms.ModelForm):
+  class Meta:
+    model=payments
+    fields ="__all__"
+        
 
 
 class business_detailsForm(forms.ModelForm):
 
     class Meta:
         model = business_details
-        fields ='__all__'
-        # fields = ('category','account_number','Account_holder','subcategory', 'Abin','email','business_address','business_desc','business_name','bsb','bank_name','image1')
+        
+        fields = ('categories',
+    'bank_name',
+    'bsb',
+    'business_name',
+    'business_desc',
+    'business_address',
+    'email',
+    'In',
+   
+    'Account_holder',
+    'account_number',
+    'business_contact',
+    'image1',
+    'add_offer',)
 class categoryForm(forms.ModelForm):
 
     class Meta:

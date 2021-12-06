@@ -55,7 +55,7 @@
           <form method="post" enctype="multipart/form-data" >
             {% csrf_token %}
             <div class="col-sm-3">
-              <div style="padding-right:30px">  {{cs.as_p}}</div>
+              <div style="padding-right:30px">  {{form.as_p}}</div>
             </div>
                 <button class="btn btn-primary my-4" type="submit">Submit</button>
           </form>

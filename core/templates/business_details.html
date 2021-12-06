@@ -123,7 +123,8 @@
                     <a href="edit/{{data.id}}">edit</a>
                     <img src="{{data.image1.url}}" width="363" />
                     <div class="card-body">
-                      Category Name: {{ data.category }}<br />
+                      {% for data in cat %}
+                      Category Name: {{ data.name}}<br />
                       Business Description: {{ data.business_desc }}<br />
                       Business Address {{ data.business_address }}<br />
                      
@@ -131,7 +132,7 @@
                       <hr />
                       <a href="http://13.232.49.240:8000/checkout-session?item_id={{data.id}}">checkout</a>
                       {% load qr_code %}
-{% qr_from_text host|add:"/checkout-session?item_id="|add:data.id size="m" image_format="png" error_correction="L" %}
+{% qr_from_text "/payments" size="m" image_format="png" error_correction="L" %}
 
                     </div>
                   </div>

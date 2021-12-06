@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class business_detailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = business_details 
-        fields=( 'category',
+        fields=( 'categories',
          'bank_name',
           'bsb',
             'business_name',
@@ -13,16 +13,17 @@ class business_detailsSerializer(serializers.ModelSerializer):
             'business_address',
             'email',
             'In',
-            'subcategory',
+            
             'Account_holder',
             'account_number',
             'image1',
             'business_contact',
             'add_offer')
+
 class categorySerializer(serializers.ModelSerializer):
     class Meta:
         model = category
-        fields=('add_category',)
+        fields=('name',)
 class transSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transactions

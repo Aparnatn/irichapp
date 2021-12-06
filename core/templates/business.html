@@ -114,8 +114,14 @@
                                   <label for="fname">Category</label>
                                   <br>
                                   <div class="d-flex">
-                                      <input type="text" id="cname" name="category" placeholder="CATEGORY" required>
                                    
+                                      <select  style="border-radius:12px;width: 8cm;" class="custom-select" name="categories_id">
+                                       
+                                                                          
+                                        {% for i in cat %}
+                                        <option value="{{i.id}}">{{i.name}}</option>
+{%endfor%}
+                                    </select>
                                   </div>
                                 </div>
                                 <br>
@@ -127,6 +133,7 @@
                                      
                                   </div>
                                 </div>
+                              
                                 <br>
                                 <div class="inputBox">
                                   <label for="fname">BSB Number</label>
@@ -186,15 +193,9 @@
                                       </div>
                                     </div>
                                     <br>
-                                    <div class="inputBox">
-                                      <label for="fname">Sub Category</label>
-                                      <br>
-                                      <div class="d-flex">
-                                          <input type="text" id="subcategory" name="subcategory" placeholder="CATEGORY" required>
-                                        
-                                      </div>
+                                  
                                     </div>
-                                    <br>
+                                  
                                     <div class="inputBox">
                                       <label for="fname">Account Holder Name</label>
                                      <br>
@@ -239,6 +240,7 @@
                                               
                                             </div>
                                         </div>
+                                        
                                     </div>
                                     <br>
                                   <div class="inputBox">

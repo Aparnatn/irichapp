@@ -22,140 +22,16 @@
                         <h3>Proceed with your</h3>
                         <h1>Registration</h1>
                        
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                              <div class="input">
-                                <div class="inputBox">
-                                  <label for="fname">First Name</label>
-                                  <form action="/login" method="POST">
+                       
+                                  <form method="POST">
                                     {%csrf_token%}
-                                  <div class="d-flex">
-                                      <input type="text" id="fname" name="username" placeholder="IRICH NAME" required>
-                                      <i class="far fa-user"></i>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class="input">
-                                  <div class="inputBox">
-                                      <label for="lname">Last Name</label>
-                                      <div class="d-flex">
-                                      <input type="text" id="lname" name="lastname" placeholder="IRICH NAME" required>
-                                      <i class="far fa-user"></i>
-                                      </div>
-                                  </div>
-                                </div>
-                              </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                                <div class="input">
-                                  <div class="inputBox">
-                                      <label for="email">Email</label>
-                                      <div class="d-flex">
-                                       <input type="email" id="email" name="email" placeholder="abc@abc.com">
-                                       <i class="far fa-envelope"></i>
-                                      </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="col-12 col-md-6">
-                                <div class="input">
-                                  <div class="inputBox">
-                                      <label for="phone">Mobile</label>
-                                      <div class="d-flex">
-                                        <input type="tel" id="phone" name="phone" placeholder="123-45-678" required>
-                                      <i class="fas fa-mobile-alt"></i>
-                                      </div>
-                                    </div>
-                                </div>
-                              </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                                <div class="input">
-                                  <div class="inputBox">
-                                      <label for="pwd">Password</label>
-                                      <div class="d-flex">
-                                      <input type="password" id="pwd" name="password1" minlength="8" placeholder="••••••••" required>
-                                      <i class="fas fa-key"></i>
-                                      </div>
-                                    </div>
-                                </div>
-                              </div>
-                              <div class="col-12 col-md-6">
-                                <div class="input">
-                                  <div class="inputBox">
-                                      <label for="pwd">Confirm Passsword</label>
-                                      <div class="d-flex">
-                                      <input type="password" id="pwd" name="password2" minlength="8" placeholder="••••••••" required>
-                                      <i class="fas fa-key"></i>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div> 
-                        </div>    
-                        <div class="row">
-                            <div class="col-12 col-md-6">
-                                <div class="input">
-                                  <div class="inputBox">
-                                      <label for="num">Customer Code</label>
-                                      <div class="d-flex">
-                                      <input type="text" name="customercode" id="num" placeholder="1234" required>
-                                      <!-- <div class="community-verify">
-                                        <a href="">verify</a>
-                                      </div> -->
-                                      </div>
-                                  </div>
-                                </div>
-                              </div>
-                              <div class="col-12 col-md-6">
-                                <div class="input">
-                                  <div class="inputBox">
-                                      <label for="num">Community Code</label>
-                                      <div class="d-flex">
-                                      <input type="text" name="communitycode" id="num" placeholder="1234" required>
-                                      <!-- <div class="community-verify">
-                                        <a href="">verify</a>
-                                      </div> -->
-                                      </div>
-                                  </div>
-                                </div>
-                              </div>
-                        </div>  
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="input">
-                                  <div class="inputBox">
-                                      <label for="num">Sales Code</label>
-                                      <div class="d-flex">
-                                      <input type="text" name="salescode" id="num" placeholder="1234" required>
-                                      <!-- <div class="community-verify">
-                                        <a href="">verify</a>
-                                      </div> -->
-                                      </div>
-                                  </div>
-                                </div>
-                              </div>
-                        </div> 
-                        <div class="row">
-                          <div class="col-12">
-                            <div class="input">
-                              <input type="checkbox" id="check" name="check" value="true">
-                              <label for="check"> I agree to the term and conditions.</label> 
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-12">
-                            <div class="input">
-                              <a href="add-business.html">
-                              <input type="submit" name="submit" value="Sign Up"> 
-                            </a>
-                            </div>
-                          </div>
-                        </div>
+                                    {{form.as_p}}
+                        
+                              
+                          
+                                    <button class="btn btn-primary my-4" type="submit">Submit</button>
+                            
+                          
                       </form>
                       </div>
                 </div>
