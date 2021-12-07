@@ -4,7 +4,9 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 from django.http.request import HttpRequest
-from serializers import business_detailsSerializer,ProfileSerializer, categorySerializer,transSerializer
+from requests.models import Response
+import random
+from serializers import UserSerializer, business_detailsSerializer,ProfileSerializer, categorySerializer, paymentSerializer,transSerializer
 from ..models import business_details, category
 from rest_framework import status
 from django.http import response
@@ -366,8 +368,8 @@ def apis(request):
 @csrf_exempt
 # Create your views here.
 def trans(request):
-    transact=Transactions.objects.all()
-    serializer = transSerializer(transact, many=True)
+    transact=payments.objects.all()
+    serializer = paymentSerializer(transact, many=True)
     return JsonResponse({'transact': serializer.data}, safe=False, status=status.HTTP_200_OK)
    
 
@@ -387,41 +389,39 @@ def index(request):
 
 
 def transactions(request):
-    transact=Transactions.objects.all()
-    transactions = Transactions.objects.filter().order_by('-price')
+    transact=payments.objects.all()
+   
 
-    count = len(transactions)
-    total = 0
-    shares = []
-    factor = sum(range(count+1))
+    # count = len(transactions)
+    # total = 0
+    # shares = []
+    # factor = sum(range(count+1))
     
-    for i, item in enumerate(transactions, start=1):
-        total += int(item.price)
-        shares.append({
-            "sl": i,
-            "order": count,
-            "share": int(item.price),
-            "id": item.id,
-            "name": "customer_{item.id}",
-            "to_give": 0,
-            "multiplier": 0,
-            "factor": factor,
-        })
-        count -= 1
+    # for i, item in enumerate(transactions, start=1):
+    #     total += int(item.price)
+    #     shares.append({
+    #         "sl": i,
+    #         "order": count,
+    #         "share": int(item.price),
+    #         "id": item.id,
+    #         "name": "customer_{item.id}",
+    #         "to_give": 0,
+    #         "multiplier": 0,
+    #         "factor": factor,
+    #     })
+    #     count -= 1
 
-    multiplier = (total * 0.5)/factor
+    # multiplier = (total * 0.5)/factor
 
-    give_back = []
-    for item in shares:
-        item['to_give'] = item['order'] * multiplier
-        item['multiplier'] = multiplier
-        give_back.append(item)
+    # give_back = []
+    # for item in shares:
+    #     item['to_give'] = item['order'] * multiplier
+    #     item['multiplier'] = multiplier
+    #     give_back.append(item)
 
    
     return render(request, 'transactions.html', {
-        'transact': transact,
-        'give_back': give_back
-    })
+         'transact': transact})
 def shuffle(request):
     transact=Transactions.objects.all()
     transactions = Transactions.objects.filter().order_by('-price')
@@ -488,6 +488,19 @@ def payment(request,id):
         "payment": payment,
         "users": users
     })
+@api_view(["GET"])
+@csrf_exempt
+def business_pay(request,id):
+    payment = payments.objects.filter(business_id=id)
+    
+    users = Users.objects.all()
+
+    
+    return JsonResponse({
+        "payments" : paymentSerializer(payment,many=True).data,
+         "users": UserSerializer(users,many=True).data,
+    })
+    
        
     
     
@@ -557,7 +570,13 @@ def show_category(request):
     cs = category.objects.all()
     serializer = categorySerializer(cs, many=True)
     return JsonResponse({'category': serializer.data}, safe=False, status=status.HTTP_200_OK)
-
+@api_view(["GET"])
+@csrf_exempt
+def show_business(request):
+    
+    cs = business_details.objects.all()
+    serializer =business_detailsSerializer(cs, many=True)
+    return JsonResponse({"cs":serializer.data}, safe=False, status=status.HTTP_200_OK)
 
 def categories(request):
     cat = category.objects.all() 
@@ -568,39 +587,45 @@ def Home(request):
     
     if request.method == "POST":
         
-        categories= request.POST.get('categories_id'),
-        bank_name = request.POST.get('bank_name'),
-        bsb = request.POST.get('bsb'),
-        business_name = request.POST.get('business_name'),
-        business_desc = request.POST.get('business_desc'),
-        business_address = request.POST.get('business_address'),
-        email = request.POST.get('email'),
-        In = request.POST.get('In'),
-     
-        Account_holder = request.POST.get('Account_holder'),
-        account_number = request.POST.get('account_number'),
-        business_contact = request.POST.get('business_contact'),
-        image1 = request.FILES.get('image1'),
+        categories_id= request.POST.get('categories_id')
+        bank_name = request.POST.get('bank_name')
+        bsb = request.POST.get('bsb')
+        business_name = request.POST.get('business_name')
+        business_desc = request.POST.get('business_desc')
+        business_address = request.POST.get('business_address')
+        email = request.POST.get('email')
+        In = request.POST.get('In')
+        business_code =request.POST.get('business_code')
+        Account_holder = request.POST.get('Account_holder')
+        account_number = request.POST.get('account_number')
+        business_contact = request.POST.get('business_contact')
+        image1 = request.FILES.get('image1')
         add_offer = request.POST.get('add_offer'),
+
+       
         
-        obj = business_details(categories_id=request.POST['categories_id'],
-                               bank_name=request.POST['bank_name'],
-                               bsb=request.POST['bsb'],
-                               business_name=request.POST['business_name'],
-                               business_desc=request.POST['business_desc'],
-                               business_address=request.POST['business_address'],
-                               email=request.POST['email'],
-                               In=request.POST['In'],
-                              
-                               Account_holder=request.POST['Account_holder'],
-                               account_number=request.POST['account_number'],
-                               business_contact=request.POST['business_contact'],
-                               image1=request.FILES['image1'],
-                               add_offer=request.POST['add_offer'],
+        categories= category.objects.filter(id=categories_id).first()
+        business_code =request.POST.get('business_code')
+        business_code=categories.name[0:3] + business_name[0:3] +str(random.randint(100,200))
+        obj = business_details(categories_id=categories_id,
+                               bank_name=bank_name,
+                               bsb=bsb,
+                               business_name=business_name,
+                               business_desc=business_desc,
+                               business_address=business_address,
+                               email=email,
+                               In=In,
+                               business_code=business_code.upper(),
+                               Account_holder=Account_holder,
+                               account_number=account_number,
+                               business_contact=business_contact,
+                               image1=image1,
+                               add_offer=add_offer,
                                )
        
         obj.save()
-    cat = category.objects.all()   
+    cat = category.objects.all() 
+      
     return render(request,'business.html',{"cat":cat})
     
     

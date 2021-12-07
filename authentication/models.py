@@ -305,7 +305,7 @@ class business_details(models.Model):
     business_address=models.CharField(max_length=200)
     email=models.EmailField(max_length=50)
     In=models.CharField(max_length=50)
-    
+    business_code=models.CharField(max_length=50)
     Account_holder=models.CharField(max_length=50)
     account_number=models.CharField(max_length=50)
     business_contact=models.CharField(max_length=50)
