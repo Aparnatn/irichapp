@@ -477,19 +477,17 @@ def paymentss(request):
         form = paymentForm()
     return render(request,'payments.html',{"form":form})
     
-def payment(request):
-    if request.GET.get('busi_id',False):
-        busi_id= request.GET.get('busi_id',False)
-        movies=business_details.objects.filter(business_name=busi_id)
-    else:
-
-     movies = business_details.objects.all()
-   
-    cat=Users.objects.all()
-    context = {"movies": movies,"cat":cat}
+def payment(request,id):
+    payment = payments.objects.filter(business_id=id).first()
     
+    users = Users.objects.all()
 
-    return render(request, "payment.html", context)
+    # print (business.payments)
+    
+    return render(request, "payment.html", {
+        "payment": payment,
+        "users": users
+    })
        
     
     

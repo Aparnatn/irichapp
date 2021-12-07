@@ -23,7 +23,7 @@ class business_detailsSerializer(serializers.ModelSerializer):
 class categorySerializer(serializers.ModelSerializer):
     class Meta:
         model = category
-        fields=('name',)
+        fields=('name','id')
 class transSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transactions

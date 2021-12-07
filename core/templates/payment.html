@@ -72,7 +72,7 @@
                 </a>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="/login">
                     <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
                     <span class="title">Logout</span>
                 </a>
@@ -100,13 +100,14 @@
 
             </div>
            
-      {% for i in cat %}
-      {{i.username}}
+      {% for i in users %}
+     User name: {{i.username}}<br>
       {%endfor%}
-      {% for data in movie %}
+    
       
-      {{data.business_name}}
-      {%endfor%}
+      Business name: {{payment.business.business_name}}<br>
+    Amount:   {{payment.amount}}<br>
+      
       </div>
           
 

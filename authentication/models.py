@@ -320,7 +320,9 @@ class payments(models.Model):
     business=models.ForeignKey('business_details',
         on_delete=models.CASCADE,
         null=True,
-        blank=True)
+        blank=True,
+        related_name='payments'
+    )
 
 # Create your models here.
 from django.contrib.auth.models import User

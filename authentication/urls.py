@@ -32,7 +32,7 @@ urlpatterns = [
     path('transactions', views.transactions, name="transactions"),
     path('business_list', views.business_list, name="business_list"),
     path('', views.register_user, name="register_user"),
-    path('payment', views.payment, name="payment"),
+    path('business/<int:id>/payment', views.payment, name="payment"),
     path('paymentss', views.paymentss, name="paymentss"),
     path('setting', views.setting, name="setting"),
     path('notification', views.notification, name="notification"),
@@ -57,7 +57,7 @@ urlpatterns = [
     path('payment-webhook', views.payment_webhook),
     path('main-view', views.main_view, name='main-view'),
     path('sign/', views.signup_view, name='signup-view'),
-      path('profile', views.profile, name='profile'),
+    path('profile', views.profile, name='profile'),
     path('profiles/', views.my_recommendations_view, name='my-recs-view'),
     path('<str:ref_code>/', views.main_view, name='main-view'),
 
