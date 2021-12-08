@@ -3,7 +3,9 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 
+import random
 from django.db import models
+import base64
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 import datetime
@@ -294,10 +296,12 @@ class mobile(models.Model):
     sId=models.IntegerField()
     phone=models.CharField(max_length=50)
 class business_details(models.Model):
-    categories=models.ForeignKey('category',
+    categories=models.ForeignKey(
+        'category',
         on_delete=models.CASCADE,
         null=True,
-        blank=True)
+        blank=True
+    )
     bank_name=models.CharField(max_length=50)
     bsb=models.CharField(max_length=50)
     business_name=models.CharField(max_length=50)
@@ -311,7 +315,32 @@ class business_details(models.Model):
     business_contact=models.CharField(max_length=50)
     image1= models.ImageField(upload_to='images',blank= True,null=True)
     add_offer=models.CharField(max_length=50)
-    
+    qr_code=models.ImageField(upload_to='qr_codes', blank=True)
+
+    def save(self, *args, **kwargs):
+        qrcode_image = qrcode.make(self.get_qr_url())
+        canvas = Image.new("RGB", (400, 400), "white")
+        draw = ImageDraw.Draw(canvas)
+        canvas.paste(qrcode_image)
+        buffer = BytesIO()
+        canvas.save(buffer, "PNG")
+        self.qr_code.save(f'code_{random.randint(0,9999)}.png', File(buffer), save=False)
+        canvas.close()
+        super().save(*args, **kwargs)
+
+    def get_qr_url(self):
+        return 'http://13.232.49.240:8000/payment.html'
+
+    def _get_qrcode(self):
+        factory = qrcode.image.svg.SvgImage
+        img = qrcode.make( image_factory=factory, box_size=20)
+        
+        # stream = BytesIO()
+        # img.save(stream)
+        return (img)
+        # return stream.getvalue().decode()
+        
+    # qrcode = property(_get_qrcode)
 
 class category(models.Model):
     name=models.CharField(max_length=500)

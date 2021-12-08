@@ -582,11 +582,9 @@ def categories(request):
     cat = category.objects.all() 
     return render(request,'categories.html',{"cat":cat})
 
+
 def Home(request):
-      
-    
     if request.method == "POST":
-        
         categories_id= request.POST.get('categories_id')
         bank_name = request.POST.get('bank_name')
         bsb = request.POST.get('bsb')
@@ -595,33 +593,32 @@ def Home(request):
         business_address = request.POST.get('business_address')
         email = request.POST.get('email')
         In = request.POST.get('In')
+      
         business_code =request.POST.get('business_code')
         Account_holder = request.POST.get('Account_holder')
         account_number = request.POST.get('account_number')
         business_contact = request.POST.get('business_contact')
         image1 = request.FILES.get('image1')
         add_offer = request.POST.get('add_offer'),
-
-       
-        
         categories= category.objects.filter(id=categories_id).first()
         business_code =request.POST.get('business_code')
         business_code=categories.name[0:3] + business_name[0:3] +str(random.randint(100,200))
-        obj = business_details(categories_id=categories_id,
-                               bank_name=bank_name,
-                               bsb=bsb,
-                               business_name=business_name,
-                               business_desc=business_desc,
-                               business_address=business_address,
-                               email=email,
-                               In=In,
-                               business_code=business_code.upper(),
-                               Account_holder=Account_holder,
-                               account_number=account_number,
-                               business_contact=business_contact,
-                               image1=image1,
-                               add_offer=add_offer,
-                               )
+        obj = business_details(
+            categories_id=categories_id,
+            bank_name=bank_name,
+            bsb=bsb,
+            business_name=business_name,
+            business_desc=business_desc,
+            business_address=business_address,
+            email=email,
+            In=In,
+            business_code=business_code.upper(),
+            Account_holder=Account_holder,
+            account_number=account_number,
+            business_contact=business_contact,
+            image1=image1,
+            add_offer=add_offer,
+        )
        
         obj.save()
     cat = category.objects.all() 
