@@ -331,13 +331,7 @@ class business_details(models.Model):
     def get_qr_url(self):
         return 'http://13.232.49.240:8000/payment.html'
 
-    def _get_qrcode(self):
-        factory = qrcode.image.svg.SvgImage
-        img = qrcode.make( image_factory=factory, box_size=20)
-        
-        # stream = BytesIO()
-        # img.save(stream)
-        return (img)
+    
         # return stream.getvalue().decode()
         
     # qrcode = property(_get_qrcode)
