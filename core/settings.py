@@ -44,7 +44,7 @@ INSTALLED_APPS = [
      'channels',
      'django_celery_beat',
      'django_celery_results',
-     'qr_code',
+   
       'crispy_forms',
       
 ]
