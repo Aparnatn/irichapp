@@ -14,7 +14,7 @@ from ..send_otp import send_otp
 from django.shortcuts import render
 import requests
 import json
-from qr_code.qrcode.utils import QRCodeOptions
+
 
 from requests.auth import HTTPBasicAuth
 from django.shortcuts import (get_object_or_404,
@@ -577,7 +577,17 @@ def show_business(request):
     cs = business_details.objects.all()
     serializer =business_detailsSerializer(cs, many=True)
     return JsonResponse({"cs":serializer.data}, safe=False, status=status.HTTP_200_OK)
+from rest_framework.views import APIView
+class paysection(APIView):
+    serializer_class = paymentSerializer
+    
+    def post(self,request):
+        Serializer = paymentSerializer(data=request.data)
+        if Serializer.is_valid():
+            Serializer.save()
+            return JsonResponse(Serializer.data)
 
+        return Response(Serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 def categories(request):
     cat = category.objects.all() 
     return render(request,'categories.html',{"cat":cat})

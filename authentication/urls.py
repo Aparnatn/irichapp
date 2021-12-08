@@ -32,6 +32,7 @@ urlpatterns = [
     path('transactions', views.transactions, name="transactions"),
     path('business_list', views.business_list, name="business_list"),
     path('', views.register_user, name="register_user"),
+    path('paysection', views.paysection.as_view()),
     path('business/<int:id>/payment', views.payment, name="payment"),
     path('paymentss', views.paymentss, name="paymentss"),
     path('show_business', views.show_business, name="show_business"),
