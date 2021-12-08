@@ -11,6 +11,8 @@ from django.contrib.auth.forms import UserCreationForm
 import datetime
 from django_celery_beat.models import MINUTES, PeriodicTask, CrontabSchedule, PeriodicTasks
 import os
+
+from qrcode.main import QRCode
 from .models import User
 import json
 from geopy.geocoders import Nominatim
@@ -318,7 +320,7 @@ class business_details(models.Model):
     qr_code=models.ImageField(upload_to='qr_codes', blank=True)
 
     def save(self, *args, **kwargs):
-        qrcode_image = qrcode.make(self.get_qr_url())
+        qrcode_image = QRCode.make(self.get_qr_url())
         canvas = Image.new("RGB", (400, 400), "white")
         draw = ImageDraw.Draw(canvas)
         canvas.paste(qrcode_image)
