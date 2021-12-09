@@ -152,9 +152,8 @@ def trans(request):
 @api_view(["GET"])
 @csrf_exempt
 def transact(request):   
-    business_id = request.GET.get('business_id', None)
-    if business_id is not None:
-        business_payments = payments.objects.all().select_related('business').only(
+   
+    business_payments = payments.objects.all().select_related('business').only(
                     'id',
                     'amount',
                     'business_id',
