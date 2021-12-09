@@ -167,7 +167,7 @@ def transact(request):
                 'id': payment.id,
                 'amount': payment.amount,
                 'business_id': payment.business_id,
-                'business_name':payment.business.business_name,
+                'business':payment.business.business_name,
                 'categories':payment.business.categories.name,
             })
         
