@@ -149,7 +149,31 @@ def trans(request):
         return JsonResponse(details, safe=False)   
 
     return JsonResponse({'error' : 'Bad request. Need `business_id`'}, status=400)     
+@api_view(["GET"])
+@csrf_exempt
+def transact(request):    
+    business_payments = payments.objects.all().select_related('business').only(
+                'id',
+                'amount',
+                'business_id',
+                'business__business_name', 
+                'business__categories__name',
+            )
+            
+    details = []
+
+    for payment in business_payments:
+            details.append({
+                'id': payment.id,
+                'amount': payment.amount,
+                'business_id': payment.business_id,
+                'business_name':payment.business.business_name,
+                'categories':payment.business.categories.name,
+            })
         
+    return JsonResponse(details, safe=False)   
+
+         
 def index(request):
     try:
         users = User.objects.all()

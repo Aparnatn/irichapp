@@ -38,6 +38,7 @@ urlpatterns = [
     path('notification', views.notification, name="notification"),
     path("logout/", LogoutView.as_view(), name="logout"),
     path('home', views.Home, name="home"),
+    path('transact',views.transact,name="transact"),
     # path('business_lists', views.business_lists.as_view()),
     path('pay', views.pay, name="pay"),
     path('list', views.tablelist, name="list"),
