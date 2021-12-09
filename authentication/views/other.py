@@ -151,14 +151,16 @@ def trans(request):
     return JsonResponse({'error' : 'Bad request. Need `business_id`'}, status=400)     
 @api_view(["GET"])
 @csrf_exempt
-def transact(request):    
-    business_payments = payments.objects.all().select_related('business').only(
-                'id',
-                'amount',
-                'business_id',
-                'business__business_name', 
-                'business__categories__name',
-            )
+def transact(request):   
+    business_id = request.GET.get('business_id', None)
+    if business_id is not None:
+        business_payments = payments.objects.all().select_related('business').only(
+                    'id',
+                    'amount',
+                    'business_id',
+                    'business__business_name', 
+                    'business__categories__name',
+                )
             
     details = []
 
