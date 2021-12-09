@@ -14,8 +14,8 @@ from ..send_otp import send_otp
 from django.shortcuts import render
 import requests
 import json
-
-
+from rest_framework import generics
+from rest_framework.views import APIView
 from requests.auth import HTTPBasicAuth
 from django.shortcuts import (get_object_or_404,
                               render,
@@ -111,248 +111,6 @@ def main_view(request, *args, **kwargs):
 
 
 
-# def qr(request):
-#     currency = 'INR'
-#     amount = 20000  # Rs. 200
-
-#     # Create a Razorpay Order
-#     razorpay_order = razorpay_client.order.create(dict(amount=amount,
-#                                                        currency=currency,
-#                                                        payment_capture='0'))
-
-#     # order id of newly created order.
-#     razorpay_order_id = razorpay_order['id']
-#     callback_url = 'paymenthandler/'
-
-#     # we need to pass these details to frontend.
-#     context = {}
-#     context['razorpay_order_id'] = razorpay_order_id
-#     context['razorpay_merchant_key'] = settings.RAZOR_KEY_ID
-#     context['razorpay_amount'] = amount
-#     context['currency'] = currency
-#     context['callback_url'] = callback_url
-
-#     return render(request, 'index.html', context=context)
-
-
-# we need to csrf_exempt this url as
-# POST request will be made by Razorpay
-# and it won't have the csrf token.
-# @csrf_exempt
-# def paymenthandler(request):
-
-#     # only accept POST request.
-#     if request.method == "POST":
-#         try:
-
-#             # get the required parameters from post request.
-#             payment_id = request.POST.get('razorpay_payment_id', '')
-#             razorpay_order_id = request.POST.get('razorpay_order_id', '')
-#             signature = request.POST.get('razorpay_signature', '')
-#             params_dict = {
-#                 'razorpay_order_id': razorpay_order_id,
-#                 'razorpay_payment_id': payment_id,
-#                 'razorpay_signature': signature
-#             }
-
-#             # verify the payment signature.
-#             result = razorpay_client.utility.verify_payment_signature(
-#                 params_dict)
-#             if result is None:
-#                 amount = 20000  # Rs. 200
-#                 try:
-
-#                     # capture the payemt
-#                     razorpay_client.payment.capture(payment_id, amount)
-
-#                     # render success page on successful caputre of payment
-#                     return render(request, 'paymentsuccess.html')
-#                 except:
-
-#                     # if there is an error while capturing payment.
-#                     return render(request, 'paymentfail.html')
-#             else:
-
-#                 # if signature verification fails.
-#                 return render(request, 'paymentfail.html')
-#         except:
-
-#             # if we don't find the required parameters in POST data
-#             return HttpResponseBadRequest()
-#     else:
-#        # if other than POST request is made.
-#         return HttpResponseBadRequest()
-
-
-class HomepageView(TemplateView):
-    template_name = 'api.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(HomepageView, self).get_context_data(**kwargs)
-        bills = Bill.my_query.get_queryset().unpaid()[:10]
-        payrolls = Payroll.my_query.get_queryset().unpaid()[:10]
-        expenses = GenericExpense.my_query.get_queryset().unpaid()[:10]
-        context.update({'bills': bills,
-                        'payroll': payrolls,
-                        'expenses': expenses
-                        })
-        return context
-
-
-class BillListView(ListView):
-    model = Bill
-    template_name = 'page_list.html'
-    paginate_by = 100
-
-    def get_queryset(self):
-        queryset = Bill.objects.all()
-        queryset = Bill.filters_data(self.request, queryset)
-        return queryset
-
-    def get_context_data(self, **kwargs):
-        context = super(BillListView, self).get_context_data(**kwargs)
-        page_title = 'Bills List'
-        categories = BillCategory.objects.all()
-        search_name, cate_name, paid_name = [self.request.GET.get('search_name', None),
-                                             self.request.GET.getlist(
-                                                 'cate_name', None),
-                                             self.request.GET.getlist(
-                                                 'paid_name', None)
-                                             ]
-        total_value, paid_value, diff, category_analysis = Bill.analysis(
-            self.object_list)
-        currency = CURRENCY
-        context.update(locals())
-        return context
-
-
-class PayrollListView(ListView):
-    model = Payroll
-    template_name = 'page_list.html'
-    paginate_by = 100
-
-    def get_queryset(self):
-        queryset = Payroll.objects.all()
-        queryset = Payroll.filters_data(self.request, queryset)
-        return queryset
-
-    def get_context_data(self, **kwargs):
-        context = super(PayrollListView, self).get_context_data(**kwargs)
-        page_title = 'Payroll List'
-        categories = PayrollCategory.objects.all()
-        persons = Person.objects.all()
-        search_name, cate_name, paid_name, person_name = [self.request.GET.get('search_name', None),
-                                                          self.request.GET.getlist(
-                                                              'cate_name', None),
-                                                          self.request.GET.getlist(
-                                                              'paid_name', None),
-                                                          self.request.GET.getlist(
-                                                              'person_name', None)
-                                                          ]
-        total_value, paid_value, diff, category_analysis = Payroll.analysis(
-            self.object_list)
-        currency = CURRENCY
-        context.update(locals())
-        return context
-
-
-class ExpensesListView(ListView):
-    model = GenericExpense
-    template_name = 'page_list.html'
-    paginate_by = 100
-
-    def get_queryset(self):
-        queryset = GenericExpense.objects.all()
-        queryset = GenericExpense.filters_data(self.request, queryset)
-        return queryset
-
-    def get_context_data(self, **kwargs):
-        context = super(ExpensesListView, self).get_context_data(**kwargs)
-        page_title = 'Expenses List'
-        categories = GenericExpenseCategory.objects.all()
-        search_name, cate_name, paid_name = [self.request.GET.get('search_name', None),
-                                             self.request.GET.getlist(
-                                                 'cate_name', None),
-                                             self.request.GET.getlist(
-                                                 'paid_name')
-                                             ]
-        total_value, paid_value, diff, category_analysis = GenericExpense.analysis(
-            self.object_list)
-        currency = CURRENCY
-        context.update(locals())
-        return context
-
-
-def report_view(request):
-    startDate = request.GET.get('startDate', '2018-01-01')
-    endDate = request.GET.get('endDate', '2018-12-31')
-    if startDate > endDate:
-        startDate, endDate = '2018-01-01', '2018-12-31'
-    date_start = datetime.datetime.strptime(startDate, '%Y-%m-%d').date()
-    date_end = datetime.datetime.strptime(endDate, '%Y-%m-%d').date()
-    bills = Bill.my_query.get_queryset().filter_by_date(date_start, date_end)
-    payrolls = Payroll.my_query.get_queryset().filter_by_date(date_start, date_end)
-    expenses = GenericExpense.my_query.get_queryset().filter_by_date(date_start, date_end)
-    queryset = sorted(chain(bills, payrolls, expenses),
-                      key=lambda instance: instance.date_expired
-                      )
-    bill_total_value, bill_paid_value, bill_diff, bill_category_analysis = DefaultExpenseModel.analysis(
-        bills)
-    payroll_total_value, payroll_paid_value, payroll_diff, bill_category_analysis = DefaultExpenseModel.analysis(
-        payrolls)
-    expense_total_value, expense_paid_value, expense_diff, expense_category_analysis = DefaultExpenseModel.analysis(
-        expenses)
-
-    bill_by_month, payroll_by_month, expenses_by_month, totals_by_month = [], [], [], []
-    months_list = []
-    while date_start < date_end:
-        months_list.append(date_start)
-
-    for date in months_list:
-        start = date.replace(day=1)
-        next_month = date.replace(day=28) + datetime.timedelta(days=4)
-        days = int(str(next_month).split('-')[-1])
-        end = next_month - datetime.timedelta(days=days)
-        print(next_month, end)
-        this_month_bill_queryset = bills.filter(
-            date_expired__range=[start, end])
-        this_month_bills = DefaultExpenseModel.analysis(
-            this_month_bill_queryset)
-        this_month_payroll_queryset = payrolls.filter(
-            date_expired__range=[start, end])
-        this_month_payroll = DefaultExpenseModel.analysis(
-            this_month_payroll_queryset)
-        this_month_expense_queryset = expenses.filter(
-            date_expired__range=[start, end])
-        this_month_expense = DefaultExpenseModel.analysis(
-            this_month_expense_queryset)
-        bill_by_month.append(this_month_bills)
-        payroll_by_month.append(this_month_expense)
-        expenses_by_month.append(this_month_payroll)
-        totals_by_month.append([this_month_bills[0]+this_month_expense[0] + this_month_payroll[0],
-                                this_month_bills[1] + this_month_expense[1] +
-                                this_month_payroll[1],
-                                this_month_bills[2] +
-                                this_month_expense[2] + this_month_payroll[2]
-                                ])
-
-    totals = [payroll_total_value + bill_total_value + expense_total_value,
-              bill_paid_value + payroll_paid_value + expense_paid_value,
-              bill_diff + payroll_diff + expense_diff
-              ]
-    currency = CURRENCY
-    context = locals()
-    return render(request, 'report.html', context=context)
-
-
-@api_view(["GET"])
-@csrf_exempt
-@permission_classes([IsAuthenticated])
-def welcome(request):
-    content = {"message": "Welcome to the BookStore!"}
-    return JsonResponse(content)
-
-
 @api_view(["GET"])
 @csrf_exempt
 def apis(request):
@@ -366,17 +124,32 @@ def apis(request):
 
 @api_view(["GET"])
 @csrf_exempt
-# Create your views here.
 def trans(request):
-    transact=payments.objects.all()
-    serializer = paymentSerializer(transact, many=True)
-    return JsonResponse({'transact': serializer.data}, safe=False, status=status.HTTP_200_OK)
-   
+    business_id = request.GET.get('business_id', None)
+    if business_id is not None:
+        business_payments = payments.objects.filter(
+                business_id=business_id
+            ).select_related('business').only(
+                'id',
+                'amount',
+                'business_id',
+                'business__business_name', 
+            )
+            
+        details = []
 
+        for payment in business_payments:
+            details.append({
+                'id': payment.id,
+                'amount': payment.amount,
+                'business_id': payment.business_id,
+                'business_name':payment.business.business_name,
+            })
+        
+        return JsonResponse(details, safe=False)   
 
-# Create your views here.
-
-
+    return JsonResponse({'error' : 'Bad request. Need `business_id`'}, status=400)     
+        
 def index(request):
     try:
         users = User.objects.all()
@@ -390,36 +163,6 @@ def index(request):
 
 def transactions(request):
     transact=payments.objects.all()
-   
-
-    # count = len(transactions)
-    # total = 0
-    # shares = []
-    # factor = sum(range(count+1))
-    
-    # for i, item in enumerate(transactions, start=1):
-    #     total += int(item.price)
-    #     shares.append({
-    #         "sl": i,
-    #         "order": count,
-    #         "share": int(item.price),
-    #         "id": item.id,
-    #         "name": "customer_{item.id}",
-    #         "to_give": 0,
-    #         "multiplier": 0,
-    #         "factor": factor,
-    #     })
-    #     count -= 1
-
-    # multiplier = (total * 0.5)/factor
-
-    # give_back = []
-    # for item in shares:
-    #     item['to_give'] = item['order'] * multiplier
-    #     item['multiplier'] = multiplier
-    #     give_back.append(item)
-
-   
     return render(request, 'transactions.html', {
          'transact': transact})
 def shuffle(request):
@@ -514,43 +257,6 @@ def setting(request):
 
 def pay(request):
     return render(request, 'pay.html')
-
-
-def api(request):
-    restraunt_objs = Restraunt.objects.all()
-
-    pincode = request.GET.get('pincode')
-    km = request.GET.get('km')
-    user_lat = None
-    user_long = None
-
-    if pincode:
-        geolocator = Nominatim(user_agent="geoapiExercises")
-        location = geolocator.geocode(int(pincode))
-        user_lat = location.latitude
-        user_long = location.longitude
-
-    payload = []
-    for restraunt_obj in restraunt_objs:
-        result = {}
-        result['name'] = restraunt_obj.name
-        result['image'] = restraunt_obj.image
-        result['description'] = restraunt_obj.description
-        result['pincode'] = restraunt_obj.pincode
-        if pincode:
-            first = (float(user_lat), float(user_long))
-            second = (float(restraunt_obj.lat), float(restraunt_obj.lon))
-            result['distance'] = int(great_circle(first, second).miles)
-
-        payload.append(result)
-
-        if km:
-            if result['distance'] > int(km):
-                payload.pop()
-
-    return JsonResponse(payload, safe=False)
-
-
 def get_books(request):
     business_detail = request.user.id
     business_detail = business_details.objects.all()
@@ -577,7 +283,7 @@ def show_business(request):
     cs = business_details.objects.all()
     serializer =business_detailsSerializer(cs, many=True)
     return JsonResponse({"cs":serializer.data}, safe=False, status=status.HTTP_200_OK)
-from rest_framework.views import APIView
+
 class paysection(APIView):
     serializer_class = paymentSerializer
     

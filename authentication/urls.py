@@ -1,30 +1,27 @@
+
 from authentication import views
 from django.conf.urls.static import static
 from django.conf import settings
 
 
 from django.urls import path
+
+
 from .views import Home, login_view, register_user
 from django.conf.urls import url
 from django.contrib.auth.views import LogoutView
-from .views import (HomepageView, BillListView,
-                    PayrollListView, ExpensesListView,
-                    report_view
-                    )
+
 
 from django.views.static import serve
 
 urlpatterns = [
     # path('index',views.index,name='index'),
     path('login', login_view, name="login"),
-    path('homepage', HomepageView.as_view(), name='homepage'),
+   
     path('edit/<int:id>',views.edit,name="edit"),
      path('update/<int:id>',views.update,name="update"),
     #  path('delete/<int:id>', views.delete,name="delete"),
-    path('bills/', BillListView.as_view(), name='bills_view'),
-    path('payroll/', PayrollListView.as_view(), name='payroll_view'),
-    path('expenses/', ExpensesListView.as_view(), name='expenses_view'),
-    path('reports/', report_view, name='reports_view'),
+   
     path('', register_user, name="register"),
     path('getbooks', views.get_books),
      path('trans', views.trans,name='trans'),
@@ -41,6 +38,7 @@ urlpatterns = [
     path('notification', views.notification, name="notification"),
     path("logout/", LogoutView.as_view(), name="logout"),
     path('home', views.Home, name="home"),
+    # path('business_lists', views.business_lists.as_view()),
     path('pay', views.pay, name="pay"),
     path('list', views.tablelist, name="list"),
     path('business', views.business, name="business"),
@@ -50,7 +48,7 @@ urlpatterns = [
     path('categories', views.categories, name="categories"),
     path('shuffle', views.shuffle, name="shuffle"),
    
-    path('api/get/', views.api, name="api"),
+    
 
 
     # pyament checkout urls

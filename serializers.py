@@ -5,23 +5,7 @@ from django.contrib.auth.models import User
 class business_detailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = business_details 
-        fields=( 
-            'categories',
-            'bank_name',
-            'bsb',
-            'business_name',
-            'business_desc',
-            'business_address',
-            'email',
-            'In',
-            'business_code',
-            'Account_holder',
-            'account_number',
-            'image1',
-            'qr_code',
-            'business_contact',
-            'add_offer'
-        )
+        fields="__all__"
         
 
 class categorySerializer(serializers.ModelSerializer):
