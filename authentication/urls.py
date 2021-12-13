@@ -7,7 +7,7 @@ from django.conf import settings
 from django.urls import path
 
 
-from .views import Home, login_view, register_user
+from .views import Home,register_user
 from django.conf.urls import url
 from django.contrib.auth.views import LogoutView
 
@@ -16,16 +16,20 @@ from django.views.static import serve
 
 urlpatterns = [
     # path('index',views.index,name='index'),
-    path('login', login_view, name="login"),
-   
+    path('signin', views.signin, name="signin"),
+    path('users',views.users,name="users"),
     path('edit/<int:id>',views.edit,name="edit"),
-     path('update/<int:id>',views.update,name="update"),
-    #  path('delete/<int:id>', views.delete,name="delete"),
-   
-    path('', register_user, name="register"),
+    path('useredit/<int:id>',views.useredit,name="useredit"),
+    path('categoryedit/<int:id>',views.categoryedit,name="categoryredit"),
+    path('update/<int:id>',views.update,name="update"),
+    path('userupdate/<int:id>',views.userupdate,name="userupdate"),
+    path('categoryupdate/<int:id>',views.categoryupdate,name="categoryupdate"),
+    path('userdelete/<int:id>',views.userdelete,name="userdelete"),
+    path('delete/<int:id>',views.delete,name="delete"),
+    path('catgeories/<int:id>/delete',views.categorydelete,name="categorydelete"),
     path('getbooks', views.get_books),
      path('trans', views.trans,name='trans'),
-    # path('profile', views.profile),
+  
     path('transactions', views.transactions, name="transactions"),
     path('business_list', views.business_list, name="business_list"),
     path('', views.register_user, name="register_user"),
@@ -57,12 +61,7 @@ urlpatterns = [
     path('payment-success', views.payment_success),
     path('payment-success', views.payment_cancel),
     path('payment-webhook', views.payment_webhook),
-    path('main-view', views.main_view, name='main-view'),
-    path('sign/', views.signup_view, name='signup-view'),
-    path('profile', views.profile, name='profile'),
-    path('profiles/', views.my_recommendations_view, name='my-recs-view'),
-    path('<str:ref_code>/', views.main_view, name='main-view'),
-
+   
 ]
 
 if settings.DEBUG:

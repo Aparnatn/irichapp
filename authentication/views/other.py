@@ -6,7 +6,7 @@ Copyright (c) 2019 - present AppSeed.us
 from django.http.request import HttpRequest
 from requests.models import Response
 import random
-from serializers import UserSerializer, business_detailsSerializer,ProfileSerializer, categorySerializer, paymentSerializer,transSerializer
+from serializers import UserSerializer, business_detailsSerializer, categorySerializer, paymentSerializer,transSerializer
 from ..models import business_details, category
 from rest_framework import status
 from django.http import response
@@ -69,45 +69,10 @@ from authentication.models import Transactions
 
 # Create your views here.
 
-def my_recommendations_view(request):
-    user = request.user.is_authenticated
-    profile = Profile.objects.filter(user=request.user)
-    
-    context = {'profile': profile}
-    return render(request, 'profiles/main.html', context)
-def signup_view(request):
-    profile_id = request.session.get('ref_profile')
-    print('profile_id', profile_id)
-    form = UserCreationForm(request.POST or None)
-    if form.is_valid():
-        if profile_id is not None:
-            recommended_by_profile = Profile.objects.get(id=profile_id)
 
-            instance = form.save()
-            registered_user = User.objects.get(id=instance.id)
-            registered_profile = Profile.objects.get(user=registered_user)
-            registered_profile.recommended_by = recommended_by_profile.user
-            registered_profile.save()
-        else:
-            form.save()
-        username = form.cleaned_data.get('username')
-        password = form.cleaned_data.get('password1')
-        user = authenticate(username=username, password=password)
-        login(request, user)
-        return redirect('main-view')
-    context = {'form':form}
-    return render(request, 'sign.html', context)
 
-def main_view(request, *args, **kwargs):
-    code = str(kwargs.get('ref_code'))
-    try:
-        profile = Profile.objects.get(code=code)
-        request.session['ref_profile'] = profile.id
-        print('id', profile.id)
-    except:
-        pass
-    print(request.session.get_expiry_age())
-    return render(request, 'main.html', {})
+
+
 
 
 
@@ -287,13 +252,7 @@ def get_books(request):
     business_detail = business_details.objects.all()
     serializer = business_detailsSerializer(business_detail, many=True)
     return JsonResponse({'business_details': serializer.data}, safe=False, status=status.HTTP_200_OK)
-@api_view(["GET"])
-@csrf_exempt
-def profile(request):
-    profile = request.user.id
-    profile = Profile.objects.all()
-    serializer = ProfileSerializer(profile, many=True)
-    return JsonResponse({'profile': serializer.data}, safe=False, status=status.HTTP_200_OK)
+
 @api_view(["GET"])
 @csrf_exempt
 def show_category(request):
@@ -418,43 +377,71 @@ def tablelist(request):
     return render(request, "tables.html", context)
 
 
-def login_view(request):
-    form = LoginForm(request.POST or None)
-
-    msg = None
-
-    if request.method == "POST":
-
-        if form.is_valid():
-            username = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password")
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect("/")
-            else:
-                msg = 'Invalid credentials'
+def signin(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password1= request.POST.get('password1')
+        
+        user = Users.objects.filter(username=username,password1=password1).first()
+        
+        if user is not None:
+           
+            messages.success(request, "Logged In Sucessfully!!")
+            return redirect('/home')
         else:
-            msg = 'Error validating the form'
+            messages.error(request, "Bad Credentials!!")
+            return redirect('home')
+    
+    return render(request, "accounts/login.html")
 
-    return render(request, "accounts/login.html", {"form": form, "msg": msg})
-
-
+def users(request):
+    user=Users.objects.all()
+    return render(request,"users.html",{"user":user})
 def register_user(request):
 
     if request.method == "POST":
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect("/login")
-    else:
-        form = SignUpForm()
-    return render(request,'accounts/register.html',{"form":form})
+        username= request.POST.get('username')
+        lastname = request.POST.get('lastname')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        referral_code = request.POST.get('referral_code')
+        postcode = request.POST.get('postcode')
+        password1 = request.POST.get('password1')
+        password2 = request.POST.get('password2')
+      
+        Users.objects.create(
+            username= username,
+            lastname = lastname,
+            email = email,
+            phone = phone,
+            referral_code = referral_code,
+            postcode = postcode,
+            password1 = password1,
+            password2 = password2,
+        )
+    
+      
+    return render(request,'accounts/register.html')
+    
 def edit(request,id):
    
     object=business_details.objects.get(id=id)
     return render(request,'edit.html',{'object':object})
-
+def useredit(request,id):
+   
+    object=Users.objects.get(id=id)
+    return render(request,'useredit.html',{'object':object})
+def categoryedit(request,id):
+   
+    object=category.objects.get(id=id)
+    return render(request,'categoryedit.html',{'object':object})
+def userupdate(request,id):
+       object=Users.objects.get(id=id)
+       form=SignUpForm(request.POST,instance=object)
+       if form.is_valid:
+        form.save()
+        object=Users.objects.all()
+        return redirect('/users')
     
 def update(request,id):
        object=business_details.objects.get(id=id)
@@ -462,4 +449,20 @@ def update(request,id):
        if form.is_valid:
         form.save()
         object=business_details.objects.all()
+        return redirect('/categories')
+def categoryupdate(request,id):
+       object=category.objects.get(id=id)
+       form=categoryForm(request.POST,instance=object)
+       if form.is_valid:
+        form.save()
+        object=category.objects.all()
+        return redirect('/categories')
+def delete(request,id):   
+        business_details.objects.filter(id=id).delete()
+        return redirect('/categories')
+def userdelete(request,id):   
+        Users.objects.filter(id=id).delete()
+        return redirect('/users')
+def categorydelete(request,id):   
+        category.objects.filter(id=id).delete()
         return redirect('/categories')

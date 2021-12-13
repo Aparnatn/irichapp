@@ -13,39 +13,148 @@
 </head>
 <body>
    
-        <div class="row">
-            <div class="col-12 col-md-7 ">
-                <div class="login-form">
-                    <div class="form">
-                     
-                        <img src="/static/assets/images/irich-logo-mini.png" alt="login-logo">
-                        <h3>Proceed with your</h3>
-                        <h1>Registration</h1>
-                       
-                       
-                                  <form method="POST">
-                                    {%csrf_token%}
-                                    {{form.as_p}}
-                        
-                              
-                          
-                                    <button class="btn btn-primary my-4" type="submit">Submit</button>
-                                    <div class="login-signin">
-                                        <p>Already Have an account? <a href="/login">Sign in</a></p>
-                                     </div>
-                          
-                      </form>
+       
+    <div class="row">
+        <div class="col-12 col-md-7 ">
+            <div class="login-form">
+               
+                <div class="form">
+                   
+                    <img src="/static/assets/images/irich-logo-mini.png" alt="login-logo">
+                    <h3>Proceed with your</h3>
+                    <h1>Registration</h1>
+                    <form action="" method="post">
+                        {%csrf_token%}
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                          <div class="input">
+                            <div class="inputBox">
+                              <label for="fname">First Name</label>
+                              <div class="d-flex">
+                                  <input type="text" id="fname" name="username" placeholder="IRICH NAME" required>
+                                  <i class="far fa-user"></i>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="input">
+                              <div class="inputBox">
+                                  <label for="lname">Last Name</label>
+                                  <div class="d-flex">
+                                  <input type="text" id="lname" name="lastname" placeholder="IRICH NAME" required>
+                                  <i class="far fa-user"></i>
+                                  </div>
+                              </div>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div class="input">
+                              <div class="inputBox">
+                                  <label for="email">Email</label>
+                                  <div class="d-flex">
+                                   <input type="email" id="email" name="email" placeholder="abc@abc.com" required>
+                                   <i class="far fa-envelope"></i>
+                                  </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="col-12 col-md-6">
+                            <div class="input">
+                              <div class="inputBox">
+                                  <label for="phone">Mobile</label>
+                                  <div class="d-flex">
+                                    <input type="tel" id="phone" name="phone" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required>
+                                  <i class="fas fa-mobile-alt"></i>
+                                  </div>
+                                </div>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-md-6">
+                            <div class="input">
+                              <div class="inputBox">
+                                  <label for="pwd">Password</label>
+                                  <div class="d-flex">
+                                  <input type="password" id="pwd" name="password1" minlength="8" placeholder="••••••••" required>
+                                  <i class="fas fa-key"></i>
+                                  </div>
+                                </div>
+                            </div>
+                          </div>
+                          <div class="col-12 col-md-6">
+                            <div class="input">
+                              <div class="inputBox">
+                                  <label for="pwd">Confirm Passsword</label>
+                                  <div class="d-flex">
+                                  <input type="password" id="pwd" name="password2"minlength="8" placeholder="••••••••" required>
+                                  <i class="fas fa-key"></i>
+                                  </div>
+                                </div>
+                              </div>
+                            </div> 
+                            <div class="col-12 col-md-6">
+                                <div class="input">
+                                  <div class="inputBox">
+                                      <label for="pwd">Referral code</label>
+                                      <div class="d-flex">
+                                      <input type="text" id="pwd" name="referral_code"  required>
+                                      
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div> 
+                                <div class="col-12 col-md-6">
+                                    <div class="input">
+                                      <div class="inputBox">
+                                          <label for="pwd">Post Code</label>
+                                          <div class="d-flex">
+                                          <input type="text"  name="postcode" minlength="6" required>
+                                         
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div> 
+                    </div>    
+                   
+                   
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="input">
+                          <input type="checkbox" id="check" name="check" value="true">
+                          <label for="check"> I agree to the term and conditions.</label> 
+                        </div>
                       </div>
+                    </div>
+                    
+                        
+                     <br>     
+                        
+                    <input type="submit" name="adduser" class="btn btn-primary"value="Sign Up">
+                    <div class="login-signin">
+                        <p>Already Have an account? <a href="/signin">Sign in</a></p>
+                     </div>
                 </div>
-              
+               
+            </form>  
             </div>
-            <div class="col-12 col-md-5 login-image">
-                <img src="/static/assets/images/employee-shaded.jpg" alt="Login-image">
-            </div>
-        </div>
+      
+           
+
+   
+     
+   
+ </div>
+ <div class="col-12 col-md-5 login-image">
+     <img src="/static/assets/images/employee-shaded.jpg" alt="Login-image">
+ </div>       
+</div>
 
 <!-- Scripts -->
-    <script src="/static/assets/scripts/script.js" type="text/javascript"></script>
+    <!-- <script src="/static/assets/scripts/script.js" type="text/javascript"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>

@@ -24,6 +24,7 @@ class MobileLoginForm(forms.Form):
 class Meta:
         model = mobile
         fields = ('sId','phone',)
+
 class BusinessForm(forms.Form):
     category = forms.CharField(
         widget=forms.TextInput(
@@ -114,7 +115,7 @@ class LoginForm(forms.Form):
                 "class": "form-control"
             }
         ))
-    password = forms.CharField(
+    password1 = forms.CharField(
         widget=forms.PasswordInput(
             attrs={
                 "placeholder" : "Password",
