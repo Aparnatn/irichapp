@@ -31,6 +31,7 @@ urlpatterns = [
      path('trans', views.trans,name='trans'),
   
     path('transactions', views.transactions, name="transactions"),
+    path('role', views.role, name="role"),
     path('business_list', views.business_list, name="business_list"),
     path('', views.register_user, name="register_user"),
     path('paysection', views.paysection.as_view()),

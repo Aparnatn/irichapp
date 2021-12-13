@@ -22,7 +22,8 @@ body{
     background: #412160;
     transition: 0.5s;
     border-radius: 0px 5px 5px 0px;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: visible;
 }
 .navigation .user-info{
     display: flex;
@@ -96,7 +97,7 @@ body{
     position: relative;
     width: 100%;
     list-style: none;
-    padding: 15px 15px;
+    padding: 0px 15px;
     transition: all 0.3s ease;
 }
 .navigation ul li:hover{
@@ -134,9 +135,9 @@ body{
 .navigation ul li a .title {
     position: relative;
     display: block;
-    padding: 0 20px;
-    line-height: 60px;
-    white-space: nowrap;
+    /* padding: 0 20px; */
+    /* line-height: 10px; */
+    
 }
 
 .main{

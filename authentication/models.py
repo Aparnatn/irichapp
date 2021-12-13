@@ -27,18 +27,20 @@ crontab = {}
 from django.dispatch import receiver
 CURRENCY = '€'
 
-class Users(models.Model):
-    username=models.CharField(max_length=150)
-   
-    email=models.CharField(max_length=150) 
-    password1=models.CharField(max_length=150)
-    password2=models.CharField(max_length=150)
+# class Users(models.Model):
+#     username=models.CharField(max_length=150)
+#     lastname=models.CharField(max_length=150)
+#     email=models.CharField(max_length=150) 
+#     password1=models.CharField(max_length=150)
+#     password2=models.CharField(max_length=150)
+#     referral_code=models.CharField(max_length=150)
+#     phone=models.CharField(max_length=150)
+#     postcode=models.CharField(max_length=150)
+class Employee(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     referral_code=models.CharField(max_length=150)
-    
     phone=models.CharField(max_length=150)
-    lastname=models.CharField(max_length=150)
     postcode=models.CharField(max_length=150)
-
 class PaymentMethod(models.Model):
     title = models.CharField(unique=True, max_length=150)
 
@@ -109,6 +111,8 @@ class business_details(models.Model):
 
 class category(models.Model):
     name=models.CharField(max_length=500)
+class roles(models.Model):
+    designation=models.CharField(max_length=500)
 
 class payments(models.Model):
     amount=models.IntegerField()

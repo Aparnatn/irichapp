@@ -7,7 +7,7 @@ from django.http.request import HttpRequest
 from requests.models import Response
 import random
 from serializers import UserSerializer, business_detailsSerializer, categorySerializer, paymentSerializer,transSerializer
-from ..models import business_details, category
+from ..models import business_details, category,roles
 from rest_framework import status
 from django.http import response
 from ..send_otp import send_otp
@@ -26,9 +26,9 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.forms.utils import ErrorList
 from django.http import HttpResponse
-from ..forms import LoginForm, SignUpForm
+from ..forms import LoginForm, rolesForm
 from authentication.models import mobile
-from authentication.models import business_details
+from authentication.models import business_details,Employee
 from authentication.forms import MobileLoginForm, BusinessForm, categoryForm,paymentForm
 from ..forms import business_detailsForm
 from django.contrib import messages
@@ -213,7 +213,7 @@ def paymentss(request):
 def payment(request,id):
     payment = payments.objects.filter(business_id=id).first()
     
-    users = Users.objects.all()
+    users = User.objects.all()
 
     # print (business.payments)
     
@@ -226,7 +226,7 @@ def payment(request,id):
 def business_pay(request,id):
     payment = payments.objects.filter(business_id=id)
     
-    users = Users.objects.all()
+    users = User.objects.all()
 
     
     return JsonResponse({
@@ -341,7 +341,15 @@ def Category(request):
     else:
         form = categoryForm()
     return render(request,'category.html',{"form":form})
-    
+def role(request):
+    if request.method=="POST":
+        form = rolesForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect("/role")
+    else:
+        form = rolesForm()
+    return render(request,'roles.html',{"form":form})   
 
 def percentage(part, whole):
     return 100 * float(part)/float(whole)
@@ -380,9 +388,9 @@ def tablelist(request):
 def signin(request):
     if request.method == 'POST':
         username = request.POST.get('username')
-        password1= request.POST.get('password1')
+        password= request.POST.get('password')
         
-        user = Users.objects.filter(username=username,password1=password1).first()
+        user = User.objects.filter(username=username,password=password).first()
         
         if user is not None:
            
@@ -395,29 +403,40 @@ def signin(request):
     return render(request, "accounts/login.html")
 
 def users(request):
-    user=Users.objects.all()
+    user=User.objects.all()
     return render(request,"users.html",{"user":user})
-def register_user(request):
 
+def register_user(request):
     if request.method == "POST":
-        username= request.POST.get('username')
-        lastname = request.POST.get('lastname')
-        email = request.POST.get('email')
+        username = request.POST.get('username')
+        is_staff = 1
+        is_active = 1
+        is_superuser = False
+        first_name=request.POST.get('first_name')
+        last_name=request.POST.get('last_name')
+        email=request.POST.get('email')
+        password=request.POST.get('password')
+        date_joined= datetime.date.today()
+        user = User.objects.create(
+            username = username,
+            is_staff = is_staff,
+            is_active =is_active,
+            is_superuser = is_superuser,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=password,
+            date_joined=date_joined
+        )
+    
         phone = request.POST.get('phone')
         referral_code = request.POST.get('referral_code')
         postcode = request.POST.get('postcode')
-        password1 = request.POST.get('password1')
-        password2 = request.POST.get('password2')
-      
-        Users.objects.create(
-            username= username,
-            lastname = lastname,
-            email = email,
+        Employee.objects.create(
+            user_id=user.id,
             phone = phone,
             referral_code = referral_code,
-            postcode = postcode,
-            password1 = password1,
-            password2 = password2,
+            postcode = postcode,    
         )
     
       
@@ -429,18 +448,18 @@ def edit(request,id):
     return render(request,'edit.html',{'object':object})
 def useredit(request,id):
    
-    object=Users.objects.get(id=id)
+    object=Employee.objects.get(id=id)
     return render(request,'useredit.html',{'object':object})
 def categoryedit(request,id):
    
     object=category.objects.get(id=id)
     return render(request,'categoryedit.html',{'object':object})
 def userupdate(request,id):
-       object=Users.objects.get(id=id)
-       form=SignUpForm(request.POST,instance=object)
+       object=User.objects.get(id=id)
+       form=UserCreationForm(request.POST,instance=object)
        if form.is_valid:
         form.save()
-        object=Users.objects.all()
+        object=Employee.objects.all()
         return redirect('/users')
     
 def update(request,id):
@@ -461,7 +480,7 @@ def delete(request,id):
         business_details.objects.filter(id=id).delete()
         return redirect('/categories')
 def userdelete(request,id):   
-        Users.objects.filter(id=id).delete()
+        Employee.objects.filter(id=id).delete()
         return redirect('/users')
 def categorydelete(request,id):   
         category.objects.filter(id=id).delete()

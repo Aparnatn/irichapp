@@ -10,7 +10,7 @@ from django.db.models import fields
 from django.forms import widgets
 from authentication import models
 from authentication.models import mobile
-from authentication.models import business_details,category,Users,payments
+from authentication.models import business_details,category,payments,roles
 from authentication.forms import mobile
 
 class MobileLoginForm(forms.Form):
@@ -123,15 +123,15 @@ class LoginForm(forms.Form):
             }
         ))
 
-class SignUpForm(forms.ModelForm):
-  class Meta:
-    model=Users
-    fields ="__all__"
+
 class paymentForm(forms.ModelForm):
   class Meta:
     model=payments
     fields ="__all__"
-        
+class rolesForm(forms.ModelForm):
+  class Meta:
+    model=roles
+    fields ="__all__"        
 
 
 class business_detailsForm(forms.ModelForm):
