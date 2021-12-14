@@ -33,85 +33,85 @@
 
     </div>
     <ul>
-      <li>
-          <a href="/category">
+        <li>
+            <a href="/category">
+                <span class="icon"><i class="fas fa-business-time"></i></span>
+                <span class="title">Add Category</span>
+            </a>
+        </li>
+        <li>
+          <a href="/categories">
               <span class="icon"><i class="fas fa-business-time"></i></span>
-              <span class="title">Add Category</span>
+              <span class="title">Categories</span>
           </a>
       </li>
-      <li>
-        <a href="/categories">
-            <span class="icon"><i class="fas fa-business-time"></i></span>
-            <span class="title">Categories</span>
-        </a>
-    </li>
-      <li>
-          <a href="/list">
-              <span class="icon"><i class="fas fa-business-time"></i></span>
-              <span class="title">My Business</span>
-          </a>
-      </li>
-      <li>
-          <a href="/transactions">
+        <li>
+            <a href="/list">
+                <span class="icon"><i class="fas fa-business-time"></i></span>
+                <span class="title">My Business</span>
+            </a>
+        </li>
+        <li>
+            <a href="/transactions">
+                <span class="icon"><i class="fas fa-exchange-alt"></i></span>
+                <span class="title">Transactions</span>
+            </a>
+        </li>
+        <li>
+          <a href="/role">
               <span class="icon"><i class="fas fa-exchange-alt"></i></span>
-              <span class="title">Transactions</span>
+              <span class="title">Add Role</span>
           </a>
       </li>
       <li>
-        <a href="/role">
+        <a href="/showrole">
             <span class="icon"><i class="fas fa-exchange-alt"></i></span>
-            <span class="title">Add Role</span>
+            <span class="title"> Roles</span>
         </a>
     </li>
-    <li>
-      <a href="/showrole">
-          <span class="icon"><i class="fas fa-exchange-alt"></i></span>
-          <span class="title"> Roles</span>
-      </a>
-  </li>
-      <li>
-          <a href="/shuffle">
+        <li>
+            <a href="/shuffle">
+                <span class="icon"><i class="fas fa-exchange-alt"></i></i></span>
+                <span class="title">Shuffle</span>
+            </a>
+        </li>
+        <li>
+          <a href="/users">
               <span class="icon"><i class="fas fa-exchange-alt"></i></i></span>
-              <span class="title">Shuffle</span>
+              <span class="title">Users</span>
           </a>
       </li>
-      <li>
-        <a href="/users">
-            <span class="icon"><i class="fas fa-exchange-alt"></i></i></span>
-            <span class="title">Users</span>
-        </a>
-    </li>
-      <li>
-          <a href="/business_list">
-              <span class="icon"><i class="fas fa-money-check"></i></span>
-              <span class="title">All Deals</span>
-          </a>
-      </li>
-      <li>
-          <a href="/paymentss">
-              <span class="icon"><i class="fas fa-coins"></i></span>
-              <span class="title">Payment</span>
-          </a>
-      </li>
-      <li>
-          <a href="/notification">
-              <span class="icon"><i class="fas fa-bell"></i></span>
-              <span class="title">Notification</span>
-          </a>
-      </li>
-      <li>
-          <a href="/setting">
-              <span class="icon"><i class="fas fa-cogs"></i></span>
-              <span class="title">Settings</span>
-          </a>
-      </li>
-      <li>
-          <a href="">
-              <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
-              <span class="title">Logout</span>
-          </a>
-      </li>
-  </ul>
+        <li>
+            <a href="/business_list">
+                <span class="icon"><i class="fas fa-money-check"></i></span>
+                <span class="title">All Deals</span>
+            </a>
+        </li>
+        <li>
+            <a href="/paymentss">
+                <span class="icon"><i class="fas fa-coins"></i></span>
+                <span class="title">Payment</span>
+            </a>
+        </li>
+        <li>
+            <a href="/notification">
+                <span class="icon"><i class="fas fa-bell"></i></span>
+                <span class="title">Notification</span>
+            </a>
+        </li>
+        <li>
+            <a href="/setting">
+                <span class="icon"><i class="fas fa-cogs"></i></span>
+                <span class="title">Settings</span>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+                <span class="title">Logout</span>
+            </a>
+        </li>
+    </ul>
   </div>
 
 
@@ -148,12 +148,8 @@
                    
                       <thead>
                           <tr>
-                          <th>First name</th>
-                          <th>Last Name</th>
-                          <th>Email</th>
-                          <th>Phone</th>
-                          <th>Referral code</th>
-                          <th>Post code</th>
+                          
+                          <th>Designation</th>
                           <th>Actions</th>
                           <th>Actions</th>
                         </tr>
@@ -163,17 +159,11 @@
                   
                   <tbody>
                       <tr>
-                        {% for data in user %}
-                    <td>{{ data.username }}</td>   
-                    <td> {{ data.last_name }}</td> 
-                    <td> {{ data.email }}</td> 
-                    
+                        {% for data in roleshow %}
+                    <td>{{ data.designation }}</td>   
                    
-                    <td> {{data.employee.phone}}</td> 
-                    <td>{{data.employee.referral_code}}</td> 
-                     <td>{{data.employee.postcode}}</td> 
-                    <td><a href="useredit/{{data.id}}">edit</a></td>
-                    <td><a href="userdelete/{{data.id}}">delete</a></td>
+                    <td><a href="roleedit/{{data.id}}">edit</a></td>
+                    <td><a href="roledelete/{{data.id}}">delete</a></td>
                     
                       
                   </tr>

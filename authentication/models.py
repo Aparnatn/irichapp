@@ -76,18 +76,21 @@ class business_details(models.Model):
         blank=True
     )
     bank_name=models.CharField(max_length=50)
-    bsb=models.CharField(max_length=50)
+    
     business_name=models.CharField(max_length=50)
     business_desc=models.CharField(max_length=200)
     business_address=models.CharField(max_length=200)
     email=models.EmailField(max_length=50)
-    In=models.CharField(max_length=50)
+    subcategory=models.CharField(max_length=200)
+    irich=models.IntegerField()
+    
     business_code=models.CharField(max_length=50)
-    Account_holder=models.CharField(max_length=50)
+    Account_details=models.CharField(max_length=50)
     account_number=models.CharField(max_length=50)
+    IFSC_code=models.CharField(max_length=50)
     business_contact=models.CharField(max_length=50)
     image1= models.ImageField(upload_to='images',blank= True,null=True)
-    add_offer=models.CharField(max_length=50)
+    
     qr_code=models.ImageField(upload_to='qr_codes', blank=True)
 
     def save(self, *args, **kwargs):

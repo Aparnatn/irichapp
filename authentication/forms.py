@@ -26,86 +26,10 @@ class Meta:
         fields = ('sId','phone',)
 
 class BusinessForm(forms.Form):
-    category = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "placeholder" : "phone",
-                "class": "form-control"
-            }
-        ))
-    bank_name = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "placeholder" : "phone",
-                "class": "form-control"
-            }
-        ))
-    bsb = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "placeholder" : "phone",
-                "class": "form-control"
-            }
-        ))
-    business_name = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "placeholder" : "phone",
-                "class": "form-control"
-            }
-        ))
-    business_desc = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "placeholder" : "phone",
-                "class": "form-control"
-            }
-        ))
-    business_address = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "placeholder" : "phone",
-                "class": "form-control"
-            }
-        ))
-    email = forms.EmailField(
-        widget=forms.TextInput(
-            attrs={
-                "placeholder" : "phone",
-                "class": "form-control"
-            }
-        ))
-    In = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "placeholder" : "phone",
-                "class": "form-control"
-            }
-        ))
-    subcategory = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "placeholder" : "phone",
-                "class": "form-control"
-            }
-        ))
-    Account_holder = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "placeholder" : "phone",
-                "class": "form-control"
-            }
-        ))
-    account_number = forms.CharField(
-        widget=forms.TextInput(
-            attrs={
-                "placeholder" : "phone",
-                "class": "form-control"
-            }
-        ))
-class Meta:
+   
+    class Meta:
         model = business_details
-        fields = ('category','account_number','Account_holder','subcategory', 'In','email','business_address','business_desc','business_name','bsb','business_contact')
+        fields = "__all__"
        
 class LoginForm(forms.Form):
     username = forms.CharField(
@@ -139,20 +63,7 @@ class business_detailsForm(forms.ModelForm):
     class Meta:
         model = business_details
         
-        fields = ('categories',
-    'bank_name',
-    'bsb',
-    'business_name',
-    'business_desc',
-    'business_address',
-    'email',
-    'In',
-   
-    'Account_holder',
-    'account_number',
-    'business_contact',
-    'image1',
-    'add_offer',)
+        fields = "__all__"
 class categoryForm(forms.ModelForm):
 
     class Meta:

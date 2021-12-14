@@ -287,37 +287,37 @@ def Home(request):
     if request.method == "POST":
         categories_id= request.POST.get('categories_id')
         bank_name = request.POST.get('bank_name')
-        bsb = request.POST.get('bsb')
+       
         business_name = request.POST.get('business_name')
         business_desc = request.POST.get('business_desc')
         business_address = request.POST.get('business_address')
         email = request.POST.get('email')
-        In = request.POST.get('In')
+        IFSC_code = request.POST.get('IFSC_code')
       
         business_code =request.POST.get('business_code')
-        Account_holder = request.POST.get('Account_holder')
+        Account_details=request.POST.get('Account_details')
         account_number = request.POST.get('account_number')
         business_contact = request.POST.get('business_contact')
         image1 = request.FILES.get('image1')
-        add_offer = request.POST.get('add_offer'),
+        
         categories= category.objects.filter(id=categories_id).first()
         business_code =request.POST.get('business_code')
         business_code=categories.name[0:3] + business_name[0:3] +str(random.randint(100,200))
         obj = business_details(
             categories_id=categories_id,
             bank_name=bank_name,
-            bsb=bsb,
+            IFSC_code=IFSC_code,
             business_name=business_name,
             business_desc=business_desc,
             business_address=business_address,
             email=email,
-            In=In,
+            Account_details=Account_details,
             business_code=business_code.upper(),
-            Account_holder=Account_holder,
+            
             account_number=account_number,
             business_contact=business_contact,
             image1=image1,
-            add_offer=add_offer,
+            
         )
        
         obj.save()
@@ -337,7 +337,7 @@ def Category(request):
         form = categoryForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect("categories/")
+            return HttpResponseRedirect("/category")
     else:
         form = categoryForm()
     return render(request,'category.html',{"form":form})
@@ -350,6 +350,9 @@ def role(request):
     else:
         form = rolesForm()
     return render(request,'roles.html',{"form":form})   
+def showrole(request):
+    roleshow=roles.objects.all()
+    return render(request,'role.html',{"roleshow":roleshow})
 
 def percentage(part, whole):
     return 100 * float(part)/float(whole)
@@ -404,7 +407,8 @@ def signin(request):
 
 def users(request):
     user=User.objects.all()
-    return render(request,"users.html",{"user":user})
+    employee=Employee.objects.all()
+    return render(request,"users.html",{"user":user,"employee":employee})
 
 def register_user(request):
     if request.method == "POST":
@@ -454,6 +458,10 @@ def categoryedit(request,id):
    
     object=category.objects.get(id=id)
     return render(request,'categoryedit.html',{'object':object})
+def roledit(request,id):
+   
+    object=roles.objects.get(id=id)
+    return render(request,'roleedit.html',{'object':object})
 def userupdate(request,id):
        object=User.objects.get(id=id)
        form=UserCreationForm(request.POST,instance=object)
@@ -476,6 +484,13 @@ def categoryupdate(request,id):
         form.save()
         object=category.objects.all()
         return redirect('/categories')
+def roleupdate(request,id):
+       object=roles.objects.get(id=id)
+       form=rolesForm(request.POST,instance=object)
+       if form.is_valid:
+        form.save()
+        object=roles.objects.all()
+        return redirect('/showrole')
 def delete(request,id):   
         business_details.objects.filter(id=id).delete()
         return redirect('/categories')
@@ -485,3 +500,6 @@ def userdelete(request,id):
 def categorydelete(request,id):   
         category.objects.filter(id=id).delete()
         return redirect('/categories')
+def roledelete(request,id):   
+        roles.objects.filter(id=id).delete()
+        return redirect('/showrole')
