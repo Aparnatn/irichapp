@@ -41,6 +41,8 @@ class Employee(models.Model):
     referral_code=models.CharField(max_length=150)
     phone=models.CharField(max_length=150)
     postcode=models.CharField(max_length=150)
+    referral=models.CharField(max_length=150)
+    role=models.CharField(max_length=150)
 class PaymentMethod(models.Model):
     title = models.CharField(unique=True, max_length=150)
 

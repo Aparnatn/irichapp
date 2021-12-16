@@ -33,12 +33,7 @@
 
     </div>
     <ul>
-      <li>
-          <a href="/category">
-              <span class="icon"><i class="fas fa-business-time"></i></span>
-              <span class="title">Add Category</span>
-          </a>
-      </li>
+    
       <li>
         <a href="/categories">
             <span class="icon"><i class="fas fa-business-time"></i></span>
@@ -57,12 +52,7 @@
               <span class="title">Transactions</span>
           </a>
       </li>
-      <li>
-        <a href="/role">
-            <span class="icon"><i class="fas fa-exchange-alt"></i></span>
-            <span class="title">Add Role</span>
-        </a>
-    </li>
+     
     <li>
       <a href="/showrole">
           <span class="icon"><i class="fas fa-exchange-alt"></i></span>
@@ -154,6 +144,7 @@
                           <th>Phone</th>
                           <th>Referral code</th>
                           <th>Post code</th>
+                          <th>Roles</th>
                           <th>Actions</th>
                           <th>Actions</th>
                         </tr>
@@ -172,6 +163,8 @@
                     <td> {{data.employee.phone}}</td> 
                     <td>{{data.employee.referral_code}}</td> 
                      <td>{{data.employee.postcode}}</td> 
+                     <td> <form action="/users/{{data.id}}" method="post">
+                       {%csrf_token%}<input type="submit" name="addbusiness" value="Add Role"> </form></td>
                     <td><a href="useredit/{{data.id}}">edit</a></td>
                     <td><a href="userdelete/{{data.id}}">delete</a></td>
                     

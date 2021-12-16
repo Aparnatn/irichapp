@@ -346,7 +346,7 @@ def role(request):
         form = rolesForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect("/role")
+            return HttpResponseRedirect("/showrole")
     else:
         form = rolesForm()
     return render(request,'roles.html',{"form":form})   
@@ -408,7 +408,8 @@ def signin(request):
 def users(request):
     user=User.objects.all()
     employee=Employee.objects.all()
-    return render(request,"users.html",{"user":user,"employee":employee})
+    role=roles.objects.all()
+    return render(request,"users.html",{"user":user,"employee":employee,"role":role})
 
 def register_user(request):
     if request.method == "POST":
@@ -436,13 +437,18 @@ def register_user(request):
         phone = request.POST.get('phone')
         referral_code = request.POST.get('referral_code')
         postcode = request.POST.get('postcode')
-        Employee.objects.create(
+        
+        referral=random.randint(100,200)
+       
+        obj=Employee(
             user_id=user.id,
             phone = phone,
             referral_code = referral_code,
-            postcode = postcode,    
+            postcode = postcode,   
+            referral=referral,
         )
-    
+        obj.save()
+
       
     return render(request,'accounts/register.html')
     
