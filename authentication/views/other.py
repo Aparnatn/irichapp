@@ -293,7 +293,7 @@ def Home(request):
         business_address = request.POST.get('business_address')
         email = request.POST.get('email')
         IFSC_code = request.POST.get('IFSC_code')
-      
+        irich=request.POST.get('irich')
         business_code =request.POST.get('business_code')
         Account_details=request.POST.get('Account_details')
         account_number = request.POST.get('account_number')
@@ -313,7 +313,7 @@ def Home(request):
             email=email,
             Account_details=Account_details,
             business_code=business_code.upper(),
-            
+            irich=irich,
             account_number=account_number,
             business_contact=business_contact,
             image1=image1,
