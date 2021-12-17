@@ -1,48 +1,64 @@
+
 from authentication import views
 from django.conf.urls.static import static
 from django.conf import settings
 
 
 from django.urls import path
-from .views import Home, login_view, register_user
+
+
+from .views import Home,register_user
 from django.conf.urls import url
 from django.contrib.auth.views import LogoutView
-from .views import (HomepageView, BillListView,
-                    PayrollListView, ExpensesListView,
-                    report_view
-                    )
+
 
 from django.views.static import serve
 
 urlpatterns = [
-    # path('index',views.index,name='index'),
-    path('login', login_view, name="login"),
-    path('homepage', HomepageView.as_view(), name='homepage'),
+    path('',views.index,name='index'),
+    path('signin', views.signin, name="signin"),
+    path('users',views.users,name="users"),
+    path('showrole',views.showrole,name="showrole"),
     path('edit/<int:id>',views.edit,name="edit"),
-    path('bills/', BillListView.as_view(), name='bills_view'),
-    path('payroll/', PayrollListView.as_view(), name='payroll_view'),
-    path('expenses/', ExpensesListView.as_view(), name='expenses_view'),
-    path('reports/', report_view, name='reports_view'),
-    path('', register_user, name="register"),
+    path('useredit/<int:id>',views.useredit,name="useredit"),
+    path('categoryedit/<int:id>',views.categoryedit,name="categoryredit"),
+    path('roleedit/<int:id>',views.roledit,name="roledit"),
+    path('update/<int:id>',views.update,name="update"),
+    path('userupdate/<int:id>',views.userupdate,name="userupdate"),
+    path('categoryupdate/<int:id>',views.categoryupdate,name="categoryupdate"),
+    path('role/<int:id>/update',views.roleupdate,name="roleupdate"),
+    path('userdelete/<int:id>',views.userdelete,name="userdelete"),
+    path('delete/<int:id>',views.delete,name="delete"),
+    path('catgeories/<int:id>/delete',views.categorydelete,name="categorydelete"),
+    path('roledelete/<int:id>',views.roledelete,name="roledelete"),
     path('getbooks', views.get_books),
      path('trans', views.trans,name='trans'),
-    # path('profile', views.profile),
+  
     path('transactions', views.transactions, name="transactions"),
+    path('role', views.role, name="role"),
     path('business_list', views.business_list, name="business_list"),
-    path('', views.register_user, name="register_user"),
-    path('payment', views.payment, name="payment"),
+    path('register_user', views.register_user, name="register_user"),
+    path('paysection', views.paysection.as_view()),
+    path('business/<int:id>/payment', views.payment, name="payment"),
+    path('paymentss', views.paymentss, name="paymentss"),
+    path('show_business', views.show_business, name="show_business"),
+    path('business/<int:id>/business_pay', views.business_pay, name="business_pay"),
     path('setting', views.setting, name="setting"),
     path('notification', views.notification, name="notification"),
     path("logout/", LogoutView.as_view(), name="logout"),
     path('home', views.Home, name="home"),
+    path('transact',views.transact,name="transact"),
+    # path('business_lists', views.business_lists.as_view()),
     path('pay', views.pay, name="pay"),
     path('list', views.tablelist, name="list"),
-    path('category', views.categories, name="category"),
+    path('business', views.business, name="business"),
+    path('category', views.Category, name="category"),
+     path('categoryapi', views.Categoryapi, name="Categoryapi"),
     path('show_category', views.show_category, name="show_category"),
-    path('categories', views.apis, name="categories"),
+    path('categories', views.categories, name="categories"),
     path('shuffle', views.shuffle, name="shuffle"),
    
-    path('api/get/', views.api, name="api"),
+    
 
 
     # pyament checkout urls
@@ -50,12 +66,7 @@ urlpatterns = [
     path('payment-success', views.payment_success),
     path('payment-success', views.payment_cancel),
     path('payment-webhook', views.payment_webhook),
-    path('main-view', views.main_view, name='main-view'),
-    path('sign/', views.signup_view, name='signup-view'),
-      path('profile', views.profile, name='profile'),
-    path('profiles/', views.my_recommendations_view, name='my-recs-view'),
-    path('<str:ref_code>/', views.main_view, name='main-view'),
-
+   
 ]
 
 if settings.DEBUG:

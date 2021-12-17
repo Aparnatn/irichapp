@@ -31,52 +31,82 @@
             </div>
             <ul>
                 <li>
+                    <a href="/category">
+                        <span class="icon"><i class="fas fa-business-time"></i></span>
+                        <span class="title">Add Category</span>
+                    </a>
+                </li>
+                <li>
+                  <a href="/categories">
+                      <span class="icon"><i class="fas fa-business-time"></i></span>
+                      <span class="title">Categories</span>
+                  </a>
+              </li>
+                <li>
                     <a href="/list">
-                    <span class="icon"><i class="fas fa-business-time"></i></span>
-                    <span class="title">My Business</span>
-                </a>
+                        <span class="icon"><i class="fas fa-business-time"></i></span>
+                        <span class="title">My Business</span>
+                    </a>
                 </li>
                 <li>
                     <a href="/transactions">
-                    <span class="icon"><i class="fas fa-exchange-alt"></i></span>
-                    <span class="title">Transactions</span>
-                </a>
+                        <span class="icon"><i class="fas fa-exchange-alt"></i></span>
+                        <span class="title">Transactions</span>
+                    </a>
                 </li>
+                <li>
+                  <a href="/role">
+                      <span class="icon"><i class="fas fa-exchange-alt"></i></span>
+                      <span class="title">Add Role</span>
+                  </a>
+              </li>
+              <li>
+                <a href="/showrole">
+                    <span class="icon"><i class="fas fa-exchange-alt"></i></span>
+                    <span class="title"> Roles</span>
+                </a>
+            </li>
                 <li>
                     <a href="/shuffle">
-                    <span class="icon"><i class="fa-solid fa-shuffle"></i></span>
-                    <span class="title">Shuffle</span>
-                </a>
+                        <span class="icon"><i class="fas fa-exchange-alt"></i></i></span>
+                        <span class="title">Shuffle</span>
+                    </a>
                 </li>
+                <li>
+                  <a href="/users">
+                      <span class="icon"><i class="fas fa-exchange-alt"></i></i></span>
+                      <span class="title">Users</span>
+                  </a>
+              </li>
                 <li>
                     <a href="/business_list">
-                    <span class="icon"><i class="fas fa-money-check"></i></span>
-                    <span class="title">All Deals</span>
-                </a>
+                        <span class="icon"><i class="fas fa-money-check"></i></span>
+                        <span class="title">All Deals</span>
+                    </a>
                 </li>
                 <li>
-                    <a href="/payment">
-                    <span class="icon"><i class="fas fa-coins"></i></span>
-                    <span class="title">Payment</span>
-                </a>
+                    <a href="/paymentss">
+                        <span class="icon"><i class="fas fa-coins"></i></span>
+                        <span class="title">Payment</span>
+                    </a>
                 </li>
                 <li>
                     <a href="/notification">
-                    <span class="icon"><i class="fas fa-bell"></i></span>
-                    <span class="title">Notification</span>
-                </a>
+                        <span class="icon"><i class="fas fa-bell"></i></span>
+                        <span class="title">Notification</span>
+                    </a>
                 </li>
                 <li>
                     <a href="/setting">
-                    <span class="icon"><i class="fas fa-cogs"></i></span>
-                    <span class="title">Settings</span>
-                </a>
+                        <span class="icon"><i class="fas fa-cogs"></i></span>
+                        <span class="title">Settings</span>
+                    </a>
                 </li>
                 <li>
                     <a href="">
-                    <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
-                    <span class="title">Logout</span>
-                </a>
+                        <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+                        <span class="title">Logout</span>
+                    </a>
                 </li>
             </ul>
         </div>
@@ -99,159 +129,164 @@
                     </div>
                   </div>
             </div>
-            <form action="/edit/{{data.id}}" method="post" enctype="multipart/form-data">
-                {%csrf_token%}
-            <div class="main-content">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12 col-md-6 add-business-col-1">
-                         <div class="add-business-image">
-                            <img src="/static/assets/images/hotel-image-addbusiness.jpg" alt="hotel-image">
-                         </div>
-                       
-                            <div class="input">
-                                <div class="inputBox">
-                                  <label for="fname">Category</label>
-                                  <br>
-                                  <div class="d-flex">
-                                      <input type="text" id="cname" name="category" placeholder="CATEGORY" required>
-                                   
-                                  </div>
-                                </div>
-                                <br>
-                                <div class="inputBox">
-                                  <label for="fname">Bank Name</label>
-                                  <br>
-                                  <div class="d-flex">
-                                      <input type="text" id="bankname" name="bank_name" placeholder="CATEGORY" required>
-                                     
-                                  </div>
-                                </div>
-                                <br>
-                                <div class="inputBox">
-                                  <label for="fname">BSB Number</label>
-                                  <br>
-                                  <div class="d-flex">
-                                      <input type="text" id="bsbnumber" name="bsb" placeholder="CATEGORY" required>
-                                    
-                                  </div>
-                                </div>
-                              <!-- </div> -->
-                         </div>
-                        </div>
-                        
-                        <div class="col-12 col-md-6 add-business-col-2">
-                            
-                                  <div class="input">
+            <form action="/update/{{object.id}}" method="POST" enctype="multipart/form-data">
+               
+                    {%csrf_token%}
+                <div class="main-content">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 col-md-6 add-business-col-1">
+                             <div class="add-business-image">
+                                <img src="/static/assets/images/hotel-image-addbusiness.jpg" alt="hotel-image">
+                             </div>
+                           
+                                <div class="input">
                                     <div class="inputBox">
-                                      <label for="fname">Business Name</label>
-                                     <br>
-                                      <div class="d-flex">
-                                          <input type="text" id="bname" name="business_name" placeholder="BUSINESS NAME" required>
-                                         
-                                      </div>
-                                    </div>
-                                    <br>
-                                    <div class="inputBox">
-                                      <label for="fname">Business Description</label>
-                                      <div class="d-flex">
-                                          <input type="text" id="bdescription" name="business_desc" placeholder="BUSINESS DESCRIPTION" required>
-                                         
-                                      </div>
-                                    </div>
-                                    <br>
-                                    <div class="inputBox">
-                                      <label for="fname">Business Address</label>
-                                      <div class="d-flex">
-                                          <input type="text" id="baddress" name="business_address" placeholder="BUSINESS ADDRESS" required>
-                                         
-                                      </div>
-                                    </div>
-                                    <br>
-                                    <div class="inputBox">
-                                      <label for="fname">Business Manager Email</label>
-                                     <br>
-                                      <div class="d-flex">
-                                          <input type="text" id="businessemail" name="email" placeholder="EMAIL" required>
-                                        
-                                      </div>
-                                    </div>
-                                    <br>
-                                    <div class="inputBox">
-                                      <label for="fname">IN Number</label>
-                                     <br>
-                                      <div class="d-flex">
-                                          <input type="text" id="abnnumber" name="In" placeholder="1234" required>
-                                        
-                                      </div>
-                                    </div>
-                                    <br>
-                                    <div class="inputBox">
-                                      <label for="fname">Sub Category</label>
+                                      <label for="fname">Category</label>
                                       <br>
                                       <div class="d-flex">
-                                          <input type="text" id="subcategory" name="subcategory" placeholder="CATEGORY" required>
-                                        
-                                      </div>
-                                    </div>
-                                    <br>
-                                    <div class="inputBox">
-                                      <label for="fname">Account Holder Name</label>
-                                     <br>
-                                      <div class="d-flex">
-                                          <input type="text" id="acname" name="Account_holder" placeholder="ACCOUNT HOLDER NAME" required>
-                                          
-                                      </div>
-                                    </div>
-                                    <br>
-                                    <div class="inputBox">
-                                      <label for="fname">Account Number</label>
-                                     <br>
-                                      <div class="d-flex">
-                                          <input type="text" id="acnumber" name="account_number" placeholder="ACCOUNT NUMBER" required>
-                                        
-                                      </div>
-                                    </div>
-                                    <br>
-                                      <div class="inputBox">
-                                        <label for="fname">Business Contact</label>
-                                        <br>
-                                        <div class="d-flex">
-                                            <input type="text" id="acnumber" name="business_contact" placeholder="" required>
-                                            
-                                        </div>
-                                    </div>
-                                    <br>
-                                      <div class="inputBox">
-                                        <label for="fname">Add Offer</label>
-                                       <br>
-                                        <div class="d-flex">
-                                            <input type="text" id="acnumber" name="add_offer" placeholder="" required>
+                                       
+                                          <select  style="border-radius:12px;width: 8cm;" class="custom-select" name="categories_id">
                                            
-                                        </div>
+                                                                              
+                                            {% for i in cat %}
+                                            <option value="{{object.name}}">{{object.name}}</option>
+    {%endfor%}
+                                        </select>
+                                      </div>
                                     </div>
                                     <br>
+                                    <div class="inputBox">
+                                      <label for="fname">Bank Name</label>
+                                      <br>
+                                      <div class="d-flex">
+                                          <input type="text" id="bankname" name="bank_name" value="{{object.bank_name}}"placeholder="CATEGORY" required>
+                                         
+                                      </div>
+                                    </div>
+                                  
+                                    <br>
+                                    <div class="inputBox">
+                                      <label for="fname">BSB Number</label>
+                                      <br>
+                                      <div class="d-flex">
+                                          <input type="text" id="bsbnumber" name="bsb" value="{{object.bsb}}" placeholder="CATEGORY" required>
+                                        
+                                      </div>
+                                    </div>
+                                  <!-- </div> -->
+                             </div>
+                            </div>
+                            
+                            <div class="col-12 col-md-6 add-business-col-2">
+                                
+                                      <div class="input">
                                         <div class="inputBox">
-                                            <label for="fname">Add Image</label>
+                                          <label for="fname">Business Name</label>
+                                         <br>
+                                          <div class="d-flex">
+                                              <input type="text" id="bname" name="business_name" value="{{object.business_name}}" placeholder="BUSINESS NAME" required>
+                                             
+                                          </div>
+                                        </div>
+                                        <br>
+                                        <div class="inputBox">
+                                          <label for="fname">Business Description</label>
+                                          <div class="d-flex">
+                                              <input type="text" id="bdescription" name="business_desc" value="{{object.business_desc}}" placeholder="BUSINESS DESCRIPTION" required>
+                                             
+                                          </div>
+                                        </div>
+                                   
+                                        <br>
+                                        <div class="inputBox">
+                                          <label for="fname">Business Address</label>
+                                          <div class="d-flex">
+                                              <input type="text" id="baddress" name="business_address" value="{{object.business_address}}" placeholder="BUSINESS ADDRESS" required>
+                                             
+                                          </div>
+                                        </div>
+                                        <br>
+                                        <div class="inputBox">
+                                          <label for="fname">Business Manager Email</label>
+                                         <br>
+                                          <div class="d-flex">
+                                              <input type="text" id="businessemail" name="email" value="{{object.email}}"placeholder="EMAIL" required>
+                                            
+                                          </div>
+                                        </div>
+                                        <br>
+                                        <div class="inputBox">
+                                          <label for="fname">IN Number</label>
+                                         <br>
+                                          <div class="d-flex">
+                                              <input type="text" id="abnnumber" name="In" value="{{object.In}}" placeholder="1234" required>
+                                            
+                                          </div>
+                                        </div>
+                                        <br>
+                                      
+                                        </div>
+                                      
+                                        <div class="inputBox">
+                                          <label for="fname">Account Holder Name</label>
+                                         <br>
+                                          <div class="d-flex">
+                                              <input type="text" id="acname" name="Account_holder" value="{{object.Account_holder}}"placeholder="ACCOUNT HOLDER NAME" required>
+                                              
+                                          </div>
+                                        </div>
+                                        <br>
+                                        <div class="inputBox">
+                                          <label for="fname">Account Number</label>
+                                         <br>
+                                          <div class="d-flex">
+                                              <input type="text" id="acnumber" name="account_number" value="{{object.account_number}}" placeholder="ACCOUNT NUMBER" required>
+                                            
+                                          </div>
+                                        </div>
+                                        <br>
+                                          <div class="inputBox">
+                                            <label for="fname">Business Contact</label>
                                             <br>
                                             <div class="d-flex">
-                                                <input type="file" id="acnumber" name="image1"  required>
-                                              
+                                                <input type="text" id="acnumber" name="business_contact" value="{{object.business_contact}}" placeholder="" required>
+                                                
                                             </div>
                                         </div>
+                                        <br>
+                                          <div class="inputBox">
+                                            <label for="fname">Add Offer</label>
+                                           <br>
+                                            <div class="d-flex">
+                                                <input type="text" id="acnumber" name="add_offer" value="{{object.add_offer}}" placeholder="" required>
+                                               
+                                            </div>
+                                        </div>
+                                        <br>
+                                            <div class="inputBox">
+                                                <label for="fname">Add Image</label>
+                                                <br>
+                                                <div class="d-flex">
+                                                    <input type="file" id="acnumber" name="image1" value="{{object.image1.url}}"  required>
+                                                  
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+                                        <br>
+                                      <div class="inputBox">
+                                        <input type="submit" name="addbusiness" value="Add Business"> 
                                     </div>
-                                    <br>
-                                  <div class="inputBox">
-                                    <input type="submit" name="addbusiness" value="Add Business"> 
                                 </div>
+                          
                             </div>
-                      
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </form>
+        </form>
+    
 
 
 <!-- Scripts -->

@@ -4,16 +4,18 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 from django.http.request import HttpRequest
-from serializers import business_detailsSerializer,ProfileSerializer, categorySerializer,transSerializer
-from ..models import business_details, category
+from requests.models import Response
+import random
+from serializers import UserSerializer, business_detailsSerializer, categorySerializer, paymentSerializer,transSerializer
+from ..models import business_details, category,roles
 from rest_framework import status
 from django.http import response
 from ..send_otp import send_otp
 from django.shortcuts import render
 import requests
 import json
-from qr_code.qrcode.utils import QRCodeOptions
-
+from rest_framework import generics
+from rest_framework.views import APIView
 from requests.auth import HTTPBasicAuth
 from django.shortcuts import (get_object_or_404,
                               render,
@@ -24,10 +26,10 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.forms.utils import ErrorList
 from django.http import HttpResponse
-from ..forms import LoginForm, SignUpForm
+from ..forms import LoginForm, rolesForm
 from authentication.models import mobile
-from authentication.models import business_details
-from authentication.forms import MobileLoginForm, BusinessForm, categoryForm
+from authentication.models import business_details,Employee
+from authentication.forms import MobileLoginForm, BusinessForm, categoryForm,paymentForm
 from ..forms import business_detailsForm
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
@@ -67,288 +69,11 @@ from authentication.models import Transactions
 
 # Create your views here.
 
-def my_recommendations_view(request):
-    user = request.user.is_authenticated
-    profile = Profile.objects.filter(user=request.user)
-    
-    context = {'profile': profile}
-    return render(request, 'profiles/main.html', context)
-def signup_view(request):
-    profile_id = request.session.get('ref_profile')
-    print('profile_id', profile_id)
-    form = UserCreationForm(request.POST or None)
-    if form.is_valid():
-        if profile_id is not None:
-            recommended_by_profile = Profile.objects.get(id=profile_id)
-
-            instance = form.save()
-            registered_user = User.objects.get(id=instance.id)
-            registered_profile = Profile.objects.get(user=registered_user)
-            registered_profile.recommended_by = recommended_by_profile.user
-            registered_profile.save()
-        else:
-            form.save()
-        username = form.cleaned_data.get('username')
-        password = form.cleaned_data.get('password1')
-        user = authenticate(username=username, password=password)
-        login(request, user)
-        return redirect('main-view')
-    context = {'form':form}
-    return render(request, 'sign.html', context)
-
-def main_view(request, *args, **kwargs):
-    code = str(kwargs.get('ref_code'))
-    try:
-        profile = Profile.objects.get(code=code)
-        request.session['ref_profile'] = profile.id
-        print('id', profile.id)
-    except:
-        pass
-    print(request.session.get_expiry_age())
-    return render(request, 'main.html', {})
 
 
 
-# def qr(request):
-#     currency = 'INR'
-#     amount = 20000  # Rs. 200
-
-#     # Create a Razorpay Order
-#     razorpay_order = razorpay_client.order.create(dict(amount=amount,
-#                                                        currency=currency,
-#                                                        payment_capture='0'))
-
-#     # order id of newly created order.
-#     razorpay_order_id = razorpay_order['id']
-#     callback_url = 'paymenthandler/'
-
-#     # we need to pass these details to frontend.
-#     context = {}
-#     context['razorpay_order_id'] = razorpay_order_id
-#     context['razorpay_merchant_key'] = settings.RAZOR_KEY_ID
-#     context['razorpay_amount'] = amount
-#     context['currency'] = currency
-#     context['callback_url'] = callback_url
-
-#     return render(request, 'index.html', context=context)
 
 
-# we need to csrf_exempt this url as
-# POST request will be made by Razorpay
-# and it won't have the csrf token.
-# @csrf_exempt
-# def paymenthandler(request):
-
-#     # only accept POST request.
-#     if request.method == "POST":
-#         try:
-
-#             # get the required parameters from post request.
-#             payment_id = request.POST.get('razorpay_payment_id', '')
-#             razorpay_order_id = request.POST.get('razorpay_order_id', '')
-#             signature = request.POST.get('razorpay_signature', '')
-#             params_dict = {
-#                 'razorpay_order_id': razorpay_order_id,
-#                 'razorpay_payment_id': payment_id,
-#                 'razorpay_signature': signature
-#             }
-
-#             # verify the payment signature.
-#             result = razorpay_client.utility.verify_payment_signature(
-#                 params_dict)
-#             if result is None:
-#                 amount = 20000  # Rs. 200
-#                 try:
-
-#                     # capture the payemt
-#                     razorpay_client.payment.capture(payment_id, amount)
-
-#                     # render success page on successful caputre of payment
-#                     return render(request, 'paymentsuccess.html')
-#                 except:
-
-#                     # if there is an error while capturing payment.
-#                     return render(request, 'paymentfail.html')
-#             else:
-
-#                 # if signature verification fails.
-#                 return render(request, 'paymentfail.html')
-#         except:
-
-#             # if we don't find the required parameters in POST data
-#             return HttpResponseBadRequest()
-#     else:
-#        # if other than POST request is made.
-#         return HttpResponseBadRequest()
-
-
-class HomepageView(TemplateView):
-    template_name = 'api.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(HomepageView, self).get_context_data(**kwargs)
-        bills = Bill.my_query.get_queryset().unpaid()[:10]
-        payrolls = Payroll.my_query.get_queryset().unpaid()[:10]
-        expenses = GenericExpense.my_query.get_queryset().unpaid()[:10]
-        context.update({'bills': bills,
-                        'payroll': payrolls,
-                        'expenses': expenses
-                        })
-        return context
-
-
-class BillListView(ListView):
-    model = Bill
-    template_name = 'page_list.html'
-    paginate_by = 100
-
-    def get_queryset(self):
-        queryset = Bill.objects.all()
-        queryset = Bill.filters_data(self.request, queryset)
-        return queryset
-
-    def get_context_data(self, **kwargs):
-        context = super(BillListView, self).get_context_data(**kwargs)
-        page_title = 'Bills List'
-        categories = BillCategory.objects.all()
-        search_name, cate_name, paid_name = [self.request.GET.get('search_name', None),
-                                             self.request.GET.getlist(
-                                                 'cate_name', None),
-                                             self.request.GET.getlist(
-                                                 'paid_name', None)
-                                             ]
-        total_value, paid_value, diff, category_analysis = Bill.analysis(
-            self.object_list)
-        currency = CURRENCY
-        context.update(locals())
-        return context
-
-
-class PayrollListView(ListView):
-    model = Payroll
-    template_name = 'page_list.html'
-    paginate_by = 100
-
-    def get_queryset(self):
-        queryset = Payroll.objects.all()
-        queryset = Payroll.filters_data(self.request, queryset)
-        return queryset
-
-    def get_context_data(self, **kwargs):
-        context = super(PayrollListView, self).get_context_data(**kwargs)
-        page_title = 'Payroll List'
-        categories = PayrollCategory.objects.all()
-        persons = Person.objects.all()
-        search_name, cate_name, paid_name, person_name = [self.request.GET.get('search_name', None),
-                                                          self.request.GET.getlist(
-                                                              'cate_name', None),
-                                                          self.request.GET.getlist(
-                                                              'paid_name', None),
-                                                          self.request.GET.getlist(
-                                                              'person_name', None)
-                                                          ]
-        total_value, paid_value, diff, category_analysis = Payroll.analysis(
-            self.object_list)
-        currency = CURRENCY
-        context.update(locals())
-        return context
-
-
-class ExpensesListView(ListView):
-    model = GenericExpense
-    template_name = 'page_list.html'
-    paginate_by = 100
-
-    def get_queryset(self):
-        queryset = GenericExpense.objects.all()
-        queryset = GenericExpense.filters_data(self.request, queryset)
-        return queryset
-
-    def get_context_data(self, **kwargs):
-        context = super(ExpensesListView, self).get_context_data(**kwargs)
-        page_title = 'Expenses List'
-        categories = GenericExpenseCategory.objects.all()
-        search_name, cate_name, paid_name = [self.request.GET.get('search_name', None),
-                                             self.request.GET.getlist(
-                                                 'cate_name', None),
-                                             self.request.GET.getlist(
-                                                 'paid_name')
-                                             ]
-        total_value, paid_value, diff, category_analysis = GenericExpense.analysis(
-            self.object_list)
-        currency = CURRENCY
-        context.update(locals())
-        return context
-
-
-def report_view(request):
-    startDate = request.GET.get('startDate', '2018-01-01')
-    endDate = request.GET.get('endDate', '2018-12-31')
-    if startDate > endDate:
-        startDate, endDate = '2018-01-01', '2018-12-31'
-    date_start = datetime.datetime.strptime(startDate, '%Y-%m-%d').date()
-    date_end = datetime.datetime.strptime(endDate, '%Y-%m-%d').date()
-    bills = Bill.my_query.get_queryset().filter_by_date(date_start, date_end)
-    payrolls = Payroll.my_query.get_queryset().filter_by_date(date_start, date_end)
-    expenses = GenericExpense.my_query.get_queryset().filter_by_date(date_start, date_end)
-    queryset = sorted(chain(bills, payrolls, expenses),
-                      key=lambda instance: instance.date_expired
-                      )
-    bill_total_value, bill_paid_value, bill_diff, bill_category_analysis = DefaultExpenseModel.analysis(
-        bills)
-    payroll_total_value, payroll_paid_value, payroll_diff, bill_category_analysis = DefaultExpenseModel.analysis(
-        payrolls)
-    expense_total_value, expense_paid_value, expense_diff, expense_category_analysis = DefaultExpenseModel.analysis(
-        expenses)
-
-    bill_by_month, payroll_by_month, expenses_by_month, totals_by_month = [], [], [], []
-    months_list = []
-    while date_start < date_end:
-        months_list.append(date_start)
-
-    for date in months_list:
-        start = date.replace(day=1)
-        next_month = date.replace(day=28) + datetime.timedelta(days=4)
-        days = int(str(next_month).split('-')[-1])
-        end = next_month - datetime.timedelta(days=days)
-        print(next_month, end)
-        this_month_bill_queryset = bills.filter(
-            date_expired__range=[start, end])
-        this_month_bills = DefaultExpenseModel.analysis(
-            this_month_bill_queryset)
-        this_month_payroll_queryset = payrolls.filter(
-            date_expired__range=[start, end])
-        this_month_payroll = DefaultExpenseModel.analysis(
-            this_month_payroll_queryset)
-        this_month_expense_queryset = expenses.filter(
-            date_expired__range=[start, end])
-        this_month_expense = DefaultExpenseModel.analysis(
-            this_month_expense_queryset)
-        bill_by_month.append(this_month_bills)
-        payroll_by_month.append(this_month_expense)
-        expenses_by_month.append(this_month_payroll)
-        totals_by_month.append([this_month_bills[0]+this_month_expense[0] + this_month_payroll[0],
-                                this_month_bills[1] + this_month_expense[1] +
-                                this_month_payroll[1],
-                                this_month_bills[2] +
-                                this_month_expense[2] + this_month_payroll[2]
-                                ])
-
-    totals = [payroll_total_value + bill_total_value + expense_total_value,
-              bill_paid_value + payroll_paid_value + expense_paid_value,
-              bill_diff + payroll_diff + expense_diff
-              ]
-    currency = CURRENCY
-    context = locals()
-    return render(request, 'report.html', context=context)
-
-
-@api_view(["GET"])
-@csrf_exempt
-@permission_classes([IsAuthenticated])
-def welcome(request):
-    content = {"message": "Welcome to the BookStore!"}
-    return JsonResponse(content)
 
 
 @api_view(["GET"])
@@ -364,64 +89,72 @@ def apis(request):
 
 @api_view(["GET"])
 @csrf_exempt
-# Create your views here.
 def trans(request):
-    transact=Transactions.objects.all()
-    serializer = transSerializer(transact, many=True)
-    return JsonResponse({'transact': serializer.data}, safe=False, status=status.HTTP_200_OK)
+    business_id = request.GET.get('business_id', None)
+    if business_id is not None:
+        business_payments = payments.objects.filter(
+                business_id=business_id
+            ).select_related('business').only(
+                'id',
+                'amount',
+                'business_id',
+                'business__business_name', 
+            )
+            
+        details = []
+
+        for payment in business_payments:
+            details.append({
+                'id': payment.id,
+                'amount': payment.amount,
+                'business_id': payment.business_id,
+                'business_name':payment.business.business_name,
+            })
+        
+        return JsonResponse(details, safe=False)   
+
+    return JsonResponse({'error' : 'Bad request. Need `business_id`'}, status=400)     
+@api_view(["GET"])
+@csrf_exempt
+def transact(request):   
    
+    business_payments = payments.objects.all().select_related('business').only(
+                    'id',
+                    'amount',
+                    'business_id',
+                    'business__business_name', 
+                    'business__categories__name',
+                )
+            
+    details = []
 
+    for payment in business_payments:
+            details.append({
+                'id': payment.id,
+                'amount': payment.amount,
+                'business_id': payment.business_id,
+                'business':payment.business.business_name,
+                'categories':payment.business.categories.name,
+            })
+        
+    return JsonResponse(details, safe=False)   
 
-# Create your views here.
-
-
+         
 def index(request):
-    try:
-        users = User.objects.all()
-        print(request.user)
-        user = User.objects.get(username=request.user)
-        return render(request, 'index.html', {'users': users, 'user': user})
-    except Exception as e:
-        print(e)
-        return HttpResponse("Please login from admin site for sending messages from this view")
+    # try:
+    #     users = User.objects.all()
+    #     print(request.user)
+    #     user = User.objects.get(username=request.user)
+        return render(request, 'index.html')
+    # except Exception as e:
+    #     print(e)
+    #     return HttpResponse("Please login from admin site for sending messages from this view")
 
 
 def transactions(request):
-    transact=Transactions.objects.all()
-    transactions = Transactions.objects.filter().order_by('-price')
-
-    count = len(transactions)
-    total = 0
-    shares = []
-    factor = sum(range(count+1))
-    
-    for i, item in enumerate(transactions, start=1):
-        total += int(item.price)
-        shares.append({
-            "sl": i,
-            "order": count,
-            "share": int(item.price),
-            "id": item.id,
-            "name": "customer_{item.id}",
-            "to_give": 0,
-            "multiplier": 0,
-            "factor": factor,
-        })
-        count -= 1
-
-    multiplier = (total * 0.5)/factor
-
-    give_back = []
-    for item in shares:
-        item['to_give'] = item['order'] * multiplier
-        item['multiplier'] = multiplier
-        give_back.append(item)
-
-   
+    transact=payments.objects.all()
     return render(request, 'transactions.html', {
-        'transact': transact,
-        'give_back': give_back
-    })
+         'transact': transact})
 def shuffle(request):
     transact=Transactions.objects.all()
     transactions = Transactions.objects.filter().order_by('-price')
@@ -462,15 +195,46 @@ def shuffle(request):
 
 def business_list(request):
     movies = business_details.objects.all()
-    return render(request, 'business_details.html',{"movies":movies})
+    cat = category.objects.all()
+    return render(request, 'business_details.html',{"movies":movies,"cat":cat})
 
 
-def payment(request):
-    transact=Transactions.objects.all()
-    item=Transactions.objects.filter(price='price')
-    a= (200*15/100)
-    b =a
-    return render(request, 'payment.html',{'transact':transact,'b':b})
+def paymentss(request):
+    
+    if request.method=="POST":
+        form = paymentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect("/payment")
+    else:
+        form = paymentForm()
+    return render(request,'payments.html',{"form":form})
+    
+def payment(request,id):
+    payment = payments.objects.filter(business_id=id).first()
+    
+    users = User.objects.all()
+
+    # print (business.payments)
+    
+    return render(request, "payment.html", {
+        "payment": payment,
+        "users": users
+    })
+@api_view(["GET"])
+@csrf_exempt
+def business_pay(request,id):
+    payment = payments.objects.filter(business_id=id)
+    
+    users = User.objects.all()
+
+    
+    return JsonResponse({
+        "payments" : paymentSerializer(payment,many=True).data,
+         "users": UserSerializer(users,many=True).data,
+    })
+    
+       
     
     
 def notification(request):
@@ -483,55 +247,12 @@ def setting(request):
 
 def pay(request):
     return render(request, 'pay.html')
-
-
-def api(request):
-    restraunt_objs = Restraunt.objects.all()
-
-    pincode = request.GET.get('pincode')
-    km = request.GET.get('km')
-    user_lat = None
-    user_long = None
-
-    if pincode:
-        geolocator = Nominatim(user_agent="geoapiExercises")
-        location = geolocator.geocode(int(pincode))
-        user_lat = location.latitude
-        user_long = location.longitude
-
-    payload = []
-    for restraunt_obj in restraunt_objs:
-        result = {}
-        result['name'] = restraunt_obj.name
-        result['image'] = restraunt_obj.image
-        result['description'] = restraunt_obj.description
-        result['pincode'] = restraunt_obj.pincode
-        if pincode:
-            first = (float(user_lat), float(user_long))
-            second = (float(restraunt_obj.lat), float(restraunt_obj.lon))
-            result['distance'] = int(great_circle(first, second).miles)
-
-        payload.append(result)
-
-        if km:
-            if result['distance'] > int(km):
-                payload.pop()
-
-    return JsonResponse(payload, safe=False)
-
-
 def get_books(request):
     business_detail = request.user.id
     business_detail = business_details.objects.all()
     serializer = business_detailsSerializer(business_detail, many=True)
     return JsonResponse({'business_details': serializer.data}, safe=False, status=status.HTTP_200_OK)
-@api_view(["GET"])
-@csrf_exempt
-def profile(request):
-    profile = request.user.id
-    profile = Profile.objects.all()
-    serializer = ProfileSerializer(profile, many=True)
-    return JsonResponse({'profile': serializer.data}, safe=False, status=status.HTTP_200_OK)
+
 @api_view(["GET"])
 @csrf_exempt
 def show_category(request):
@@ -539,59 +260,99 @@ def show_category(request):
     cs = category.objects.all()
     serializer = categorySerializer(cs, many=True)
     return JsonResponse({'category': serializer.data}, safe=False, status=status.HTTP_200_OK)
+@api_view(["GET"])
+@csrf_exempt
+def show_business(request):
+    
+    cs = business_details.objects.all()
+    serializer =business_detailsSerializer(cs, many=True)
+    return JsonResponse({"cs":serializer.data}, safe=False, status=status.HTTP_200_OK)
 
+class paysection(APIView):
+    serializer_class = paymentSerializer
+    
+    def post(self,request):
+        Serializer = paymentSerializer(data=request.data)
+        if Serializer.is_valid():
+            Serializer.save()
+            return JsonResponse(Serializer.data)
 
+        return Response(Serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 def categories(request):
-    if request.method == "POST":
-        cs = categoryForm(request.POST, request.FILES)
-
-        if cs.is_valid():
-            cs.save()
-            messages.success(request, ('Your movie was successfully added!'))
-        else:
-            messages.error(request, 'Error saving form')
-            return redirect("category")
-    cs = categoryForm()
-    # movies = business_details.objects.all()
-    context = {"cs": cs}
-    return render(request, "category.html", context)
+    cat = category.objects.all() 
+    return render(request,'categories.html',{"cat":cat})
 
 
 def Home(request):
     if request.method == "POST":
-        category = request.POST.get('category'),
-        bank_name = request.POST.get('bank_name'),
-        bsb = request.POST.get('bsb'),
-        business_name = request.POST.get('business_name'),
-        business_desc = request.POST.get('business_desc'),
-        business_address = request.POST.get('business_address'),
-        email = request.POST.get('email'),
-        In = request.POST.get('In'),
-        subcategory = request.POST.get('subcategory'),
-        Account_holder = request.POST.get('Account_holder'),
-        account_number = request.POST.get('account_number'),
-        business_contact = request.POST.get('business_contact'),
-        image1 = request.FILES.get('image1'),
-        add_offer = request.POST.get('add_offer')
-        obj = business_details(category=request.POST['category'],
-                               bank_name=request.POST['bank_name'],
-                               bsb=request.POST['bsb'],
-                               business_name=request.POST['business_name'],
-                               business_desc=request.POST['business_desc'],
-                               business_address=request.POST['business_address'],
-                               email=request.POST['email'],
-                               In=request.POST['In'],
-                               subcategory=request.POST['subcategory'],
-                               Account_holder=request.POST['Account_holder'],
-                               account_number=request.POST['account_number'],
-                               business_contact=request.POST['business_contact'],
-                               image1=request.FILES['image1'],
-                               add_offer=request.POST['add_offer'],
-                               )
+        categories_id= request.POST.get('categories_id')
+        bank_name = request.POST.get('bank_name')
+       
+        business_name = request.POST.get('business_name')
+        business_desc = request.POST.get('business_desc')
+        business_address = request.POST.get('business_address')
+        email = request.POST.get('email')
+        IFSC_code = request.POST.get('IFSC_code')
+        irich=request.POST.get('irich')
+        business_code =request.POST.get('business_code')
+        Account_details=request.POST.get('Account_details')
+        account_number = request.POST.get('account_number')
+        business_contact = request.POST.get('business_contact')
+        image1 = request.FILES.get('image1')
+        
+        categories= category.objects.filter(id=categories_id).first()
+        business_code =request.POST.get('business_code')
+        business_code=categories.name[0:3] + business_name[0:3] +str(random.randint(100,200))
+        obj = business_details(
+            categories_id=categories_id,
+            bank_name=bank_name,
+            IFSC_code=IFSC_code,
+            business_name=business_name,
+            business_desc=business_desc,
+            business_address=business_address,
+            email=email,
+            Account_details=Account_details,
+            business_code=business_code.upper(),
+            irich=irich,
+            account_number=account_number,
+            business_contact=business_contact,
+            image1=image1,
+            
+        )
+       
         obj.save()
-    # return redirect('/home')
-    return render(request, "business.html")
+    cat = category.objects.all() 
+      
+    return render(request,'business.html',{"cat":cat})
+    
+    
+@api_view(["GET"]) 
+def Categoryapi(request):
+    categories=category.objects.all()
+    serializer = categorySerializer(categories, many=True)
+    return JsonResponse({"categories":serializer.data}, safe=False, status=status.HTTP_200_OK)
 
+def Category(request):
+    if request.method=="POST":
+        form = categoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect("/category")
+    else:
+        form = categoryForm()
+    return render(request,'category.html',{"form":form})
+def role(request):
+    if request.method=="POST":
+        form = rolesForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect("/showrole")
+    else:
+        form = rolesForm()
+    return render(request,'roles.html',{"form":form})   
+def showrole(request):
+    roleshow=roles.objects.all()
+    return render(request,'role.html',{"roleshow":roleshow})
 
 def percentage(part, whole):
     return 100 * float(part)/float(whole)
@@ -601,79 +362,150 @@ def percentage(part, whole):
     print('{:.2f}'.format(percentage(5, 7)))
     return render(request, "tables.html")
 
+@api_view(["GET"])
+def business(request):
+    if request.GET.get('category_id',False):
+        category_id= request.GET.get('category_id',False)
+        movies=business_details.objects.filter(categories_id=category_id)
+    else:
+         movies=business_details.objects.all()
+
+    serializer =  business_detailsSerializer(movies, many=True)
+    return JsonResponse({"movies":serializer.data}, safe=False, status=status.HTTP_200_OK)
 
 def tablelist(request):
-    movies = business_details.objects.all()
-    codes = Transactions.objects.all()
-    
-    context = {"movie": movies, "codes": codes, "host": 'http://13.232.49.240:8000'}
+    if request.GET.get('category_id',False):
+        category_id= request.GET.get('category_id',False)
+        movies=business_details.objects.filter(categories_id=category_id)
+    else:
 
+     movies = business_details.objects.all()
+    codes = Transactions.objects.all()
+    cat=category.objects.all()
+    context = {"movie": movies,"cat":cat, "codes": codes, "host": 'http://13.232.49.240:8000'}
+    
 
     return render(request, "tables.html", context)
 
 
-def login_view(request):
-    form = LoginForm(request.POST or None)
-
-    msg = None
-
-    if request.method == "POST":
-
-        if form.is_valid():
-            username = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password")
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect("/")
-            else:
-                msg = 'Invalid credentials'
+def signin(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password= request.POST.get('password')
+        
+        user = User.objects.filter(username=username,password=password).first()
+        
+        if user is not None:
+           
+            messages.success(request, "Logged In Sucessfully!!")
+            return redirect('/home')
         else:
-            msg = 'Error validating the form'
+            messages.error(request, "Bad Credentials!!")
+            return redirect('home')
+    
+    return render(request, "accounts/login.html")
 
-    return render(request, "accounts/login.html", {"form": form, "msg": msg})
-
+def users(request):
+    user=User.objects.all()
+    employee=Employee.objects.all()
+    role=roles.objects.all()
+    return render(request,"users.html",{"user":user,"employee":employee,"role":role})
 
 def register_user(request):
-
-    if request.method=="POST":
-        fm = SignUpForm(request.POST)
-        if fm.is_valid():
-            fm.save()
-            return HttpResponseRedirect("login/")
-    else:
-        fm = SignUpForm()
-    return render(request,'accounts/register.html',{"fm":fm})
-def edit(request,id):
-    business = get_object_or_404(business_details, pk=id)
-    # business = Company.objects.get(id = id)
-
-    if request.method == 'POST':
-        form = business_detailsForm(request.POST, request.FILES, instance=business)
-        if form.is_valid():
-            form.save()
-            return redirect('tables.html')
-            # return redirect('/')
-    else:
-        form = business_detailsForm(instance = business)
-
-    return render(request,'edit.html')
-def update(request,id):
-        cust = business_details.objects.get(id=id)
-        cust.category = request.POST.get('category'),
-        cust.bank_name = request.POST.get('bank_name'),
-        cust.bsb = request.POST.get('bsb'),
-        cust.business_name = request.POST.get('business_name'),
-        cust.business_desc = request.POST.get('business_desc'),
-        cust.business_address = request.POST.get('business_address'),
-        cust.email = request.POST.get('email'),
-        cust.In = request.POST.get('In'),
-        cust.subcategory = request.POST.get('subcategory'),
-        cust.Account_holder = request.POST.get('Account_holder'),
-        cust.account_number = request.POST.get('account_number'),
-        cust.business_contact = request.POST.get('business_contact'),
-        cust.image1 = request.FILES.get('image1'),
-        cust.add_offer = request.POST.get('add_offer')
-        cust.save()
+    if request.method == "POST":
+        username = request.POST.get('username')
+        is_staff = 1
+        is_active = 1
+        is_superuser = False
+        first_name=request.POST.get('first_name')
+        last_name=request.POST.get('last_name')
+        email=request.POST.get('email')
+        password=request.POST.get('password')
+        date_joined= datetime.date.today()
+        user = User.objects.create(
+            username = username,
+            is_staff = is_staff,
+            is_active =is_active,
+            is_superuser = is_superuser,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=password,
+            date_joined=date_joined
+        )
     
-        return render(request, 'business_details.html')
+        phone = request.POST.get('phone')
+        referral_code = request.POST.get('referral_code')
+        postcode = request.POST.get('postcode')
+        
+        referral=random.randint(100,200)
+       
+        obj=Employee(
+            user_id=user.id,
+            phone = phone,
+            referral_code = referral_code,
+            postcode = postcode,   
+            referral=referral,
+        )
+        obj.save()
+
+      
+    return render(request,'accounts/register.html')
+    
+def edit(request,id):
+   
+    object=business_details.objects.get(id=id)
+    return render(request,'edit.html',{'object':object})
+def useredit(request,id):
+   
+    object=Employee.objects.get(id=id)
+    return render(request,'useredit.html',{'object':object})
+def categoryedit(request,id):
+   
+    object=category.objects.get(id=id)
+    return render(request,'categoryedit.html',{'object':object})
+def roledit(request,id):
+   
+    object=roles.objects.get(id=id)
+    return render(request,'roleedit.html',{'object':object})
+def userupdate(request,id):
+       object=User.objects.get(id=id)
+       form=UserCreationForm(request.POST,instance=object)
+       if form.is_valid:
+        form.save()
+        object=Employee.objects.all()
+        return redirect('/users')
+    
+def update(request,id):
+       object=business_details.objects.get(id=id)
+       form=business_detailsForm(request.POST,instance=object)
+       if form.is_valid:
+        form.save()
+        object=business_details.objects.all()
+        return redirect('/categories')
+def categoryupdate(request,id):
+       object=category.objects.get(id=id)
+       form=categoryForm(request.POST,instance=object)
+       if form.is_valid:
+        form.save()
+        object=category.objects.all()
+        return redirect('/categories')
+def roleupdate(request,id):
+       object=roles.objects.get(id=id)
+       form=rolesForm(request.POST,instance=object)
+       if form.is_valid:
+        form.save()
+        object=roles.objects.all()
+        return redirect('/showrole')
+def delete(request,id):   
+        business_details.objects.filter(id=id).delete()
+        return redirect('/categories')
+def userdelete(request,id):   
+        Employee.objects.filter(id=id).delete()
+        return redirect('/users')
+def categorydelete(request,id):   
+        category.objects.filter(id=id).delete()
+        return redirect('/categories')
+def roledelete(request,id):   
+        roles.objects.filter(id=id).delete()
+        return redirect('/showrole')

@@ -22,6 +22,7 @@ def create_checkout_session(request):
     unit_price = 200
     quantity = 1
     session = stripe.checkout.Session.create(
+        customer_email='customer@example.com',
         line_items=[{
             'price_data': {
                 'currency': 'usd',
@@ -41,7 +42,7 @@ def create_checkout_session(request):
         price = (unit_price * quantity),
         session_id = session.id,
         status='pending',
-        Customer='Customer',
+        
     ).save()
 
     return redirect(session.url, code=303)

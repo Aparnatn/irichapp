@@ -30,53 +30,73 @@
 
             </div>
             <ul>
+               
+                <li>
+                  <a href="/categories">
+                      <span class="icon"><i class="fas fa-business-time"></i></span>
+                      <span class="title">Categories</span>
+                  </a>
+              </li>
                 <li>
                     <a href="/list">
-                    <span class="icon"><i class="fas fa-business-time"></i></span>
-                    <span class="title">My Business</span>
-                </a>
+                        <span class="icon"><i class="fas fa-business-time"></i></span>
+                        <span class="title">My Business</span>
+                    </a>
                 </li>
                 <li>
                     <a href="/transactions">
-                    <span class="icon"><i class="fas fa-exchange-alt"></i></span>
-                    <span class="title">Transactions</span>
-                </a>
+                        <span class="icon"><i class="fas fa-exchange-alt"></i></span>
+                        <span class="title">Transactions</span>
+                    </a>
                 </li>
+               
+              <li>
+                <a href="/showrole">
+                    <span class="icon"><i class="fas fa-exchange-alt"></i></span>
+                    <span class="title"> Roles</span>
+                </a>
+            </li>
                 <li>
                     <a href="/shuffle">
-                    <span class="icon"><i class="fa-solid fa-shuffle"></i></span>
-                    <span class="title">Shuffle</span>
-                </a>
+                        <span class="icon"><i class="fas fa-exchange-alt"></i></i></span>
+                        <span class="title">Shuffle</span>
+                    </a>
                 </li>
+                <li>
+                  <a href="/users">
+                      <span class="icon"><i class="fas fa-exchange-alt"></i></i></span>
+                      <span class="title">Users</span>
+                  </a>
+              </li>
                 <li>
                     <a href="/business_list">
-                    <span class="icon"><i class="fas fa-money-check"></i></span>
-                    <span class="title">All Deals</span>
-                </a>
+                        <span class="icon"><i class="fas fa-money-check"></i></span>
+                        <span class="title">All Deals</span>
+                    </a>
                 </li>
                 <li>
-                    <a href="/payment">
-                    <span class="icon"><i class="fas fa-coins"></i></span>
-                    <span class="title">Payment</span>
-                </a>
+                    <a href="/paymentss">
+                        <span class="icon"><i class="fas fa-coins"></i></span>
+                        <span class="title">Payment</span>
+                    </a>
                 </li>
                 <li>
                     <a href="/notification">
-                    <span class="icon"><i class="fas fa-bell"></i></span>
-                    <span class="title">Notification</span>
-                </a>
+                        <span class="icon"><i class="fas fa-bell"></i></span>
+                        <span class="title">Notification</span>
+                    </a>
                 </li>
                 <li>
                     <a href="/setting">
-                    <span class="icon"><i class="fas fa-cogs"></i></span>
-                    <span class="title">Settings</span>
-                </a>
+                        <span class="icon"><i class="fas fa-cogs"></i></span>
+                        <span class="title">Settings</span>
+                    </a>
                 </li>
                 <li>
                     <a href="">
-                    <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
-                    <span class="title">Logout</span>
-                </a>
+                        <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+                        <span class="title">Logout</span>
+                    </a>
                 </li>
             </ul>
         </div>
@@ -114,8 +134,14 @@
                                   <label for="fname">Category</label>
                                   <br>
                                   <div class="d-flex">
-                                      <input type="text" id="cname" name="category" placeholder="CATEGORY" required>
                                    
+                                      <select  style="border-radius:12px;width: 8cm;" class="custom-select" name="categories_id">
+                                       
+                                                                          
+                                        {% for i in cat %}
+                                        <option value="{{i.id}}">{{i.name}}</option>
+{%endfor%}
+                                    </select>
                                   </div>
                                 </div>
                                 <br>
@@ -123,21 +149,53 @@
                                   <label for="fname">Bank Name</label>
                                   <br>
                                   <div class="d-flex">
-                                      <input type="text" id="bankname" name="bank_name" placeholder="CATEGORY" required>
+                                      <input type="text" id="bankname" name="bank_name" placeholder="Bank Name" required>
                                      
                                   </div>
                                 </div>
+                              
                                 <br>
                                 <div class="inputBox">
-                                  <label for="fname">BSB Number</label>
+                                  <label for="fname">IFSC code</label>
                                   <br>
                                   <div class="d-flex">
-                                      <input type="text" id="bsbnumber" name="bsb" placeholder="CATEGORY" required>
+                                      <input type="text" id="bsbnumber" name="IFSC_code" placeholder="IFSC_code" required>
                                     
                                   </div>
                                 </div>
                               <!-- </div> -->
                          </div>
+                         <div class="input">
+                            <div class="inputBox">
+                              <label for="fname">Sub Category</label>
+                              <br>
+                              <div class="d-flex">
+                               
+                                <input type="text" id="bankname" name="subcategory" placeholder="CATEGORY" required>
+                              </div>
+                            </div>
+                            <br>
+                            <div class="inputBox">
+                              <label for="fname">Account Details</label>
+                              <br>
+                              <div class="d-flex">
+                                  <input type="text" id="bankname" name="Account_details" placeholder="Account_details" required>
+                                 
+                              </div>
+                            </div>
+                            <div class="inputBox">
+                                <label for="fname">Email</label>
+                                <br>
+                                <div class="d-flex">
+                                    <input type="text" id="bankname" name="email" placeholder="email" required>
+                                   
+                                </div>
+                              </div>
+                          
+                            <br>
+                           
+                          <!-- </div> -->
+                     </div>
                         </div>
                         
                         <div class="col-12 col-md-6 add-business-col-2">
@@ -159,6 +217,7 @@
                                          
                                       </div>
                                     </div>
+                               
                                     <br>
                                     <div class="inputBox">
                                       <label for="fname">Business Address</label>
@@ -167,42 +226,13 @@
                                          
                                       </div>
                                     </div>
+
+                                 
                                     <br>
-                                    <div class="inputBox">
-                                      <label for="fname">Business Manager Email</label>
-                                     <br>
-                                      <div class="d-flex">
-                                          <input type="text" id="businessemail" name="email" placeholder="EMAIL" required>
-                                        
-                                      </div>
+                                  
                                     </div>
-                                    <br>
-                                    <div class="inputBox">
-                                      <label for="fname">IN Number</label>
-                                     <br>
-                                      <div class="d-flex">
-                                          <input type="text" id="abnnumber" name="In" placeholder="1234" required>
-                                        
-                                      </div>
-                                    </div>
-                                    <br>
-                                    <div class="inputBox">
-                                      <label for="fname">Sub Category</label>
-                                      <br>
-                                      <div class="d-flex">
-                                          <input type="text" id="subcategory" name="subcategory" placeholder="CATEGORY" required>
-                                        
-                                      </div>
-                                    </div>
-                                    <br>
-                                    <div class="inputBox">
-                                      <label for="fname">Account Holder Name</label>
-                                     <br>
-                                      <div class="d-flex">
-                                          <input type="text" id="acname" name="Account_holder" placeholder="ACCOUNT HOLDER NAME" required>
-                                          
-                                      </div>
-                                    </div>
+                                  
+                                 
                                     <br>
                                     <div class="inputBox">
                                       <label for="fname">Account Number</label>
@@ -213,6 +243,15 @@
                                       </div>
                                     </div>
                                     <br>
+                                    <div class="inputBox">
+                                        <label for="fname">Irich %</label>
+                                       <br>
+                                        <div class="d-flex">
+                                            <input type="text" id="acnumber" name="irich" placeholder="ACCOUNT NUMBER" required>
+                                          
+                                        </div>
+                                      </div>
+                                    <br>
                                       <div class="inputBox">
                                         <label for="fname">Business Contact</label>
                                         <br>
@@ -222,14 +261,7 @@
                                         </div>
                                     </div>
                                     <br>
-                                      <div class="inputBox">
-                                        <label for="fname">Add Offer</label>
-                                       <br>
-                                        <div class="d-flex">
-                                            <input type="text" id="acnumber" name="add_offer" placeholder="" required>
-                                           
-                                        </div>
-                                    </div>
+                                     
                                     <br>
                                         <div class="inputBox">
                                             <label for="fname">Add Image</label>
@@ -239,6 +271,7 @@
                                               
                                             </div>
                                         </div>
+                                        
                                     </div>
                                     <br>
                                   <div class="inputBox">
