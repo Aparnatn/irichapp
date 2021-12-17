@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app', # Enable the inner app
     'authentication',
+    'django_google_maps',
    
     'rest_framework',
     'corsheaders',
