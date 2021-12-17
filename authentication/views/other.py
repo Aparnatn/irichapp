@@ -205,7 +205,7 @@ def paymentss(request):
         form = paymentForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect("/home")
+            return HttpResponseRedirect("/payment")
     else:
         form = paymentForm()
     return render(request,'payments.html',{"form":form})
