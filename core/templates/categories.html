@@ -155,7 +155,7 @@
                     <tr>
                         {% for i in cat%}
                         
-                <td><form action="/list?category_id={{i.id}}"><button type="submit" >{{i.name}}</button></form></td>
+                <td><a href="/list?category_id={{i.id}}">{{i.name}}</a></td>
                 <td><a href="categoryedit/{{i.id}}">edit</a></td>
                 <td><a href="catgeories/{{i.id}}/delete">delete</a></td>
             </tr>
