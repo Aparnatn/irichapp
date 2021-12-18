@@ -205,7 +205,7 @@ def paymentss(request):
         form = paymentForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect("/payment")
+            return HttpResponseRedirect("/home")
     else:
         form = paymentForm()
     return render(request,'payments.html',{"form":form})
@@ -409,8 +409,11 @@ def users(request):
     user=User.objects.all()
     employee=Employee.objects.all()
     role=roles.objects.all()
+    
     return render(request,"users.html",{"user":user,"employee":employee,"role":role})
-
+# def adduser(request,id):
+   
+#     return render(request,"users.html",{"users":users})
 def register_user(request):
     if request.method == "POST":
         username = request.POST.get('username')
@@ -460,6 +463,13 @@ def useredit(request,id):
    
     object=Employee.objects.get(id=id)
     return render(request,'useredit.html',{'object':object})
+def adduser(request,id):
+    role=roles.objects.all()
+    object=User.objects.get(id=id)
+    designation=request.POST.get('designation')
+    obj=User(designation=designation)
+    obj.save()
+    return render(request,'adduser.html',{'object':object,'role':role})
 def categoryedit(request,id):
    
     object=category.objects.get(id=id)
