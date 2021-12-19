@@ -36,6 +36,7 @@ urlpatterns = [
   
     path('transactions', views.transactions, name="transactions"),
     path('role', views.role, name="role"),
+    path('business_favourite/<int:id>', views.business_favourite, name="business_favourite"),
     path('business_list', views.business_list, name="business_list"),
     path('register_user', views.register_user, name="register_user"),
     path('paysection', views.paysection.as_view()),
