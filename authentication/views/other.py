@@ -415,8 +415,11 @@ def users(request):
     user=User.objects.all()
     employee=Employee.objects.all()
     role=roles.objects.all()
+    
     return render(request,"users.html",{"user":user,"employee":employee,"role":role})
-
+# def adduser(request,id):
+   
+#     return render(request,"users.html",{"users":users})
 def register_user(request):
     if request.method == "POST":
         username = request.POST.get('username')
@@ -443,7 +446,7 @@ def register_user(request):
         phone = request.POST.get('phone')
         referral_code = request.POST.get('referral_code')
         postcode = request.POST.get('postcode')
-        
+        designation=request.POST.get('designation')
         referral=random.randint(100,200)
        
         obj=Employee(
@@ -453,7 +456,7 @@ def register_user(request):
             postcode = postcode,   
             referral=referral,
         )
-        obj.save()
+        obj.save(designation)
 
       
     return render(request,'accounts/register.html')
@@ -466,6 +469,13 @@ def useredit(request,id):
    
     object=Employee.objects.get(id=id)
     return render(request,'useredit.html',{'object':object})
+def adduser(request,id):
+    role=roles.objects.all()
+    object=User.objects.get(id=id)
+    return render(request,'adduser.html',{'role':role,'object':object})
+def adduserslist(request):
+    role=roles.objects.all() 
+    return render(request,'adduser.html',{'role':role})
 def categoryedit(request,id):
    
     object=category.objects.get(id=id)

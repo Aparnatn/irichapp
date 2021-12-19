@@ -42,7 +42,7 @@ class Employee(models.Model):
     phone=models.CharField(max_length=150)
     postcode=models.CharField(max_length=150)
     referral=models.CharField(max_length=150)
-    role=models.CharField(max_length=150)
+    designation=models.CharField(max_length=150)
 class PaymentMethod(models.Model):
     title = models.CharField(unique=True, max_length=150)
 
