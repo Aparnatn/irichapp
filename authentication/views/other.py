@@ -156,6 +156,10 @@ def transactions(request):
     transact=payments.objects.all()
     return render(request, 'transactions.html', {
          'transact': transact})
+def normaltransactions(request):
+    transact=payments.objects.all()
+    return render(request, 'normaltransactions.html', {
+         'transact': transact})
 def shuffle(request):
     transact=Transactions.objects.all()
     transactions = Transactions.objects.filter().order_by('-price')
@@ -241,7 +245,16 @@ def paymentss(request):
     else:
         form = paymentForm()
     return render(request,'payments.html',{"form":form})
+def normalpayment(request):
     
+    if request.method=="POST":
+        form = paymentForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect("/home")
+    else:
+        form = paymentForm()
+    return render(request,'normalpayments.html',{"form":form})  
 def payment(request,id):
     payment = payments.objects.filter(business_id=id).first()
     
@@ -271,7 +284,8 @@ def business_pay(request,id):
     
 def notification(request):
     return render(request, 'notification.html')
-
+def normaluser(request):
+    return render(request, 'normalusers.html')
 
 def setting(request):
     return render(request, 'settings.html')
@@ -322,7 +336,9 @@ class paysection(APIView):
 def categories(request):
     cat = category.objects.all() 
     return render(request,'categories.html',{"cat":cat})
-
+def normalcategories(request):
+    cat = category.objects.all() 
+    return render(request,'normalcategory.html',{"cat":cat})
 
 def Home(request):
     if request.method == "POST":
@@ -469,6 +485,19 @@ def tablelist(request):
     
 
     return render(request, "tables.html", context)
+def businesslist(request):
+    if request.GET.get('category_id',False):
+        category_id= request.GET.get('category_id',False)
+        movies=business_details.objects.filter(categories_id=category_id)
+    else:
+
+     movies = business_details.objects.all()
+    codes = Transactions.objects.all()
+    cat=category.objects.all()
+    context = {"movie": movies,"cat":cat, "codes": codes, "host": 'http://13.232.49.240:8000'}
+    
+
+    return render(request, "businesslist.html", context)
 
 
 def signin(request):
@@ -490,7 +519,7 @@ def signin(request):
        
         else:
             request.session['name']="username"
-            return  notification(request)
+            return  normaluser(request)
     return render(request,'accounts/login.html',{'error':"please check the password","m": m})
    except:
           return render(request,'accounts/login.html',{'error':"please check the password"})
