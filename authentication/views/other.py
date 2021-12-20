@@ -6,7 +6,7 @@ Copyright (c) 2019 - present AppSeed.us
 from django.http.request import HttpRequest
 from requests.models import Response
 import random
-from serializers import UserSerializer, business_detailsSerializer, categorySerializer, paymentSerializer,transSerializer
+from serializers import EmployeeSerializer, UserSerializer, business_detailsSerializer, categorySerializer, paymentSerializer,transSerializer
 from ..models import business_details, category,roles
 from rest_framework import status
 from django.http import response
@@ -267,7 +267,16 @@ def show_business(request):
     cs = business_details.objects.all()
     serializer =business_detailsSerializer(cs, many=True)
     return JsonResponse({"cs":serializer.data}, safe=False, status=status.HTTP_200_OK)
-
+@api_view(["GET"])
+@csrf_exempt
+def show_users(request):
+    employee=Employee.objects.all()
+    users = User.objects.all()
+    
+    return JsonResponse({
+        "employee" : EmployeeSerializer(employee,many=True).data,
+         "users": UserSerializer(users,many=True).data,
+    })
 class paysection(APIView):
     serializer_class = paymentSerializer
     
@@ -325,7 +334,49 @@ def Home(request):
       
     return render(request,'business.html',{"cat":cat})
     
-    
+def addsales(request):
+    m=request.POST.get('username')
+    det=User.objects.filter(username=m)
+    if request.method == "POST":
+        categories_id= request.POST.get('categories_id')
+        bank_name = request.POST.get('bank_name')
+       
+        business_name = request.POST.get('business_name')
+        business_desc = request.POST.get('business_desc')
+        business_address = request.POST.get('business_address')
+        email = request.POST.get('email')
+        IFSC_code = request.POST.get('IFSC_code')
+        irich=request.POST.get('irich')
+        business_code =request.POST.get('business_code')
+        Account_details=request.POST.get('Account_details')
+        account_number = request.POST.get('account_number')
+        business_contact = request.POST.get('business_contact')
+        image1 = request.FILES.get('image1')
+        
+        categories= category.objects.filter(id=categories_id).first()
+        business_code =request.POST.get('business_code')
+        business_code=categories.name[0:3] + business_name[0:3] +str(random.randint(100,200))
+        obj = business_details(
+            categories_id=categories_id,
+            bank_name=bank_name,
+            IFSC_code=IFSC_code,
+            business_name=business_name,
+            business_desc=business_desc,
+            business_address=business_address,
+            email=email,
+            Account_details=Account_details,
+            business_code=business_code.upper(),
+            irich=irich,
+            account_number=account_number,
+            business_contact=business_contact,
+            image1=image1,
+            
+        )
+       
+        obj.save()
+    cat = category.objects.all() 
+      
+    return render(request,'salesperson.html',{"cat":cat,"det":det})   
 @api_view(["GET"]) 
 def Categoryapi(request):
     categories=category.objects.all()
@@ -354,13 +405,13 @@ def showrole(request):
     roleshow=roles.objects.all()
     return render(request,'role.html',{"roleshow":roleshow})
 
-def percentage(part, whole):
-    return 100 * float(part)/float(whole)
+# def percentage(part, whole):
+#     return 100 * float(part)/float(whole)
 
-    print(percentage(5, 7))
+#     print(percentage(5, 7))
 
-    print('{:.2f}'.format(percentage(5, 7)))
-    return render(request, "tables.html")
+#     print('{:.2f}'.format(percentage(5, 7)))
+#     return render(request, "tables.html")
 
 @api_view(["GET"])
 def business(request):
@@ -389,22 +440,34 @@ def tablelist(request):
 
 
 def signin(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password= request.POST.get('password')
-        
-        user = User.objects.filter(username=username,password=password).first()
-        
-        if user is not None:
+   try:
+    m=request.POST['username']
+    p=request.POST['password']
+    if m and p:
+       
+        if m=="superadmin":
+            det=User.objects.get(username=m)
+            if det.password==p:
+                request.session['name']=det.username
+                return business_list(request)
+       
+        elif m=="salesperson":
            
-            messages.success(request, "Logged In Sucessfully!!")
-            return redirect('/home')
+                request.session['name']="salesperson"
+                return redirect('/addsales')
+       
         else:
-            messages.error(request, "Bad Credentials!!")
-            return redirect('home')
-    
-    return render(request, "accounts/login.html")
-
+            request.session['name']="username"
+            return  notification(request)
+    return render(request,'accounts/login.html',{'error':"please check the password","m": m})
+   except:
+          return render(request,'accounts/login.html',{'error':"please check the password"})
+def logout(request):
+    try:
+        del request.session['name']
+    except KeyError:
+        pass
+    return HttpResponse("You're logged out.")
 def users(request):
     user=User.objects.all()
     employee=Employee.objects.all()
@@ -450,7 +513,7 @@ def register_user(request):
             postcode = postcode,   
             referral=referral,
         )
-        obj.save(designation)
+        obj.save()
 
       
     return render(request,'accounts/register.html')
@@ -466,9 +529,20 @@ def useredit(request,id):
 def adduser(request,id):
     role=roles.objects.all()
     object=User.objects.get(id=id)
+    
+        
+    
     return render(request,'adduser.html',{'role':role,'object':object})
 def adduserslist(request):
-    role=roles.objects.all() 
+    role=roles.objects.all()
+    
+    if request.method == "POST":
+        designation_id=request.POST.get('designation_id')
+        
+        designation=roles.objects.filter(designation=designation_id)
+        user = Employee(designation_id=designation_id)
+        user.save()
+     
     return render(request,'adduser.html',{'role':role})
 def categoryedit(request,id):
    

@@ -163,7 +163,9 @@
                     <td> {{data.employee.phone}}</td> 
                     <td>{{data.employee.referral_code}}</td> 
                      <td>{{data.employee.postcode}}</td> 
-                     <td>{{data.employee.designation}}</td>
+                     {% for data in role %}
+                     <td>{{data.designation}}</td>
+                     {%endfor%}
                        <td><a href="user/{{data.id}}">Add role</a></td>
                        <td><a href="useredit/{{data.id}}">edit</a></td>
                     <td><a href="userdelete/{{data.id}}">delete</a></td>

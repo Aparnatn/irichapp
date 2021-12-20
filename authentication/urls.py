@@ -36,7 +36,8 @@ urlpatterns = [
     path('roledelete/<int:id>',views.roledelete,name="roledelete"),
     path('getbooks', views.get_books),
      path('trans', views.trans,name='trans'),
-  
+     path('show_users',views.show_users,name="show_users"),
+    path('addsales', views.addsales,name='addsales'),
     path('transactions', views.transactions, name="transactions"),
     path('role', views.role, name="role"),
     path('business_list', views.business_list, name="business_list"),
@@ -48,7 +49,7 @@ urlpatterns = [
     path('business/<int:id>/business_pay', views.business_pay, name="business_pay"),
     path('setting', views.setting, name="setting"),
     path('notification', views.notification, name="notification"),
-    path("logout/", LogoutView.as_view(), name="logout"),
+    path("logout", views.logout, name="logout"),
     path('home', views.Home, name="home"),
     path('transact',views.transact,name="transact"),
     # path('business_lists', views.business_lists.as_view()),
