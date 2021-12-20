@@ -204,6 +204,32 @@ def business_favourite(request,id):
     payment = payments.objects.all()
     movies = payments.objects.filter(business_id=id)
     return render(request, 'favourite.html',{"movies":movies,"cat":cat,"payment":payment})
+@api_view(["GET"])
+@csrf_exempt
+def favourites(request):
+    business_payments = payments.objects.all().select_related('business').only(
+                    'id',
+                     
+                    'business_id',
+                    'business__business_name', 
+                    'business__categories__name',
+                    
+                    'business__business_address'
+                )
+            
+    details = []
+
+    for payment in business_payments:
+            details.append({
+                'id': payment.id,
+                # 'image1':payment.business.image1,
+                'business_id': payment.business_id,
+                'business_name':payment.business.business_name,
+                'categories':payment.business.categories.name,
+                'business_address':payment.business.business_address,
+            })
+        
+    return JsonResponse(details, safe=False)   
 
 def paymentss(request):
     

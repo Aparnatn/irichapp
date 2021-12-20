@@ -37,6 +37,7 @@ urlpatterns = [
     path('getbooks', views.get_books),
      path('trans', views.trans,name='trans'),
      path('show_users',views.show_users,name="show_users"),
+      path('favourites',views.favourites,name="favourites"),
     path('addsales', views.addsales,name='addsales'),
     path('transactions', views.transactions, name="transactions"),
     path('role', views.role, name="role"),
