@@ -42,7 +42,7 @@ INSTALLED_APPS = [
    
     'rest_framework',
     'corsheaders',
-     'channels',
+     
      'django_celery_beat',
      'django_celery_results',
    
