@@ -108,6 +108,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core.wsgi.application'
 
 ASGI_APPLICATION = 'core.asgi.application'
+# ASGI_APPLICATION = 'routing.application'
+
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 

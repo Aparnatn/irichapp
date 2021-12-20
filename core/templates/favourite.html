@@ -52,7 +52,7 @@
               <span class="title">Transactions</span>
           </a>
       </li>
-     
+      
     <li>
       <a href="/showrole">
           <span class="icon"><i class="fas fa-exchange-alt"></i></span>
@@ -65,12 +65,6 @@
               <span class="title">Shuffle</span>
           </a>
       </li>
-      <li>
-        <a href="/wallet">
-            <span class="icon"><i class="fas fa-exchange-alt"></i></i></span>
-            <span class="title">Wallet</span>
-        </a>
-    </li>
       <li>
         <a href="/users">
             <span class="icon"><i class="fas fa-exchange-alt"></i></i></span>
@@ -134,48 +128,40 @@
       <div class="container">
         <div class="tab">
           <div class="tab-buttons">
-            <button class="tablinks" onclick="businessList(event, 'details')" id="defaultOpen">All list</button>
-          <a href="/business_favourite/{{data.id}}"><button class="tablinks" onclick="businessList(event, 'details-one')">Favourite</button></a>
+            <a href="list"><button class="tablinks" onclick="businessList(event, 'details')">All list</button></a>
+            <button class="tablinks" onclick="businessList(event, 'details-one')" id="defaultOpen">Favourite</button>
           </div>
         </div>
 
       
               <div class="row">
               
-                  {% for data in movie %}
+                  {% for data in movies %}
                  
-                  
                   <div class="col-12 col-md-4">
                   <div class="card">
                     <a href="edit/{{data.id}}">edit</a>
-                    <img src="{{data.image1.url}}" width="300" />
+                    <img src="{{data.business.image1.url}}" width="363" />
                     <div class="card-body">
-                  
-                  
-                      Category Name: {{ data.categories.name }}<br />
+                      Business_name :{{data.business.business_name}}<br />  
+                      Category Name: {{ data.business.categories.name }}<br />
                       Business Description: {{ data.business.business_desc }}<br />
-                      Business Address {{ data.business_address }}<br />
-                      Business_name :{{data.business_name}}<br />
-                      Business_desc: {{data.business_desc}}<br />
-                      Business_address: {{data.business_address}}<br />
-                      Email {{data.email}}<br />
-                      In :{{data.In}}<br />
+                      Business Address : {{ data.business.business_address }}<br />
+                      Email : {{data.business.email}}<br />
+                      business_contact :{{data.business.business_contact}}
                      
-                      Account_holder :{{data.Account_holder}}<br />
-                      account_number :{{data.account_number}}<br />
-                      business_contact :{{business_contact}}
+                      
                      
-                      add_offer: {{data.add_offer}}<br />
-                     
-                     
-                      <hr>
-                      <a href="/business/{{data.id}}/payment">checkout</a>
                   
-                      <a href="/business_favourite/{{data.id}}">Favourite</a>
+                      <br />
+                      <hr />
+                      <a href="http://13.232.49.240:8000/checkout-session?item_id={{data.id}}">checkout</a>
+                      
 
                     </div>
-                  </div> 
-                </div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  </div>
+                </div>
+               
                   {% endfor %}
                 </div>
               
