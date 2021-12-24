@@ -7,6 +7,7 @@
 body{
     overflow-x: hidden;
 }
+
 .container{
     position: relative;
     max-width: 100% !important;
@@ -69,7 +70,7 @@ body{
     align-items: center;
 }
 .navigation.active{
-    width: 70px;
+    width: 84px;
 }
 .navigation .logo{
     margin-left: 10px;
@@ -151,8 +152,8 @@ body{
     top: 30px;
 }
 .main.active{
-    width: calc(100% - 70px);
-    left: 70px;
+    width: calc(100% - 84px);
+    left: 84px;
 }
 .main .topbar{
     width: 100%;
@@ -192,7 +193,6 @@ body{
     display: flex;
     justify-content: space-between;
     padding: 10px 12px;
-    width: 80px;
     position: relative;
     right: 10px;
  }
@@ -204,6 +204,7 @@ body{
      position: relative;
      right: 0;
      margin-top: 0;
+     margin-left: 5px;
  }
 
 
@@ -428,20 +429,20 @@ body{
   
   /* Style the buttons inside the tab */
   .tab button {
-    color: #6f73ea;
+    color: #412160;
     border: none;
     outline: none;
     cursor: pointer;
     padding: 3px 34px;
     transition: 0.3s;
     font-size: 16px;
-    border: 2px solid #6f73ea;
+    border: 2px solid #412160;
     border-radius: 10px;
   }
   
   /* Change background color of buttons on hover */
   .tab button:hover {
-    background-color: #ddd;
+    background-color: #f1dddd;
   }
   
   /* Create an active/current tablink class */
@@ -474,10 +475,10 @@ body{
       border-radius: 5px;
   }
   .card-body{
-      background-color: #efefef;
+      background-color: #f1dddd;
   }
   .card img{
-      max-height: 230px;
+      max-height: 130px;
   }
   .card-text .fa-map-marker-alt{
        position: relative;

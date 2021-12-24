@@ -11,7 +11,7 @@
         line-height: 50px;
     }
     .main .topbar .search{
-        width: 80%;
+        display: none;
     }
     .notification-cardcontent h4{
         font-size: 16px;
