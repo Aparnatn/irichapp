@@ -114,6 +114,12 @@
         <h3>Business List</h3>
       </div>
       <div class="right-options">
+        <div class="search">
+          <label>
+              <input type="text" placeholder="Search here">
+              <i class="fas fa-search"></i>
+          </label>
+      </div>
         <div class="notifications">
           <a href=""><i class="far fa-bell topbar-icons"></i></a>
         </div>
@@ -141,12 +147,12 @@
                   <div class="col-12 col-md-4">
                   <div class="card">
                     <a href="edit/{{data.id}}">edit</a>
-                    <img src="{{data.image1.url}}" width="363" />
+                    <img src="{{data.image1.url}}"/>
                     <div class="card-body">
                       {% for data in cat %}
-                      Category Name: {{ data.name}}<br />
-                      Business Description: {{ data.business_desc }}<br />
-                      Business Address {{ data.business_address }}<br />
+                     <b> Category Name:</b> {{ data.name}}<br />
+                      <b>Business Description:</b> {{ data.business_desc }}<br />
+                      <b>Business Address:</b> {{ data.business_address }}<br />
                      
                   {% endfor %}
                       <br />
@@ -173,7 +179,17 @@
                       </div>
                      
 
-
+                      <style>
+                        .card a{
+                         text-decoration: none;
+                         color: rgb(51, 42, 42);
+                         padding: 10px 10px;
+                       }
+                       .card a:hover{
+                    
+                         color: rgba(51, 42, 42, 0.507);
+                       }
+                    </style> 
                       
 
               <!-- Scripts -->
