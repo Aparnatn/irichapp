@@ -7,7 +7,7 @@ from django.http.request import HttpRequest
 from requests.models import Response
 import random
 from authentication.views.checkout import payment_cancel
-from serializers import UserSerializer, business_detailsSerializer, categorySerializer,EmployeeSerializer,paymentSerializer,transSerializer
+from serializers import UserSerializer, business_detailsSerializer, businessSerializer, categorySerializer,EmployeeSerializer,paymentSerializer,transSerializer
 from ..models import business_details, category,roles,payments
 from rest_framework import status
 from django.http import response
@@ -744,3 +744,19 @@ def categorydelete(request,id):
 def roledelete(request,id):   
         roles.objects.filter(id=id).delete()
         return redirect('/showrole')
+
+
+class BusinessAddApi(APIView):
+    serializer_class = businessSerializer
+    
+    def post(self,request):
+        Serializer = businessSerializer(data=request.data)
+        categories_id= request.POST.get('categories_id')
+        categories= category.objects.filter(id=categories_id).first()
+        if Serializer.is_valid():
+           
+           business_name = request.POST.get('business_name') 
+           Serializer.save(business_code=categories.name[0:3] + business_name[0:3] +str(random.randint(100,200)))
+           return Response(Serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(Serializer.errors, status=status.HTTP_400_BAD_REQUEST)

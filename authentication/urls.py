@@ -71,6 +71,7 @@ urlpatterns = [
     path('categories', views.categories, name="categories"),
     path('shuffle', views.shuffle, name="shuffle"),
    
+    path('BusinessAdd', views.BusinessAddApi.as_view()),
     
 
 
