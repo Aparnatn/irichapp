@@ -36,7 +36,14 @@ urlpatterns = [
     path('roledelete/<int:id>',views.roledelete,name="roledelete"),
     path('getbooks', views.get_books),
      path('trans', views.trans,name='trans'),
-  
+     path('show_users',views.show_users,name="show_users"),
+     path('normalcategories',views.normalcategories,name="normalcategories"),
+     path('normaltransactions',views.normaltransactions,name="normaltransactions"),
+     path('normalpayment',views.normalpayment,name="normalpayment"),
+      path('favourites',views.favourites,name="favourites"),
+    path('businesslist',views.businesslist,name="businesslist"),
+    path('addsales', views.addsales,name='addsales'),
+    path('normaluser', views.normaluser,name='normaluser'),
     path('transactions', views.transactions, name="transactions"),
     path('role', views.role, name="role"),
     path('business_favourite/<int:id>', views.business_favourite, name="business_favourite"),
@@ -49,7 +56,7 @@ urlpatterns = [
     path('business/<int:id>/business_pay', views.business_pay, name="business_pay"),
     path('setting', views.setting, name="setting"),
     path('notification', views.notification, name="notification"),
-    path("logout/", LogoutView.as_view(), name="logout"),
+    path("logout", views.logout, name="logout"),
     path('home', views.Home, name="home"),
     path('transact',views.transact,name="transact"),
     # path('business_lists', views.business_lists.as_view()),
@@ -62,6 +69,7 @@ urlpatterns = [
     path('categories', views.categories, name="categories"),
     path('shuffle', views.shuffle, name="shuffle"),
    
+    path('BusinessAdd', views.BusinessAddApi.as_view()),
     
 
 

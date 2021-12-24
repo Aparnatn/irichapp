@@ -36,13 +36,21 @@ CURRENCY = '€'
 #     referral_code=models.CharField(max_length=150)
 #     phone=models.CharField(max_length=150)
 #     postcode=models.CharField(max_length=150)
+from django.contrib.auth.models import AbstractUser
+from django.db import models
+
+
+
+
 class Employee(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE,null=True,
+        blank=True)
     referral_code=models.CharField(max_length=150)
     phone=models.CharField(max_length=150)
     postcode=models.CharField(max_length=150)
     referral=models.CharField(max_length=150)
-    designation=models.CharField(max_length=150)
+    designation=models.ForeignKey('roles', on_delete=models.CASCADE,null=True,
+        blank=True)
 class PaymentMethod(models.Model):
     title = models.CharField(unique=True, max_length=150)
 

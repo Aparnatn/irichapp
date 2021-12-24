@@ -46,49 +46,49 @@
               <span class="title">My Business</span>
           </a>
       </li>
-      <li>
+      <!-- <li>
           <a href="/transactions">
               <span class="icon"><i class="fas fa-exchange-alt"></i></span>
               <span class="title">Transactions</span>
           </a>
-      </li>
+      </li> -->
      
-    <li>
+    <!-- <li>
       <a href="/showrole">
           <span class="icon"><i class="fas fa-exchange-alt"></i></span>
           <span class="title"> Roles</span>
       </a>
-  </li>
-      <li>
+  </li> -->
+      <!-- <li>
           <a href="/shuffle">
               <span class="icon"><i class="fas fa-exchange-alt"></i></i></span>
               <span class="title">Shuffle</span>
           </a>
-      </li>
+      </li> -->
       <li>
         <a href="/wallet">
             <span class="icon"><i class="fas fa-exchange-alt"></i></i></span>
             <span class="title">Wallet</span>
         </a>
     </li>
-      <li>
+      <!-- <li>
         <a href="/users">
             <span class="icon"><i class="fas fa-exchange-alt"></i></i></span>
             <span class="title">Users</span>
         </a>
-    </li>
-      <li>
+    </li> -->
+      <!-- <li>
           <a href="/business_list">
               <span class="icon"><i class="fas fa-money-check"></i></span>
               <span class="title">All Deals</span>
           </a>
-      </li>
-      <li>
+      </li> -->
+      <!-- <li>
           <a href="/paymentss">
               <span class="icon"><i class="fas fa-coins"></i></span>
               <span class="title">Payment</span>
           </a>
-      </li>
+      </li> -->
       <li>
           <a href="/notification">
               <span class="icon"><i class="fas fa-bell"></i></span>
@@ -120,12 +120,6 @@
         <h3>Business List</h3>
       </div>
       <div class="right-options">
-        <div class="search">
-          <label>
-              <input type="text" placeholder="Search here">
-              <i class="fas fa-search"></i>
-          </label>
-      </div>
         <div class="notifications">
           <a href=""><i class="far fa-bell topbar-icons"></i></a>
         </div>
@@ -154,22 +148,22 @@
                   <div class="col-12 col-md-4">
                   <div class="card">
                     <a href="edit/{{data.id}}">edit</a>
-                    <img src="{{data.image1.url}}"/>
+                    <img src="{{data.image1.url}}" width="300" />
                     <div class="card-body">
                   
                   
-                     <b>Category Name:</b>  {{ data.categories.name }}<br />
-                      <b>Business Description:</b> {{ data.business.business_desc }}<br />
-                      <b>Business Address:</b> {{ data.business_address }}<br />
-                      <b>Business_name:</b>{{data.business_name}}<br />
-                      <b>Business_desc:</b> {{data.business_desc}}<br />
-                      <b>Business_address:</b> {{data.business_address}}<br />
-                      <b>Email:</b> {{data.email}}<br />
-                     <b>In:</b>{{data.In}}<br />
+                      Category Name: {{ data.categories.name }}<br />
+                      Business Description: {{ data.business.business_desc }}<br />
+                      Business Address {{ data.business_address }}<br />
+                      Business_name :{{data.business_name}}<br />
+                      Business_desc: {{data.business_desc}}<br />
+                      Business_address: {{data.business_address}}<br />
+                      Email {{data.email}}<br />
+                      In :{{data.In}}<br />
                      
-                    <b>Account_holder:</b> {{data.Account_holder}}<br />
-                      <b>Account_number:</b>{{data.account_number}}<br />
-                      <b>Business_contact:</b>{{business_contact}}
+                      Account_holder :{{data.Account_holder}}<br />
+                      account_number :{{data.account_number}}<br />
+                      business_contact :{{business_contact}}
                      
                       add_offer: {{data.add_offer}}<br />
                      
@@ -198,17 +192,7 @@
                      
 
 
-                     <style>
-                         .card a{
-                          text-decoration: none;
-                          color: rgb(51, 42, 42);
-                          padding: 10px 10px;
-                        }
-                        .card a:hover{
-                     
-                          color: rgba(51, 42, 42, 0.507);
-                        }
-                     </style> 
+                      
 
               <!-- Scripts -->
               <script src="/static/assets/scripts/script.js" type="text/javascript"></script>

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from authentication.models import Transactions, payments,business_details,category
+from authentication.models import Employee, Transactions, payments,business_details,category
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 class business_detailsSerializer(serializers.ModelSerializer):
@@ -20,10 +20,18 @@ class transSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields=('username','email')
-        read_only_fields = ('email','password1', 'password2')
+        fields='__all__'
+class EmployeeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Employee
+        fields='__all__'
 class paymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = payments
+        fields="__all__"
+
+class businessSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = business_details
         fields="__all__"
 
