@@ -30,3 +30,8 @@ class paymentSerializer(serializers.ModelSerializer):
         model = payments
         fields="__all__"
 
+class businessSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = business_details
+        fields="__all__"
+
