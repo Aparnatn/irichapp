@@ -120,14 +120,26 @@
 
             </div>
             <div class="col-sm-3">
-                <form method="post" action="/paymentss "enctype="multipart/form-data" >
-                  {% csrf_token %}
-                  <div class="col-sm-3">
-                    <div style="padding-right:30px">  {{form.as_p}}</div>
-                  </div>
-                      <button class="btn btn-primary my-4" type="submit">Submit</button>
-                </form>
-     
+                <table>
+                    <thead>
+                        <tr>
+                    <th>Sl.No</th>
+                    <th>Username</th>
+                    <th>Amount</th>
+                    <th>Business_name</th>
+                    <th>Irich%</th>
+                    <th>Amount to be transfered</th>
+                    <th>Bank Charges</th>
+                    <th>Net Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for data in users,let i=index %}
+                <tr>
+                    <td></td>
+            </tr>
+            </tbody>
+            </table>
       </div>
           
 

@@ -153,24 +153,23 @@
                    
                   
                   <tbody>
-                      <tr>
-                        {% for data in user %}
-                    <td>{{ data.username }}</td>   
-                    <td> {{ data.last_name }}</td> 
-                    <td> {{ data.email }}</td> 
+                      
+                    {% for data in users %}
+                    <tr>
+                    <td>{{ data.user.username }}</td>   
+                    <td> {{ data.user.last_name }}</td> 
+                    <td> {{ data.user.email }}</td> 
                     
                    
-                    <td> {{data.employee.phone}}</td> 
-                    <td>{{data.employee.referral_code}}</td> 
-                     <td>{{data.employee.postcode}}</td> 
-                     {% for data in role %}
-                     <td>{{data.designation}}</td>
-                     {%endfor%}
-                       <td><a href="user/{{data.id}}">Add role</a></td>
-                       <td><a href="useredit/{{data.id}}">edit</a></td>
-                    <td><a href="userdelete/{{data.id}}">delete</a></td>
-                    
-                      
+                    <td> {{data.phone}}</td> 
+                    <td>{{data.referral_code}}</td> 
+                    <td>{{data.postcode}}</td> 
+                    <td>{{data.designation.designation}}</td>
+                     
+                    <td><a href="user/{{data.user.id}}/edit-role">Add role</a></td>
+                    <td><a href="user/{{data.user.id}}/edit_business">Add business</a></td>
+                    <td><a href="useredit/{{data.user.id}}">edit</a></td>
+                    <td><a href="userdelete/{{data.user.id}}">delete</a></td>
                   </tr>
                   {% endfor %}
                     

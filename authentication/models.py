@@ -43,14 +43,28 @@ from django.db import models
 
 
 class Employee(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE,null=True,
-        blank=True)
+    user = models.OneToOneField(
+        User, 
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
     referral_code=models.CharField(max_length=150)
     phone=models.CharField(max_length=150)
     postcode=models.CharField(max_length=150)
     referral=models.CharField(max_length=150)
-    designation=models.ForeignKey('roles', on_delete=models.CASCADE,null=True,
-        blank=True)
+    designation=models.ForeignKey(
+        'roles', 
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+    business=models.ForeignKey(
+        'business_details', 
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
 class PaymentMethod(models.Model):
     title = models.CharField(unique=True, max_length=150)
 
@@ -136,6 +150,14 @@ class payments(models.Model):
         blank=True,
         # verbose_name='business_name'
     )
+    user=models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        # verbose_name='business_name'
+    )
+
 
 # Create your models here.
 

@@ -161,8 +161,8 @@ def normaltransactions(request):
     return render(request, 'normaltransactions.html', {
          'transact': transact})
 def shuffle(request):
-    transact=Transactions.objects.all()
-    transactions = Transactions.objects.filter().order_by('-price')
+    transact=payments.objects.all()
+    transactions = payments.objects.filter().order_by('amount')
 
     count = len(transactions)
     total = 0
@@ -170,13 +170,13 @@ def shuffle(request):
     factor = sum(range(count+1))
     
     for i, item in enumerate(transactions, start=1):
-        total += int(item.price)
+        total += int(item.amount)
         shares.append({
             "sl": i,
             "order": count,
-            "share": int(item.price),
+            "share": int(item.amount),
             "id": item.id,
-            "name": 'Customer',
+           
             "to_give": 0,
             "multiplier": 0,
             "factor": factor,
@@ -236,11 +236,12 @@ def favourites(request):
     return JsonResponse(details, safe=False)   
 
 def paymentss(request):
-    
+    id=request.POST.get('id')
+    user=User.objects.filter(id=id)
     if request.method=="POST":
         form = paymentForm(request.POST)
         if form.is_valid():
-            form.save()
+            form.save(user)
             return HttpResponseRedirect("/home")
     else:
         form = paymentForm()
@@ -266,6 +267,64 @@ def payment(request,id):
         "payment": payment,
         "users": users
     })
+
+def walletsection(request):
+    id=request.POST.get('id')
+    payment = payments.objects.filter(business_id=id).first()
+    
+    users = User.objects.filter(id=id).first()
+
+    # print (business.payments)
+    
+    return render(request, "payments.html", {
+        "payment": payment,
+        "users": users
+    })
+
+def wallet(request):
+    paymentoption = payments.objects.all()
+    
+    users = User.objects.all()
+
+    transact=payments.objects.all()
+    transactions = payments.objects.filter().order_by('amount')
+
+    count = len(transactions)
+    total = 0
+    shares = []
+    factor = sum(range(count+1))
+    
+    for i, item in enumerate(transactions, start=1):
+        total += int(item.amount)
+        shares.append({
+            "sl": i,
+            "order": count,
+            "share": int(item.amount),
+            "id": item.id,
+           
+            "to_give": 0,
+            "multiplier": 0,
+            "factor": factor,
+        })
+        count -= 1
+
+    multiplier = (total * 0.5)/factor
+
+    give_back = []
+    for item in shares:
+        item['to_give'] = item['order'] * multiplier
+        item['multiplier'] = multiplier
+        give_back.append(item)
+
+   
+   
+    
+    return render(request, "wallet.html", {
+        "paymentoption": paymentoption,
+        "users": users,
+        'transact': transact,
+        'give_back': give_back
+    })
 @api_view(["GET"])
 @csrf_exempt
 def business_pay(request,id):
@@ -285,7 +344,8 @@ def business_pay(request,id):
 def notification(request):
     return render(request, 'notification.html')
 def normaluser(request):
-    return render(request, 'normalusers.html')
+    paymentoption=payments.objects.all()
+    return render(request, 'normalusers.html',{"paymentoption":paymentoption})
 
 def setting(request):
     return render(request, 'settings.html')
@@ -529,15 +589,13 @@ def logout(request):
     except KeyError:
         pass
     return HttpResponse("You're logged out.")
+
 def users(request):
-    user=User.objects.all()
-    employee=Employee.objects.all()
-    role=roles.objects.all()
     
-    return render(request,"users.html",{"user":user,"employee":employee,"role":role})
-# def adduser(request,id):
-   
-#     return render(request,"users.html",{"users":users})
+    employee=Employee.objects.select_related('user', 'designation','business').all()
+    
+    return render(request, "users.html", {"users":employee})
+
 def register_user(request):
     if request.method == "POST":
         username = request.POST.get('username')
@@ -584,31 +642,63 @@ def edit(request,id):
     object=business_details.objects.get(id=id)
     return render(request,'edit.html',{'object':object})
 def useredit(request,id):
-   
     object=Employee.objects.get(id=id)
     return render(request,'useredit.html',{'object':object})
-def adduser(request,id):
-    role=roles.objects.all()
-    object=User.objects.get(id=id)
-    
-        
-    
-    return render(request,'adduser.html',{'role':role,'object':object})
-def adduserslist(request):
-    role=roles.objects.all()
-    
+
+def edit_user_role(request, id):
+    user_roles = roles.objects.all()
+    user = User.objects.get(id=id)
+
     if request.method == "POST":
-        designation_id=request.POST.get('designation_id')
-        
-        designation=roles.objects.filter(designation=designation_id)
-        user = Employee(designation_id=designation_id)
-        user.save()
-     
-    return render(request,'adduser.html',{'role':role})
+        designation_id = request.POST.get('role')
+       
+        employee = Employee.objects.filter(user_id=id).first()
+        if employee is None:
+            employee = Employee.objects.create(
+                designation_id=designation_id, 
+                user_id=id
+            )
+        else:
+            employee.designation_id = designation_id
+            employee.save()
+  
+    else: 
+        employee = Employee.objects.filter(user_id=id).first()
+
+    return render(request, 'edit-role.html', {
+        'roles':user_roles,
+        'user':user,
+        'role_id': employee.designation_id if employee is not None else ''
+    })
+def edit_business(request, id):
+    business_edit = business_details.objects.all()
+    user = User.objects.get(id=id)
+
+    if request.method == "POST":
+        business_id = request.POST.get('business_name')
+       
+        employee = Employee.objects.filter(user_id=id).first()
+        if employee is None:
+            employee = business_details.objects.create(
+                business_id=business_id, 
+                user_id=id
+            )
+        else:
+            employee.business_id = business_id
+            employee.save()
+  
+    else: 
+        employee = Employee.objects.filter(user_id=id).first()
+
+    return render(request, 'edit-role.html', {
+        'business':business_edit,
+        'user':user,
+        'business_id': employee.business_id if employee is not None else ''
+    })
 def categoryedit(request,id):
-   
     object=category.objects.get(id=id)
     return render(request,'categoryedit.html',{'object':object})
+
 def roledit(request,id):
    
     object=roles.objects.get(id=id)
