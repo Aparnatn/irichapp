@@ -140,7 +140,9 @@ class category(models.Model):
     name=models.CharField(max_length=500)
 class roles(models.Model):
     designation=models.CharField(max_length=500)
-
+class deals(models.Model):
+    title=models.CharField(max_length=500)
+    description=models.CharField(max_length=500)
 class payments(models.Model):
     amount=models.IntegerField()
     business=models.ForeignKey(

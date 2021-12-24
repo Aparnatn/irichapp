@@ -27,7 +27,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.forms.utils import ErrorList
 from django.http import HttpResponse
-from ..forms import LoginForm, rolesForm
+from ..forms import DealsForm, LoginForm, rolesForm
 from authentication.models import mobile
 from authentication.models import business_details,Employee,payments
 from authentication.forms import MobileLoginForm, BusinessForm, categoryForm,paymentForm
@@ -269,16 +269,21 @@ def payment(request,id):
     })
 
 def walletsection(request):
-    id=request.POST.get('id')
-    payment = payments.objects.filter(business_id=id).first()
+    Payment = payments.objects.all().select_related('business','user').only('business__business_name','business__irich','user__username')
     
-    users = User.objects.filter(id=id).first()
-
+    
+    details=[]
     # print (business.payments)
-    
+    for payment in Payment:
+            details.append({
+               'username':payment.user.username,
+                'amount': payment.amount,
+                'irich': payment.business.irich,
+                'business_name':payment.business.business_name,
+               
+            })
     return render(request, "payments.html", {
-        "payment": payment,
-        "users": users
+        "details": details,     
     })
 
 def wallet(request):
@@ -512,7 +517,18 @@ def role(request):
 def showrole(request):
     roleshow=roles.objects.all()
     return render(request,'role.html',{"roleshow":roleshow})
-
+def adddeal(request):
+    if request.method=="POST":
+        form = DealsForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect("/deals")
+    else:
+        form = DealsForm()
+    return render(request,'add_deals.html',{"form":form})   
+def showdeal(request):
+    dealshow=deals.objects.all()
+    return render(request,'deals.html',{"dealshow":dealshow})
 # def percentage(part, whole):
 #     return 100 * float(part)/float(whole)
 
@@ -703,6 +719,10 @@ def roledit(request,id):
    
     object=roles.objects.get(id=id)
     return render(request,'roleedit.html',{'object':object})
+def dealedit(request,id):
+   
+    object=deals.objects.get(id=id)
+    return render(request,'dealedit.html',{'object':object})
 def userupdate(request,id):
        object=User.objects.get(id=id)
        form=UserCreationForm(request.POST,instance=object)
@@ -732,6 +752,13 @@ def roleupdate(request,id):
         form.save()
         object=roles.objects.all()
         return redirect('/showrole')
+def dealupdate(request,id):
+       object=deals.objects.get(id=id)
+       form=DealsForm(request.POST,instance=object)
+       if form.is_valid:
+        form.save()
+        object=deals.objects.all()
+        return redirect('/deals')
 def delete(request,id):   
         business_details.objects.filter(id=id).delete()
         return redirect('/categories')
@@ -744,7 +771,9 @@ def categorydelete(request,id):
 def roledelete(request,id):   
         roles.objects.filter(id=id).delete()
         return redirect('/showrole')
-
+def dealdelete(request,id):   
+        deals.objects.filter(id=id).delete()
+        return redirect('/deals')
 
 class BusinessAddApi(APIView):
     serializer_class = businessSerializer
@@ -757,6 +786,6 @@ class BusinessAddApi(APIView):
            
            business_name = request.POST.get('business_name') 
            Serializer.save(business_code=categories.name[0:3] + business_name[0:3] +str(random.randint(100,200)))
-           return Response(Serializer.data, status=status.HTTP_201_CREATED)
+           return Response(Serializer.data,safe=False)
 
-        return Response(Serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(Serializer.errors)
