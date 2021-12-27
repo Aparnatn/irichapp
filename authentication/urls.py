@@ -39,6 +39,8 @@ urlpatterns = [
     path('roledelete/<int:id>',views.roledelete,name="roledelete"),
     path('deal/<int:id>/delete',views.dealdelete,name="dealdelete"),
     path('getbooks', views.get_books),
+    path('rewardcreation',views.rewardcreation,name="rewardcreation"),
+    path('dealapi',views.dealapi,name="dealapi"),
      path('trans', views.trans,name='trans'),
      path('show_users',views.show_users,name="show_users"),
      path('normalcategories',views.normalcategories,name="normalcategories"),

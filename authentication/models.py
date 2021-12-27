@@ -143,6 +143,11 @@ class roles(models.Model):
 class deals(models.Model):
     title=models.CharField(max_length=500)
     description=models.CharField(max_length=500)
+class rewards(models.Model):
+    start_date=models.DateField()
+    end_date=models.DateField()
+    targeted_amount=models.CharField(max_length=500)
+    referral_member=models.CharField(max_length=500)
 class payments(models.Model):
     amount=models.IntegerField()
     business=models.ForeignKey(

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from authentication.models import Employee, Transactions, payments,business_details,category
+from authentication.models import Employee, Transactions, deals, payments,business_details,category
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 class business_detailsSerializer(serializers.ModelSerializer):
@@ -34,4 +34,7 @@ class businessSerializer(serializers.ModelSerializer):
     class Meta:
         model = business_details
         fields="__all__"
-
+class dealSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = deals
+        fields="__all__"

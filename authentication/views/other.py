@@ -7,7 +7,7 @@ from django.http.request import HttpRequest
 from requests.models import Response
 import random
 from authentication.views.checkout import payment_cancel
-from serializers import UserSerializer, business_detailsSerializer, businessSerializer, categorySerializer,EmployeeSerializer,paymentSerializer,transSerializer
+from serializers import UserSerializer, business_detailsSerializer, businessSerializer, categorySerializer,EmployeeSerializer, dealSerializer,paymentSerializer,transSerializer
 from ..models import business_details, category,roles,payments
 from rest_framework import status
 from django.http import response
@@ -27,7 +27,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.forms.utils import ErrorList
 from django.http import HttpResponse
-from ..forms import DealsForm, LoginForm, rolesForm
+from ..forms import DealsForm, LoginForm, rewardsForm, rolesForm
 from authentication.models import mobile
 from authentication.models import business_details,Employee,payments
 from authentication.forms import MobileLoginForm, BusinessForm, categoryForm,paymentForm
@@ -380,6 +380,13 @@ def show_business(request):
     return JsonResponse({"cs":serializer.data}, safe=False, status=status.HTTP_200_OK)
 @api_view(["GET"])
 @csrf_exempt
+def dealapi(request):
+    
+    cs = deals.objects.all()
+    serializer =dealSerializer(cs, many=True)
+    return JsonResponse({"cs":serializer.data}, safe=False, status=status.HTTP_200_OK)
+@api_view(["GET"])
+@csrf_exempt
 def show_users(request):
     employee=Employee.objects.all()
     users = User.objects.all()
@@ -513,7 +520,27 @@ def role(request):
             return HttpResponseRedirect("/showrole")
     else:
         form = rolesForm()
-    return render(request,'roles.html',{"form":form})   
+    return render(request,'roles.html',{"form":form}) 
+def rewardcreation(request):
+    if request.method == "POST":
+        start_date= request.POST.get('start_date')
+        end_date = request.POST.get('end_date')
+       
+        targeted_amount = request.POST.get('targeted_amount')
+        referral_member=request.POST.get('referral_member')
+       
+        
+        obj = rewards(
+            start_date=start_date,
+            end_date=end_date,
+            targeted_amount=targeted_amount,     
+            referral_member=referral_member,
+           
+            
+        )
+       
+        obj.save()  
+    return render(request,'rewards.html')
 def showrole(request):
     roleshow=roles.objects.all()
     return render(request,'role.html',{"roleshow":roleshow})
@@ -785,6 +812,8 @@ class BusinessAddApi(APIView):
         if Serializer.is_valid():
            
            business_name = request.POST.get('business_name') 
+           name=request.POST.get('name')
+           print(name)
            Serializer.save(business_code=categories.name[0:3] + business_name[0:3] +str(random.randint(100,200)))
            return Response(Serializer.data,safe=False)
 

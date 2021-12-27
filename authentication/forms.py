@@ -9,7 +9,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.db.models import fields
 from django.forms import widgets
 from authentication import models
-from authentication.models import deals, mobile
+from authentication.models import deals, mobile, rewards
 from authentication.models import business_details,category,payments,roles
 from authentication.forms import mobile
 
@@ -73,6 +73,11 @@ class categoryForm(forms.ModelForm):
 
     class Meta:
         model = category
+        fields ='__all__'
+class rewardsForm(forms.ModelForm):
+
+    class Meta:
+        model = rewards
         fields ='__all__'
 
 
