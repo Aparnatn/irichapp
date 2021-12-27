@@ -106,7 +106,7 @@ class business_details(models.Model):
     business_address=models.CharField(max_length=200)
     email=models.EmailField(max_length=50)
     subcategory=models.CharField(max_length=200)
-    irich=models.IntegerField()
+    irich=models.CharField(max_length=200)
     
     business_code=models.CharField(max_length=50)
     Account_details=models.CharField(max_length=50)
