@@ -163,7 +163,7 @@ def normaltransactions(request):
 def shuffle(request):
     transact=payments.objects.all()
     transactions = payments.objects.filter().order_by('amount')
-
+    business_det=business_details.objects.filter().order_by
     count = len(transactions)
     total = 0
     shares = []
