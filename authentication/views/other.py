@@ -271,14 +271,14 @@ def payment(request,id):
 def walletsection(request):
     Payment = payments.objects.all().select_related('business','user').only('business__business_name','business__irich','user__username')
     
-    
+
     details=[]
     # print (business.payments)
     for payment in Payment:
             details.append({
                'username':payment.user.username,
                 'amount': payment.amount,
-                'irich': payment.business.irich,
+                'irich_percent': payment.business.irich,
                 'business_name':payment.business.business_name,
                
             })
