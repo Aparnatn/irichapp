@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from authentication.models import Employee, Transactions, deals, payments,business_details,category
+from authentication.models import Employee, Transactions, deals, payments,business_details,category, rewards
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 class business_detailsSerializer(serializers.ModelSerializer):
@@ -11,7 +11,7 @@ class business_detailsSerializer(serializers.ModelSerializer):
 class categorySerializer(serializers.ModelSerializer):
     class Meta:
         model = category
-        fields=('name','id')
+        fields='__all__'
 class transSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transactions
@@ -33,8 +33,27 @@ class paymentSerializer(serializers.ModelSerializer):
 class businessSerializer(serializers.ModelSerializer):
     class Meta:
         model = business_details
-        fields="__all__"
+        fields=('categories',
+    'bank_name',
+    
+    'business_name',
+    'business_desc',
+    'business_address',
+    'email',
+    'subcategory',
+    'irich',
+    
+    
+    'Account_details',
+    'account_number',
+    'IFSC_code',
+    'business_contact',
+    'image1',)
 class dealSerializer(serializers.ModelSerializer):
     class Meta:
         model = deals
+        fields="__all__"
+class rewardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = rewards
         fields="__all__"

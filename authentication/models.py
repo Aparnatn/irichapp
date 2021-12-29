@@ -137,7 +137,7 @@ class business_details(models.Model):
     # qrcode = property(_get_qrcode)
 
 class category(models.Model):
-    name=models.CharField(max_length=500)
+    name=models.TextField(max_length=500)
 class roles(models.Model):
     designation=models.CharField(max_length=500)
 class deals(models.Model):

@@ -39,6 +39,7 @@ urlpatterns = [
     path('roledelete/<int:id>',views.roledelete,name="roledelete"),
     path('deal/<int:id>/delete',views.dealdelete,name="dealdelete"),
     path('getbooks', views.get_books),
+    path('rewardsapi',views.rewardsapi,name="rewardsapi"),
     path('rewardcreation',views.rewardcreation,name="rewardcreation"),
     path('dealapi',views.dealapi,name="dealapi"),
      path('trans', views.trans,name='trans'),

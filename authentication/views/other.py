@@ -6,8 +6,9 @@ Copyright (c) 2019 - present AppSeed.us
 from django.http.request import HttpRequest
 from requests.models import Response
 import random
+import string
 from authentication.views.checkout import payment_cancel
-from serializers import UserSerializer, business_detailsSerializer, businessSerializer, categorySerializer,EmployeeSerializer, dealSerializer,paymentSerializer,transSerializer
+from serializers import UserSerializer, business_detailsSerializer, businessSerializer, categorySerializer,EmployeeSerializer, dealSerializer,paymentSerializer, rewardSerializer,transSerializer
 from ..models import business_details, category,roles,payments
 from rest_framework import status
 from django.http import response
@@ -380,6 +381,13 @@ def show_business(request):
     return JsonResponse({"cs":serializer.data}, safe=False, status=status.HTTP_200_OK)
 @api_view(["GET"])
 @csrf_exempt
+def rewardsapi(request):
+    
+    cs = rewards.objects.all()
+    serializer =rewardSerializer(cs, many=True)
+    return JsonResponse({"cs":serializer.data}, safe=False, status=status.HTTP_200_OK)
+@api_view(["GET"])
+@csrf_exempt
 def dealapi(request):
     
     cs = deals.objects.all()
@@ -619,6 +627,10 @@ def signin(request):
            
                 request.session['name']="salesperson"
                 return redirect('/addsales')
+        elif m=="business owner":
+           
+                request.session['name']="business owner"
+                return redirect('/showdeal')
        
         else:
             request.session['name']="username"
@@ -661,12 +673,13 @@ def register_user(request):
             password=password,
             date_joined=date_joined
         )
-    
+        N=8
         phone = request.POST.get('phone')
         referral_code = request.POST.get('referral_code')
         postcode = request.POST.get('postcode')
-        designation=request.POST.get('designation')
-        referral=random.randint(100,200)
+       
+        referral= ''.join(random.choices(string.ascii_uppercase +
+                             string.digits, k = N))
        
         obj=Employee(
             user_id=user.id,
@@ -807,14 +820,15 @@ class BusinessAddApi(APIView):
     
     def post(self,request):
         Serializer = businessSerializer(data=request.data)
-        categories_id= request.POST.get('categories_id')
-        categories= category.objects.filter(id=categories_id).first()
+        
+        categoryobject= category.objects.all().only('name')
         if Serializer.is_valid():
            
            business_name = request.POST.get('business_name') 
+           
            name=request.POST.get('name')
            print(name)
-           Serializer.save(business_code=categories.name[0:3] + business_name[0:3] +str(random.randint(100,200)))
-           return Response(Serializer.data,safe=False)
+           Serializer.save(business_code= business_name[0:3] +str(random.randint(100,200)))
+           return JsonResponse(Serializer.data)
 
-        return Response(Serializer.errors)
+        
