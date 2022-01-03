@@ -244,7 +244,7 @@ def favourites(request):
         details.append({
             'id': payment.id,
             # 'image1':payment.business.image1,
-            'business_id': payment.business_id,
+            'business_id': payment.irich.business_id,
             'business_name': payment.irich.business_name,
             'categories': payment.irich.categories.name,
             'business_address': payment.irich.business_address,
