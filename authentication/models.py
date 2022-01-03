@@ -65,6 +65,8 @@ class Employee(models.Model):
         null=True,
         blank=True
     )
+    
+    
 class PaymentMethod(models.Model):
     title = models.CharField(unique=True, max_length=150)
 
@@ -106,7 +108,7 @@ class business_details(models.Model):
     business_address=models.CharField(max_length=200)
     email=models.EmailField(max_length=50)
     subcategory=models.CharField(max_length=200)
-    irich=models.CharField(max_length=200)
+    irich=models.TextField(max_length=200)
     
     business_code=models.CharField(max_length=50)
     Account_details=models.CharField(max_length=50)
@@ -150,7 +152,7 @@ class rewards(models.Model):
     referral_member=models.CharField(max_length=500)
 class payments(models.Model):
     amount=models.IntegerField()
-    business=models.ForeignKey(
+    irich=models.ForeignKey(
         'business_details',
         on_delete=models.CASCADE,
         null=True,
@@ -164,13 +166,14 @@ class payments(models.Model):
         blank=True,
         # verbose_name='business_name'
     )
-
-
-# Create your models here.
-
-# Create your models here.
-
-
-
-# Create your models here.
-
+    
+class wallet(models.Model):
+    earning=models.CharField(max_length=100)
+    irich_bonus=models.CharField(max_length=100)
+    user=models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        # verbose_name='business_name'
+    )

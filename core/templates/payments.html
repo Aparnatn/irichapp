@@ -29,7 +29,7 @@
 
             </div>
             <ul>
-                
+    
                 <li>
                   <a href="/categories">
                       <span class="icon"><i class="fas fa-business-time"></i></span>
@@ -39,7 +39,7 @@
                 <li>
                     <a href="/list">
                         <span class="icon"><i class="fas fa-business-time"></i></span>
-                        <span class="title">My Business</span>
+                        <span class="title">All Business</span>
                     </a>
                 </li>
                 <li>
@@ -48,7 +48,7 @@
                         <span class="title">Transactions</span>
                     </a>
                 </li>
-              
+               
               <li>
                 <a href="/showrole">
                     <span class="icon"><i class="fas fa-exchange-alt"></i></span>
@@ -67,14 +67,9 @@
                       <span class="title">Users</span>
                   </a>
               </li>
+               
                 <li>
-                    <a href="/business_list">
-                        <span class="icon"><i class="fas fa-money-check"></i></span>
-                        <span class="title">All Deals</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/paymentss">
+                    <a href="/walletsection">
                         <span class="icon"><i class="fas fa-coins"></i></span>
                         <span class="title">Payment</span>
                     </a>
@@ -117,6 +112,13 @@
                         <a href=""><i class="fas fa-qrcode topbar-icons"></i></a> 
                     </div>
                   </div>
+                 
+                  {%for i in details%}
+                  
+               Available Balance:   {{i.bonus}}
+                  {%endfor%}
+                  <!-- {else}
+                  Available Balance:500 -->
 
             </div>
             <div class="col-sm-3">
@@ -136,8 +138,9 @@
                 </thead>
                 <tbody>
                <tr>
+                {%for i in details%}
                    <td></td>
-                   {%for i in details%}
+                   
                    <td>{{i.username}}</td>
                   
                   
@@ -147,12 +150,13 @@
                    <td>{{i.business_name}}</td>
                   
                    <td>{{i.irich_percent}}</td>
-                   {%endfor%}
+                  
                    <td>2%</td>
-                   <td></td>
-                   <td></td>
+                   <td>{{i.net_amount}}</td>
+                   <td>{{i.net_amount}}</td>
                    
             </tr>
+            {%endfor%}
             </tbody>
             </table>
       </div>

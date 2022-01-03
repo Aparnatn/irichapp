@@ -119,6 +119,28 @@
                                       </div>
                                     </div>
                                   </div>
+                                  <div class="input">
+                                    <div class="inputBox">
+                                      <label for="fname">Referred By</label>
+                                      <br>
+                                      <div class="d-flex">
+                                       
+                                          <select  style="border-radius:12px;width: 8cm;" class="custom-select" name="categories_id">
+                                           
+                                                                              
+                                            {% for i in object %}
+                                            <option value="{{i.id}}">{{i.referral_code}}</option>
+    {%endfor%}
+                                        </select>
+                                      </div>
+                                    </div>
+                                    <br>
+                                   
+                                  
+                                    <br>
+                                  
+                                  <!-- </div> -->
+                             </div>  
                                 </div> 
                                 <div class="col-12 col-md-6">
                                     <div class="input">
@@ -131,6 +153,7 @@
                                         </div>
                                       </div>
                                     </div> 
+                                                
                     </div>    
                    
                    

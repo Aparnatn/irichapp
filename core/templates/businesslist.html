@@ -35,13 +35,13 @@
     <ul>
      
       <li>
-        <a href="/categories">
+        <a href="/normalcategories">
             <span class="icon"><i class="fas fa-business-time"></i></span>
             <span class="title">Categories</span>
         </a>
     </li>
       <li>
-          <a href="/list">
+          <a href="/businesslist">
               <span class="icon"><i class="fas fa-business-time"></i></span>
               <span class="title">My Business</span>
           </a>
@@ -142,7 +142,7 @@
       
               <div class="row">
               
-                  {% for data in movie %}
+                  {% for data in details %}
                  
                   
                   <div class="col-12 col-md-4">
@@ -152,20 +152,20 @@
                     <div class="card-body">
                   
                   
-                      Category Name: {{ data.categories.name }}<br />
-                      Business Description: {{ data.business.business_desc }}<br />
+                      Category Name: {{ data.name }}<br />
+                      Business Description: {{ data.business_desc }}<br />
                       Business Address {{ data.business_address }}<br />
                       Business_name :{{data.business_name}}<br />
-                      Business_desc: {{data.business_desc}}<br />
+                     
                       Business_address: {{data.business_address}}<br />
-                      Email {{data.email}}<br />
-                      In :{{data.In}}<br />
+                      Email :{{data.email}}<br />
                      
-                      Account_holder :{{data.Account_holder}}<br />
-                      account_number :{{data.account_number}}<br />
-                      business_contact :{{business_contact}}
                      
-                      add_offer: {{data.add_offer}}<br />
+                      Account_Details :{{data.Account_details}}<br />
+                      Account_number :{{data.account_number}}<br />
+                      business_contact :{{data.business_contact}}
+                     
+                      
                      
                      
                       <hr>
