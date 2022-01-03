@@ -231,7 +231,7 @@ def favourites(request):
     business_payments = payments.objects.all().select_related('irich').only(
         'id',
 
-        'business_id',
+        'irich_id',
         'irich__business_name',
         'irich__categories__name',
 
@@ -244,7 +244,7 @@ def favourites(request):
         details.append({
             'id': payment.id,
             # 'image1':payment.business.image1,
-            'business_id': payment.irich.business_id,
+            'irich_id': payment.irich_id,
             'business_name': payment.irich.business_name,
             'categories': payment.irich.categories.name,
             'business_address': payment.irich.business_address,
