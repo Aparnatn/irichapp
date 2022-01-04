@@ -139,13 +139,16 @@
                    
                       <thead>
                           <tr>
-                          <th>Start Date</th>
-                          <th>End Date</th>
-                          <th>Targetted amount</th>
-                          <th>Target Referral member</th>
+                            <th width="50px;">#</th>
+                       
+                            <th width="100px;">Share</th>
+                            <th width="50px;">Order</th>
+                            <th width="100px;">factor</th>
+                            <th width="100px;">multiplier</th>
+                            <th width="100px;">To give</th>
+                        
                          
-                          <th>Actions</th>
-                          <th>Actions</th>
+                         
                         </tr>
                       </thead>
 
@@ -153,19 +156,20 @@
                   
                   <tbody>
                       
-                    {% for data in reward %}
+                    {% for item in give_back %} 
                     <tr>
-                    <td>{{ data.start_date }}</td>   
-                    <td> {{ data.end_date }}</td> 
-                    <td> {{ data.targeted_amount }}</td> 
-                    
-                   
-                    <td> {{data.referral_member}}</td> 
-                   
+                        <td>{{ item.sl }}</td>
+                        <!-- <td>{{ Customer }}</td> -->
+                        <td>{{ item.share }}</td>
+                        <td>{{ item.order }}</td>
+                        <td>{{ item.factor }}</td>
+                        <td>{{ item.multiplier }}</td>
+                        <td>{{ item.to_give }}</td>
+                    </tr>
+                    {% endfor %}
                      
                   
-                  </tr>
-                  {% endfor %}
+                
                     
                             
                     </tbody>
