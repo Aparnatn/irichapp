@@ -356,8 +356,17 @@ def wallets(request):
     total = 0
     shares = []
     factor = sum(range(count + 1))
-
+     
     for i, item in enumerate(transactions, start=1):
+        wallet_user_ids = wallet.objects.all().values('user_id','irich_bonus')
+        Payment = payments.objects.all().select_related('irich', 'user').only('irich__business_name', 'irich__irich',
+                                                                       'user__username')
+        for dicts in wallet_user_ids:
+            if dicts['user_id'] == item.user_id:
+               
+                bonus = int(dicts['irich_bonus']) - 75
+                from_value = wallet.objects.get(user_id=item.user_id)
+                from_value.irich_bonus = bonus
         # print(item.amount)
         total += int(item.amount)/ int(item.irich.irich) / 10*int(item.irich.irich) 
         shares.append({
@@ -402,10 +411,14 @@ def wallets(request):
     print(to_give)
     print(spent)
     print(shares)
-
+    for dicts in wallet_user_ids:
+            
+                
+            bonus = int(dicts['irich_bonus'])
     return render(request, 'wallet.html', {
         'transact': transact,
-        'give_back': give_back
+        'give_back': give_back,
+        "available_balance":int(bonus)
     })
 
 
