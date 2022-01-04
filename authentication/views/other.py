@@ -374,7 +374,7 @@ def wallets(request):
             "order": count,
             "spent": int(item.amount)/10,
             "username": item.user.username,
-            "share": int(item.amount)/10,
+            "share": int(item.amount),
             "to_give": 0,
             "multiplier": 0,
             "factor": factor,
