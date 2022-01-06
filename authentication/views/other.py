@@ -2,7 +2,7 @@
 """
 Copyright (c) 2019 - present AppSeed.us
 """
-
+import json
 from django.db.models.aggregates import Max
 from django.http.request import HttpRequest
 from requests.models import Response
@@ -140,16 +140,9 @@ def transact(request):
 
 
 def index(request):
-    # try:
-    #     users = User.objects.all()
-    #     print(request.user)
-    #     user = User.objects.get(username=request.user)
+    
     return render(request, 'index.html')
-
-
-# except Exception as e:
-#     print(e)
-#     return HttpResponse("Please login from admin site for sending messages from this view")
+@api_view(["POST"])
 
 
 def transactions(request):
@@ -552,6 +545,7 @@ def show_users(request):
     })
 
 
+
 class paysection(APIView):
     serializer_class = paymentSerializer
     
@@ -574,7 +568,26 @@ class paysection(APIView):
             return JsonResponse(Serializer.data)
 
         return Response(Serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class adduser(APIView):
 
+    serializer_class =UserSerializer
+
+    def post(self, request):
+        if request.method =="POST":
+            Serializer =UserSerializer(data=request.data)
+
+       
+        if Serializer.is_valid():
+           
+          Serializer.save()
+        return JsonResponse(Serializer.data)
+           
+ 
+
+    
+       
+      
+        
 
 def categories(request):
     cat = category.objects.all()
@@ -1104,19 +1117,6 @@ class BusinessAddApi(APIView):
             print(name)
             Serializer.save(business_code=business_name[0:3] + str(random.randint(100, 200)))
             return JsonResponse(Serializer.data)
-class UseraddApi(APIView):
-    serializer_class = UserSerializer
 
-    def post(self, request):
-        Serializer = businessSerializer(data=request.data)
-
-        categoryobject = category.objects.all().only('name')
-        if Serializer.is_valid():
-            business_name = request.POST.get('business_name')
-
-            name = request.POST.get('name')
-            print(name)
-            Serializer.save(business_code=business_name[0:3] + str(random.randint(100, 200)))
-            return JsonResponse(Serializer.data)
 
 

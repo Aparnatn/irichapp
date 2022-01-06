@@ -1,3 +1,5 @@
+from django.contrib.auth import models
+from django.db.models import fields
 from rest_framework import serializers
 from authentication.models import Employee, Transactions, deals, payments,business_details,category, rewards
 from django.contrib.auth.forms import UserCreationForm
@@ -17,14 +19,35 @@ class transSerializer(serializers.ModelSerializer):
         model = Transactions
         fields='__all__'
 
+# class UserSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = User
+#         fields='__all__'
+class EmployeeSerializer(serializers.ModelSerializer):
+   
+
+   class Meta:
+        model = Employee
+        fields=('phone','referral_code','postcode')
 class UserSerializer(serializers.ModelSerializer):
+    employee = EmployeeSerializer()
     class Meta:
         model = User
-        fields='__all__'
-class EmployeeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Employee
-        fields='__all__'
+        fields = (
+          'username',
+          'password',
+          'first_name',
+          'last_name',
+          'employee'
+        )
+
+    def create(self, validated_data):
+        employee = validated_data.pop('employee')  
+        employee = Employee.objects.create(**employee)
+        user = User.objects.create(employee=employee, **validated_data)
+        return user
+    
+    
 class paymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = payments

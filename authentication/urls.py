@@ -57,6 +57,7 @@ urlpatterns = [
     path('normaluser', views.normaluser,name='normaluser'),
     path('transactions', views.transactions, name="transactions"),
     path('role', views.role, name="role"),
+    path('adduser',views.adduser.as_view()),
     path('adddeal', views.adddeal, name="adddeal"),
     path('wallets', views.wallets, name="wallets"),
     path('business_favourite/<int:id>', views.business_favourite, name="business_favourite"),
