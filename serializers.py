@@ -22,7 +22,7 @@ class transSerializer(serializers.ModelSerializer):
 class UsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields=('username','email',)
+        fields=('id','username','email',)
 class EmployeeSerializer(serializers.ModelSerializer):
    
 
