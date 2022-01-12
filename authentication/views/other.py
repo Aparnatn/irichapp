@@ -371,12 +371,12 @@ def walletsapi(request):
         shares.append({
 
             "order": count,
-            "spent": int(item.amount)/10,
+            "spent": int(item.amount),
             "username": item.user.username,
-            "share": int(item.amount),
-            "to_give": 0,
-            "multiplier": 0,
-            "factor": factor,
+            # "share": int(item.amount),
+            "earning": 0,
+            # "multiplier": 0,
+            # "factor": factor,
         })
         count -= 1
 
@@ -384,18 +384,18 @@ def walletsapi(request):
 
     give_back = []
     for item in shares:
-        item['to_give'] = item['order'] * multiplier
+        item['earning'] = item['order'] * multiplier
         item['multiplier'] = multiplier
         give_back.append(item)
     shares = sorted(shares, key=lambda i: i['spent'], reverse=True)
     # print(shares)
-    shares_sort = sorted(shares, key=lambda i: i['to_give'], reverse=True)
+    shares_sort = sorted(shares, key=lambda i: i['earning'], reverse=True)
     # print(shares_sort)
     to_give = []
     spent = []
 
     for dicts in shares_sort:
-        to_give.append(dicts['to_give'])
+        to_give.append(dicts['earning'])
     for dict in shares:
         spent.append(dict['spent'])
     # test_share = shares
@@ -404,7 +404,7 @@ def walletsapi(request):
 
         print(to_give[counter])
 
-        dict_share['to_give'] = to_give[counter]
+        dict_share['earning'] = to_give[counter]
         # dict_share['spent'] = spent[counter]
         counter += 1
     print(to_give)
@@ -414,8 +414,10 @@ def walletsapi(request):
             
                 
             bonus = int(dicts['irich_bonus'])
-    serializer = paymentSerializer(Payment, many=True)
-    return JsonResponse({"movies": serializer.data}, safe=False, status=status.HTTP_200_OK)
+    return JsonResponse({
+        
+        'give_back': give_back
+    })
 def wallets(request):
     transactions = payments.objects.filter().order_by('amount').select_related('irich', 'user')
     bonus=500
@@ -620,11 +622,51 @@ def show_users(request):
 @api_view(["GET"])
 @csrf_exempt
 def profile(request):
-    
+    wallet_user_ids = wallet.objects.all().values('user_id','irich_bonus')
     users = User.objects.all()
+    transactions = payments.objects.filter().order_by('amount').select_related('irich')
 
+    count = len(transactions)
+    total = 0
+    shares = []
+    factor = sum(range(count + 1))
+
+    for i, item in enumerate(transactions, start=1):
+        # print(item.amount)
+        total += int(item.amount)/ int(item.irich.irich) / 10*int(item.irich.irich) 
+        shares.append({
+            # "sl": i,
+            # "order": count,
+            "spent": int(item.amount)/10,
+            # "id": item.id,
+
+            "earning": 0,
+            # "multiplier": 0,
+            # "factor": factor,
+        })
+        count -= 1
+
+    count_sl = 1
+    multiplier = (total * 0.5) / factor
+    shares = sorted(shares, key=lambda i: i['spent'], reverse=True)
+    count_shares = len(shares)
+    for dicts in shares:
+        dicts['order'] = count_shares
+        dicts['sl'] = count_sl
+        count_shares = count_shares - 1
+        count_sl += 1
+    print(sorted(shares, key=lambda i: i['spent'], reverse=True))
+
+    give_back = []
+    for item in shares:
+        item['earning'] = item['order'] * multiplier
+        item['multiplier'] = multiplier
+        give_back.append(item)
+
+    
     return JsonResponse({
         "users": UsersSerializer(users, many=True).data,
+        'give_back': give_back
     })
 @api_view(['POST'])
 def profileupdate(request,pk):
