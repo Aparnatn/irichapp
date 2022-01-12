@@ -3,13 +3,14 @@
 Copyright (c) 2019 - present AppSeed.us
 """
 import json
+import re
 from django.db.models.aggregates import Max
 from django.http.request import HttpRequest
 from requests.models import Response
 import random
 import string
 from authentication.views.checkout import payment_cancel
-from serializers import UserSerializer, business_detailsSerializer, businessSerializer, categorySerializer, \
+from serializers import UserSerializer, UsersSerializer, business_detailsSerializer, businessSerializer, categorySerializer, \
     EmployeeSerializer, dealSerializer, paymentSerializer, rewardSerializer, transSerializer
 from ..models import business_details, category, roles, payments
 from rest_framework import status
@@ -26,7 +27,7 @@ from django.shortcuts import (get_object_or_404,
                               HttpResponseRedirect)
 # Create your views here.
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, get_user, login
 from django.contrib.auth.models import User
 from django.forms.utils import ErrorList
 from django.http import HttpResponse
@@ -142,7 +143,7 @@ def transact(request):
 def index(request):
     
     return render(request, 'index.html')
-@api_view(["POST"])
+
 
 
 def transactions(request):
@@ -214,7 +215,14 @@ def business_favourite(request, id):
     business = business_details.objects.all()
     cat = category.objects.all()
     payment = payments.objects.all()
-    movies = payments.objects.filter(business_id=id)
+    movies = payments.objects.filter(irich_id=id).select_related('irich').only(
+        'id',
+
+        'irich_id',
+        'irich__business_name',
+        'irich__categories__name',
+
+        'irich__business_address')
     return render(request, 'favourite.html', {"movies": movies, "cat": cat, "payment": payment})
 
 
@@ -294,7 +302,7 @@ def payment(request, id):
 
 def walletsection(request):
     wallet_user_ids = wallet.objects.all().values('user_id','irich_bonus')
-
+    bonus=0
     print(wallet_user_ids)
     # wallet_user_ids.save()
     # print(wallet_user_ids)
@@ -339,12 +347,78 @@ def walletsection(request):
         "details": details,
         "available_balance":int(bonus)
     })
+@api_view(["GET"])
+def walletsapi(request):
+    transactions = payments.objects.filter().order_by('amount').select_related('irich', 'user')
+    bonus=500
+    count = len(transactions)
+    total = 0
+    shares = []
+    factor = sum(range(count + 1))
+     
+    for i, item in enumerate(transactions, start=1):
+        wallet_user_ids = wallet.objects.all().values('user_id','irich_bonus')
+        Payment = payments.objects.all().select_related('irich', 'user').only('irich__business_name', 'irich__irich',
+                                                                       'user__username')
+        for dicts in wallet_user_ids:
+            if dicts['user_id'] == item.user_id:
+               
+                bonus = int(dicts['irich_bonus']) - 75
+                from_value = wallet.objects.get(user_id=item.user_id)
+                from_value.irich_bonus = bonus
+        # print(item.amount)
+        total += int(item.amount)/ int(item.irich.irich) / 10*int(item.irich.irich) 
+        shares.append({
 
+            "order": count,
+            "spent": int(item.amount)/10,
+            "username": item.user.username,
+            "share": int(item.amount),
+            "to_give": 0,
+            "multiplier": 0,
+            "factor": factor,
+        })
+        count -= 1
 
+    multiplier = (total * 0.5) / factor
 
+    give_back = []
+    for item in shares:
+        item['to_give'] = item['order'] * multiplier
+        item['multiplier'] = multiplier
+        give_back.append(item)
+    shares = sorted(shares, key=lambda i: i['spent'], reverse=True)
+    # print(shares)
+    shares_sort = sorted(shares, key=lambda i: i['to_give'], reverse=True)
+    # print(shares_sort)
+    to_give = []
+    spent = []
+
+    for dicts in shares_sort:
+        to_give.append(dicts['to_give'])
+    for dict in shares:
+        spent.append(dict['spent'])
+    # test_share = shares
+    counter = 0
+    for dict_share in shares:
+
+        print(to_give[counter])
+
+        dict_share['to_give'] = to_give[counter]
+        # dict_share['spent'] = spent[counter]
+        counter += 1
+    print(to_give)
+    print(spent)
+    print(shares)
+    for dicts in wallet_user_ids:
+            
+                
+            bonus = int(dicts['irich_bonus'])
+    serializer = paymentSerializer(Payment, many=True)
+    return JsonResponse({"movies": serializer.data}, safe=False, status=status.HTTP_200_OK)
 def wallets(request):
     transactions = payments.objects.filter().order_by('amount').select_related('irich', 'user')
-    
+    bonus=500
     count = len(transactions)
     total = 0
     shares = []
@@ -543,8 +617,24 @@ def show_users(request):
         "employee": EmployeeSerializer(employee, many=True).data,
         "users": UserSerializer(users, many=True).data,
     })
+@api_view(["GET"])
+@csrf_exempt
+def profile(request):
+    
+    users = User.objects.all()
 
-
+    return JsonResponse({
+        "users": UsersSerializer(users, many=True).data,
+    })
+@api_view(['POST'])
+def profileupdate(request,pk):
+    company=User.objects.get(id=pk)
+    serializer=UsersSerializer(instance=company,data=request.data)
+    if serializer.is_valid():
+        serializer.save()
+        return JsonResponse(serializer.data,safe=False)
+    else:
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class paysection(APIView):
     serializer_class = paymentSerializer
@@ -574,12 +664,33 @@ class adduser(APIView):
 
     def post(self, request):
         if request.method =="POST":
-            Serializer =UserSerializer(data=request.data)
-
-       
-        if Serializer.is_valid():
+            id=request.POST.get('id')
+            print(id)
+            username=request.POST.get('username')
+            referral_code=request.POST.get('referral_code')
+            print(referral_code)
+            phone=request.POST.get('phone')
+            postcode=request.POST.get('postcode')
+            print(postcode)
+            
            
+           
+
+           
+            
+        Serializer =UserSerializer(data=request.data)
+        if Serializer.is_valid():
+         
+          
           Serializer.save()
+          user=User.objects.get(username=username).id
+          employees_all=Employee.objects.get(referral_code=referral_code)
+          print(user)
+          wallet_bonus=wallet(irich_bonus=500,earning=0,user_id=user)
+          employees=Employee(employees_all=employees_all,user_id=user,postcode=postcode,phone=phone)
+          print(employees_all)
+          wallet_bonus.save()
+          employees.save()
         return JsonResponse(Serializer.data)
            
  
@@ -815,11 +926,32 @@ def normallist(request):
 
     return render(request, "normallist.html", context)
 
+@api_view(["GET"])
+def businesslistapi(request):
+    m= request.POST.get('username')
+    if m == "business owner":
+     movies = Employee.objects.all().select_related('business', 'business__categories','user')
+
+     details = []
+    # print (business.payments)
+    for movie in movies:
+        details.append({
+            'business_name': movie.business.business_name,
+            'name': movie.business.categories.name,
+            'business_desc': movie.business.business_desc,
+            'business_address': movie.business.business_address,
+            'email': movie.business.email,
+            'Account_details': movie.business.Account_details,
+            'account_number': movie.business.account_number,
+            'business_contact': movie.business.business_contact,
+
+        })
+    return JsonResponse(details, safe=False)
 
 def businesslist(request):
    
 
-    movies = Employee.objects.all().select_related('business', 'business__categories')
+    movies = Employee.objects.all().select_related('business', 'business__categories','user')
 
     details = []
     # print (business.payments)
@@ -878,7 +1010,7 @@ def logout(request):
 
 
 def users(request):
-    employee = Employee.objects.select_related('user', 'designation', 'business').all()
+    employee = Employee.objects.select_related('user').all()
 
     return render(request, "users.html", {"employee": employee})
 

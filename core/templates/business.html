@@ -267,19 +267,22 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
-                                        <script>
-                                            function initialize() {
-                                                var input_location = document.getElementById('{{ form.location.auto_id }}');
-                                                var autocomplete = new google.maps.places.Autocomplete(input_location);
-
-                                                var g_autocomplete = $("body > .pac-container").filter(":visible");
-                                                g_autocomplete.bind('DOMNodeInserted DOMNodeRemoved', function (event) {
-                                                    $(".pac-item", this).addClass("needsclick");
-                                                });
-                                            }
-                                            google.maps.event.addDomListener(window, 'load', initialize);
-
+                                    <button onclick="getLocation()">Try It</button>
+                                    <script>
+                                        var x = document.getElementById("demo");
+                                        
+                                        function getLocation() {
+                                          if (navigator.geolocation) {
+                                            navigator.geolocation.getCurrentPosition(showPosition);
+                                          } else { 
+                                            x.innerHTML = "Geolocation is not supported by this browser.";
+                                          }
+                                        }
+                                        
+                                        function showPosition(position) {
+                                          x.innerHTML = "Latitude: " + position.coords.latitude + 
+                                          "<br>Longitude: " + position.coords.longitude;
+                                        }
                                         </script>
                                 
                                    <br>
