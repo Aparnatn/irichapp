@@ -270,9 +270,29 @@
                                             </div>
                                         </div>
                                     </div>
+<<<<<<< HEAD
 
 
 
+=======
+                                    <button onclick="getLocation()">Try It</button>
+                                    <script>
+                                        var x = document.getElementById("demo");
+                                        
+                                        function getLocation() {
+                                          if (navigator.geolocation) {
+                                            navigator.geolocation.getCurrentPosition(showPosition);
+                                          } else { 
+                                            x.innerHTML = "Geolocation is not supported by this browser.";
+                                          }
+                                        }
+                                        
+                                        function showPosition(position) {
+                                          x.innerHTML = "Latitude: " + position.coords.latitude + 
+                                          "<br>Longitude: " + position.coords.longitude;
+                                        }
+                                        </script>
+>>>>>>> 9de5c8c919c21920875caa850cbafa669430ef38
                                 
                                    <br>
 

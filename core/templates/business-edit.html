@@ -126,7 +126,7 @@
                     <div class="row">
                         <select  style="border-radius:12px;width: 8cm;" class="custom-select" name="business_name">                                                          
                             {% for i in business_edit %}
-                            <option value="{{i.id}}" {% if i.id == business_id %} selected{% endif %}>{{i.business_name}}</option>
+                            <option value="{{i.id}}">{{i.business_name}}</option>
                             {%endfor%}
                         </select>
                     </div>    

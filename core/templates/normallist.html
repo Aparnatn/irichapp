@@ -33,70 +33,54 @@
 
     </div>
     <ul>
-    
-      <li>
-        <a href="/categories">
-            <span class="icon"><i class="fas fa-business-time"></i></span>
-            <span class="title">Categories</span>
-        </a>
-    </li>
-      <li>
-          <a href="/list">
+                
+        <li>
+          <a href="/normalcategories">
               <span class="icon"><i class="fas fa-business-time"></i></span>
-              <span class="title">All Business</span>
+              <span class="title">Categories</span>
           </a>
       </li>
-      <li>
-          <a href="/transactions">
-              <span class="icon"><i class="fas fa-exchange-alt"></i></span>
-              <span class="title">Transactions</span>
-          </a>
-      </li>
-     
-    <li>
-      <a href="/showrole">
-          <span class="icon"><i class="fas fa-exchange-alt"></i></span>
-          <span class="title"> Roles</span>
-      </a>
-  </li>
-      <li>
-          <a href="/shuffle">
-              <span class="icon"><i class="fas fa-exchange-alt"></i></i></span>
-              <span class="title">Shuffle</span>
-          </a>
-      </li>
-      <li>
-        <a href="/users">
-            <span class="icon"><i class="fas fa-exchange-alt"></i></i></span>
-            <span class="title">Users</span>
-        </a>
-    </li>
-     
-      <li>
-          <a href="/walletsection">
-              <span class="icon"><i class="fas fa-coins"></i></span>
-              <span class="title">Payment</span>
-          </a>
-      </li>
-      <li>
-          <a href="/notification">
-              <span class="icon"><i class="fas fa-bell"></i></span>
-              <span class="title">Notification</span>
-          </a>
-      </li>
-      <li>
-          <a href="/setting">
-              <span class="icon"><i class="fas fa-cogs"></i></span>
-              <span class="title">Settings</span>
-          </a>
-      </li>
-      <li>
-          <a href="">
-              <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
-              <span class="title">Logout</span>
-          </a>
-      </li>
-  </ul>
+        <li>
+            <a href="/normallist">
+                <span class="icon"><i class="fas fa-business-time"></i></span>
+                <span class="title">All Business</span>
+            </a>
+        </li>
+        <li>
+            <a href="/normaltransactions">
+                <span class="icon"><i class="fas fa-exchange-alt"></i></span>
+                <span class="title">Transactions</span>
+            </a>
+        </li>
+    
+        <li>
+            <a href="/wallets">
+                <span class="icon"><i class="fas fa-coins"></i></span>
+                <span class="title">Wallet</span>
+            </a>
+        </li>
+       
+       
+        
+        <li>
+            <a href="/notification">
+                <span class="icon"><i class="fas fa-bell"></i></span>
+                <span class="title">Notification</span>
+            </a>
+        </li>
+        <li>
+            <a href="/setting">
+                <span class="icon"><i class="fas fa-cogs"></i></span>
+                <span class="title">Settings</span>
+            </a>
+        </li>
+        <li>
+            <a href="/logout">
+                <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+                <span class="title">Logout</span>
+            </a>
+        </li>
+    </ul>
   </div>
 
 
@@ -142,34 +126,32 @@
                   
                   <div class="col-12 col-md-4">
                   <div class="card">
-                   
+                    <a href="edit/{{data.id}}">edit</a>
                     <img src="{{data.image1.url}}"/>
                     <div class="card-body">
                   
                   
                      <b>Category Name:</b>  {{ data.categories.name }}<br />
-                      <b>Business Description:</b> {{ data.business_desc }}<br />
+                      <b>Business Description:</b> {{ data.business.business_desc }}<br />
                       <b>Business Address:</b> {{ data.business_address }}<br />
                       <b>Business_name:</b>{{data.business_name}}<br />
-                    
+                      <b>Business_desc:</b> {{data.business_desc}}<br />
                       <b>Business_address:</b> {{data.business_address}}<br />
                       <b>Email:</b> {{data.email}}<br />
-                    
+                     <b>In:</b>{{data.In}}<br />
                      
-                    <b>Account_Details:</b> {{data.Account_details}}<br />
+                    <b>Account_holder:</b> {{data.Account_holder}}<br />
                       <b>Account_number:</b>{{data.account_number}}<br />
-                      <b>Business_contact:</b>{{data.business_contact}}
+                      <b>Business_contact:</b>{{business_contact}}
                      
-                      
+                      add_offer: {{data.add_offer}}<br />
                      
                      
                       <hr>
-                      <!-- <a href="/business/{{data.id}}/payment">checkout</a> -->
+                      <a href="/business/{{data.id}}/payment">checkout</a>
                   
                       <a href="/business_favourite/{{data.id}}">Favourite</a>
                       <a href="/showdeal">Deals</a>
-                      <a href="edit/{{data.id}}">Edit </a>
-                      <a href="delete/{{data.id}}">Delete </a>
                     </div>
                   </div> 
                 </div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
