@@ -49,10 +49,11 @@ class Employee(models.Model):
         null=True,
         blank=True
     )
-    referral_code=models.CharField(max_length=150)
-    phone=models.CharField(max_length=150)
-    postcode=models.CharField(max_length=150)
-    referral=models.CharField(max_length=150)
+    referral_code=models.TextField(blank=True,max_length=150)
+    phone=models.IntegerField()
+
+    postcode=models.TextField(blank=True,max_length=150)
+    referral=models.CharField(blank=True,max_length=150)
     designation=models.ForeignKey(
         'roles', 
         on_delete=models.CASCADE,
@@ -65,6 +66,8 @@ class Employee(models.Model):
         null=True,
         blank=True
     )
+    
+    
 class PaymentMethod(models.Model):
     title = models.CharField(unique=True, max_length=150)
 
@@ -100,13 +103,14 @@ class business_details(models.Model):
         blank=True
     )
     bank_name=models.CharField(max_length=50)
-    
+    latitude = models.TextField(max_length=150)
+    longitude = models.TextField(max_length=150)
     business_name=models.CharField(max_length=50)
     business_desc=models.CharField(max_length=200)
     business_address=models.CharField(max_length=200)
     email=models.EmailField(max_length=50)
     subcategory=models.CharField(max_length=200)
-    irich=models.CharField(max_length=200)
+    irich=models.TextField(max_length=200)
     
     business_code=models.CharField(max_length=50)
     Account_details=models.CharField(max_length=50)
@@ -150,7 +154,7 @@ class rewards(models.Model):
     referral_member=models.CharField(max_length=500)
 class payments(models.Model):
     amount=models.IntegerField()
-    business=models.ForeignKey(
+    irich=models.ForeignKey(
         'business_details',
         on_delete=models.CASCADE,
         null=True,
@@ -164,13 +168,14 @@ class payments(models.Model):
         blank=True,
         # verbose_name='business_name'
     )
-
-
-# Create your models here.
-
-# Create your models here.
-
-
-
-# Create your models here.
-
+    
+class wallet(models.Model):
+    earning=models.CharField(max_length=100)
+    irich_bonus=models.CharField(max_length=100)
+    user=models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        # verbose_name='business_name'
+    )

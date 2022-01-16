@@ -134,7 +134,7 @@
                     </div>
                   </div>
             </div>
-            <form action="/home" method="post" enctype="multipart/form-data">
+            <form action="/search_map" method="post" enctype="multipart/form-data">
                 {%csrf_token%}
             <div class="main-content">
                 <div class="container">
@@ -150,7 +150,7 @@
                                   <br>
                                   <div class="d-flex">
                                    
-                                      <select  style="border-radius:12px;width: 8cm;" class="custom-select" name="categories_id">
+                                      <select  style="border-radius:12px;width: 8cm;" class="custom-select" name="categories_id" value={{categories_id}}>
                                        
                                                                           
                                         {% for i in cat %}
@@ -163,9 +163,13 @@
                                 <div class="inputBox">
                                   <label for="fname">Bank Name</label>
                                   <br>
+
                                   <div class="d-flex">
-                                      <input type="text" id="bankname" name="bank_name" placeholder="Bank Name"  >
-                                     
+                                      {% if  bank_name %}
+                                      <input type="text" id="bankname" name="bank_name" placeholder="Bank Name" value={{bank_name}} required>
+                                      {% else %}
+                                     <input type="text" id="bankname" name="bank_name" placeholder="Bank Name"  required>
+                                      {% endif %}
                                   </div>
                                 </div>
                               
@@ -174,7 +178,12 @@
                                   <label for="fname">IFSC code</label>
                                   <br>
                                   <div class="d-flex">
-                                      <input type="text" id="bsbnumber" name="IFSC_code" placeholder="IFSC_code" >
+                                      {% if  IFSC_code %}
+                                      <input type="text" id="bsbnumber" name="IFSC_code" placeholder="IFSC_code" value={{IFSC_code}} required>
+                                      {% else %}
+                                    <input type="text" id="bsbnumber" name="IFSC_code" placeholder="IFSC_code"  required>
+                                      {% endif %}
+
 
                                   </div>
                                 </div>
@@ -185,8 +194,12 @@
                               <label for="fname">Sub Category</label>
                               <br>
                               <div class="d-flex">
-                               
-                                <input type="text" id="bankname" name="subcategory" placeholder="CATEGORY" >
+                                {% if  subcategory %}
+                                      <input type="text" id="bankname" name="subcategory" placeholder="CATEGORY" value={{subcategory}}required>
+                                      {% else %}
+                                    <input type="text" id="bankname" name="subcategory" placeholder="CATEGORY" required>
+                                      {% endif %}
+
                               </div>
                             </div>
                             <br>
@@ -194,7 +207,12 @@
                               <label for="fname">Account Details</label>
                               <br>
                               <div class="d-flex">
-                                  <input type="text" id="bankname" name="Account_details" placeholder="Account_details" >
+                                  {% if  Account_details %}
+                                       <input type="text" id="bankname" name="Account_details" placeholder="Account_details" value={{Account_details}} required>
+                                      {% else %}
+                                    <input type="text" id="bankname" name="Account_details" placeholder="Account_details"  required>
+                                      {% endif %}
+
                                  
                               </div>
                             </div>
@@ -202,7 +220,12 @@
                                 <label for="fname">Email</label>
                                 <br>
                                 <div class="d-flex">
-                                    <input type="text" id="bankname" name="email" placeholder="email" >
+                                    {% if  email %}
+                                       <input type="text" id="bankname" name="email" placeholder="email" value={{email}} required>
+                                      {% else %}
+                                    <input type="text" id="bankname" name="email" placeholder="email"  required>
+                                      {% endif %}
+
                                    
                                 </div>
                               </div>
@@ -220,7 +243,12 @@
                                       <label for="fname">Business Name</label>
                                      <br>
                                       <div class="d-flex">
-                                          <input type="text" id="bname" name="business_name" placeholder="BUSINESS NAME"  >
+                                          {% if  business_name %}
+                                      <input type="text" id="bname" name="business_name" placeholder="BUSINESS NAME" value={{business_name}} required>
+                                      {% else %}
+                                    <input type="text" id="bname" name="business_name" placeholder="BUSINESS NAME"  required>
+                                      {% endif %}
+
                                          
                                       </div>
                                     </div>
@@ -228,7 +256,12 @@
                                     <div class="inputBox">
                                       <label for="fname">Business Description</label>
                                       <div class="d-flex">
-                                          <input type="text" id="bdescription" name="business_desc" placeholder="BUSINESS DESCRIPTION" >
+                                          {% if  business_desc %}
+                                      <input type="text" id="bdescription" name="business_desc" placeholder="BUSINESS DESCRIPTION" value={{business_desc}} required>
+                                      {% else %}
+                                  <input type="text" id="bdescription" name="business_desc" placeholder="BUSINESS DESCRIPTION"  required>
+                                      {% endif %}
+
                                          
                                       </div>
                                     </div>
@@ -237,10 +270,14 @@
                                     <div class="inputBox">
                                       <label for="fname">Business Address</label>
                                       <div class="d-flex">
+                                          {% if  business_name %}
+                                       <input type="text" id="baddress" name="business_address" placeholder="BUSINESS ADDRESS" value={{business_address}} required>
+                                      {% else %}
+                                   <input type="text" id="baddress" name="business_address" placeholder="BUSINESS ADDRESS"  required>
+                                      {% endif %}
 
 
-                                          <input type="text" id="baddress" name="business_address" placeholder="BUSINESS ADDRESS"  >
-                                          <input type="submit" name="addbusiness" value="Search">
+
                                          
                                       </div>
                                     </div>
@@ -295,7 +332,12 @@
                                       <label for="fname">Account Number</label>
                                      <br>
                                       <div class="d-flex">
-                                          <input type="text" id="acnumber" name="account_number" placeholder="ACCOUNT NUMBER" >
+                                          {% if  account_number %}
+                                        <input type="text" id="acnumber" name="account_number" placeholder="ACCOUNT NUMBER" value={{account_number}} required>
+                                      {% else %}
+                                    <input type="text" id="acnumber" name="account_number" placeholder="ACCOUNT NUMBER"  required>
+                                      {% endif %}
+
                                         
                                       </div>
                                     </div>
@@ -304,7 +346,13 @@
                                         <label for="fname">Irich %</label>
                                        <br>
                                         <div class="d-flex">
-                                            <input type="text" id="acnumber" name="irich" placeholder="ACCOUNT NUMBER" >
+                                             {% if  irich %}
+                                       <input type="text" id="acnumber" name="irich" placeholder="ACCOUNT NUMBER" value={{irich}} required>
+                                      {% else %}
+                                   <input type="text" id="acnumber" name="irich" placeholder="ACCOUNT NUMBER" required>
+                                      {% endif %}
+
+
                                           
                                         </div>
                                       </div>
@@ -335,7 +383,12 @@
                                         <label for="fname">Business Contact</label>
                                         <br>
                                         <div class="d-flex">
-                                            <input type="text" id="acnumber" name="business_contact" placeholder="" >
+                                               {% if  business_contact %}
+                                       <input type="text" id="acnumber" name="business_contact" placeholder="" value={{business_contact}} required>
+                                      {% else %}
+                                   <input type="text" id="acnumber" name="business_contact" placeholder=""  required>
+                                      {% endif %}
+
                                             
                                         </div>
                                     </div>
@@ -346,7 +399,12 @@
                                             <label for="fname">Add Image</label>
                                             <br>
                                             <div class="d-flex">
-                                                <input type="file" id="acnumber" name="image1"  >
+                                                  {% if  image1 %}
+                                        <input type="file" id="acnumber" name="image1"  value={{image1}} required>
+                                      {% else %}
+                                   <input type="file" id="acnumber" name="image1"   required>
+                                      {% endif %}
+
                                               
                                             </div>
                                         </div>
@@ -354,7 +412,7 @@
                                     </div>
                                     <br>
                                   <div class="inputBox">
-<!--                                    <input type="submit" name="addbusiness" value="Add Business"> -->
+                                    <input type="submit" name="addbusiness" value="Add Business"> 
                                 </div>
                             </div>
                       

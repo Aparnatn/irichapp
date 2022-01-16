@@ -35,13 +35,13 @@
     <ul>
      
       <li>
-        <a href="/categories">
+        <a href="/normalcategories">
             <span class="icon"><i class="fas fa-business-time"></i></span>
             <span class="title">Categories</span>
         </a>
     </li>
       <li>
-          <a href="/list">
+          <a href="/businesslist">
               <span class="icon"><i class="fas fa-business-time"></i></span>
               <span class="title">My Business</span>
           </a>
@@ -66,7 +66,7 @@
           </a>
       </li> -->
       <li>
-        <a href="/wallet">
+        <a href="/wallets">
             <span class="icon"><i class="fas fa-exchange-alt"></i></i></span>
             <span class="title">Wallet</span>
         </a>
@@ -141,8 +141,9 @@
 
       
               <div class="row">
-              
-                  {% for data in movie %}
+                
+             
+                   {% for data in details %}
                  
                   
                   <div class="col-12 col-md-4">
@@ -153,7 +154,7 @@
                   
                   
                       Category Name: {{ data.categories.name }}<br />
-                      Business Description: {{ data.business.business_desc }}<br />
+                      Business Description: {{ data.business_desc }}<br />
                       Business Address {{ data.business_address }}<br />
                       Business_name :{{data.business_name}}<br />
                       Business_desc: {{data.business_desc}}<br />
@@ -176,7 +177,7 @@
                     </div>
                   </div> 
                 </div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  {% endfor %}
+                 {% endfor %}
                 </div>
               
                       <!-- </div> 

@@ -136,8 +136,9 @@
                 </thead>
                 <tbody>
                <tr>
+                {%for i in details%}
                    <td></td>
-                   {%for i in details%}
+                   
                    <td>{{i.username}}</td>
                   
                   
@@ -147,12 +148,13 @@
                    <td>{{i.business_name}}</td>
                   
                    <td>{{i.irich_percent}}</td>
-                   {%endfor%}
+                  
                    <td>2%</td>
-                   <td></td>
-                   <td></td>
+                   <td>{{i.net_amount}}</td>
+                   <td>{{i.net_amount}}</td>
                    
             </tr>
+            {%endfor%}
             </tbody>
             </table>
       </div>
