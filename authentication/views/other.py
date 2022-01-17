@@ -316,7 +316,7 @@ def walletsection(request):
                 from_value = wallet.objects.get(user_id=payment.user_id)
                 from_value.irich_bonus = bonus
                 # from_value.save()
-                percentage=int(payment.amount)/int(payment.irich.irich)
+                percentage=int(payment.irich.irich)
                 details.append({
                     
                     'username': payment.user.username,
@@ -1020,26 +1020,17 @@ def normallist(request):
 
 def businesslist(request):
    
-    username=request.POST.get('username')
-    print(username)
-    movies = Employee.objects.all().select_related('business', 'business__categories')
+    user=request.POST.get('user')
+    user_id=request.POST.get('user_id')
+    print(user)
     
+    movies = business_details.objects.filter(user_id=user_id).only('business_name')
+    print(movies)
     details = []
     # print (business.payments)
-    for movie in movies:
-        details.append({
-            'business_name': movie.business.business_name,
-            'name': movie.business.categories.name,
-            'business_desc': movie.business.business_desc,
-            'business_address': movie.business.business_address,
-            'email': movie.business.email,
-            'Account_details': movie.business.Account_details,
-            'account_number': movie.business.account_number,
-            'business_contact': movie.business.business_contact,
 
-        })
     return render(request, "businesslist.html", {
-        "details": details,
+        "movies": movies,
     })
 
 
@@ -1063,7 +1054,7 @@ def signin(request):
                 username=request.POST.get('username')
                 print(m)
                 request.session['name'] = "business owner"
-                return redirect('/normalcategories')
+                return redirect('/businesslist')
 
             else:
                 request.session['name'] = "username"

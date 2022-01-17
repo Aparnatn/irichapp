@@ -118,7 +118,12 @@ class business_details(models.Model):
     IFSC_code=models.CharField(max_length=50)
     business_contact=models.CharField(max_length=50)
     image1= models.ImageField(upload_to='images',blank= True,null=True)
-    
+    user=models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
     qr_code=models.ImageField(upload_to='qr_codes', blank=True)
 
     def save(self, *args, **kwargs):

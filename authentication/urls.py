@@ -61,13 +61,6 @@ urlpatterns = [
     path('adduser',views.adduser.as_view()),
     path('adddeal', views.adddeal, name="adddeal"),
     path('wallets', views.wallets, name="wallets"),
-<<<<<<< HEAD
-=======
-    path('businesslistapi', views.businesslistapi, name="businesslistapi"),
-    path('profile',views.profile,name="profile"),
-    path('profileupdate/<str:pk>/',views.profileupdate,name="profileupdate"),
-    path('walletsapi', views.walletsapi, name="walletsapi"),
->>>>>>> 9de5c8c919c21920875caa850cbafa669430ef38
     path('business_favourite/<int:id>', views.business_favourite, name="business_favourite"),
     path('business_list', views.business_list, name="business_list"),
     path('register_user', views.register_user, name="register_user"),
