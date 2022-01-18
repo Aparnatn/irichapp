@@ -695,12 +695,13 @@ class adduser(APIView):
     serializer_class =UserSerializer
     
     def post(self, request):
+        username=request.POST.get('username')
     
-    
-
-        Serializer=UserSerializer(data=request.data)
         
-        if Serializer.is_valid():
+        Serializer=UserSerializer(data=request.data)
+        if username is not None:
+            # print(request.data)
+            if Serializer.is_valid():
            
                 
                 
@@ -722,7 +723,8 @@ class adduser(APIView):
             
                 
                  ob.save()
-        return JsonResponse(Serializer.data)
+                 return JsonResponse(Serializer.data)
+        return JsonResponse(Serializer.errors)
            
  
 class loginApi(APIView):
@@ -730,26 +732,35 @@ class loginApi(APIView):
     def post(self, request):
 
         
-        
+        Serializer=usersSerializer(data=request.data)
         phone=request.POST.get('phone')
-        print(phone)
+        # print(phone)
         # id=request.POST.get('id')
         role=roles.objects.get(designation='salesperson')
         # print(role.id)
+        
         employee=Employee.objects.get(phone=phone)
+        password=request.POST.get('password')
+        user=User.objects.filter(password=password)
+        print(password)
+        # user=User.objects.get(id=employee.user_id)
+        
+
         print(employee.designation_id)
         if role.id == employee.designation_id:
-          return redirect('/BusinessAdd')
-
-        Serializer=usersSerializer(data=request.data)
+              return redirect('/BusinessAdd')
+        elif role.id != employee.designation_id:
+              return redirect('/mybusiness',{'phone' == phone})
+            
        
            
         if Serializer.is_valid():
                 
                 
             
-                
-         return JsonResponse(Serializer.data)
+               return JsonResponse("error",safe=False) 
+        return JsonResponse(Serializer.data)
+        
 
        
       
@@ -978,6 +989,25 @@ def business(request):
 
     serializer = business_detailsSerializer(movies, many=True)
     return JsonResponse({"movies": serializer.data}, safe=False, status=status.HTTP_200_OK)
+@api_view(["GET"])
+def mybusiness(request):
+    phone=request.POST.get('phone')
+    print(phone)
+    # if user == 'business owner':
+    
+    user=User.objects.get(username="business owner")
+    business=business_details.objects.filter(user=user.id)
+    # if user == '1':
+    #     businesslist=business_details.objects.filter(user=user)
+        
+    serializer = business_detailsSerializer(business, many=True)
+    usernames=serializer.data
+    list_usernames = []
+    for name in usernames:
+        if name['user'] == user.id:
+          username = name['user']
+          print(username)  
+    return JsonResponse({"business":serializer.data}, safe=False)
 
 
 def tablelist(request):
@@ -1019,18 +1049,29 @@ def normallist(request):
 
 
 def businesslist(request):
-   
+    print('hiiii')
     user=request.POST.get('user')
-    user_id=request.POST.get('user_id')
+    # user_id=request.POST.get('user_id')
     print(user)
     
-    movies = business_details.objects.filter(user_id=user_id).only('business_name')
+    movies = business_details.objects.all()
     print(movies)
     details = []
     # print (business.payments)
+    for movie in movies:
+        details.append({
+            'business_name': movie.business_name,
+            'name': movie.categories.name,
+            'business_desc': movie.business_desc,
+            'business_address': movie.business_address,
+            'email': movie.email,
+            'Account_details': movie.Account_details,
+            'account_number': movie.account_number,
+            'business_contact': movie.business_contact,
 
+        })
     return render(request, "businesslist.html", {
-        "movies": movies,
+        "details": details,
     })
 
 
@@ -1038,15 +1079,18 @@ def signin(request):
     try:
         m = request.POST['username']
         p = request.POST['password']
+        user=request.user
+        print(user)
         if m and p:
-
-            if m == "superadmin":
-                det = User.objects.get(username=m)
+            det = User.objects.get(username=m)
+            if det.is_superuser == True:
+                
                 if det.password == p:
                     request.session['name'] = det.username
                     return redirect('/categories')
+                
 
-            elif m == "salesperson":
+            elif det.is_staff == True:
 
                 request.session['name'] = "salesperson"
                 return redirect('/addsales')
@@ -1054,7 +1098,23 @@ def signin(request):
                 username=request.POST.get('username')
                 print(m)
                 request.session['name'] = "business owner"
-                return redirect('/businesslist')
+                movies = business_details.objects.all()
+                print(movies)
+                details = []
+            # print (business.payments)
+            for movie in movies:
+                details.append({
+                    'business_name': movie.business_name,
+                    'name': movie.categories.name,
+                    'business_desc': movie.business_desc,
+                    'business_address': movie.business_address,
+                    'email': movie.email,
+                    'Account_details': movie.Account_details,
+                    'account_number': movie.account_number,
+                    'business_contact': movie.business_contact,
+
+                })
+                return render(request,'businesslist.html',{"m":m,"details":details})
 
             else:
                 request.session['name'] = "username"

@@ -49,11 +49,11 @@ class Employee(models.Model):
         null=True,
         blank=True
     )
-    referral_code=models.TextField(blank=True,max_length=150)
+    referral_code=models.TextField(max_length=150)
     phone=models.IntegerField()
 
-    postcode=models.TextField(blank=True,max_length=150)
-    referral=models.CharField(blank=True,max_length=150)
+    postcode=models.TextField(max_length=150)
+    referral=models.CharField(max_length=150)
     designation=models.ForeignKey(
         'roles', 
         on_delete=models.CASCADE,
