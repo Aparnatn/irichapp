@@ -31,7 +31,7 @@ from django.contrib.auth import authenticate, get_user, login
 from django.contrib.auth.models import User
 from django.forms.utils import ErrorList
 from django.http import HttpResponse
-from ..forms import DealsForm, LoginForm, rewardsForm, rolesForm
+from ..forms import dealsForm, LoginForm, dealsForm, rewardsForm, rolesForm
 from authentication.models import mobile
 from authentication.models import business_details, Employee, payments
 from authentication.forms import MobileLoginForm, BusinessForm, categoryForm, paymentForm
@@ -955,15 +955,19 @@ def showrole(request):
     return render(request, 'role.html', {"roleshow": roleshow})
 
 
-def adddeal(request):
+def createdeal(request):
     if request.method == "POST":
-        form = DealsForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect("/deals")
-    else:
-        form = DealsForm()
-    return render(request, 'add_deals.html', {"form": form})
+        title=request.POST.get('title')
+        description=request.POST.get('description')
+
+        obj = deals(title=title,
+        description=description
+           
+        )
+
+        obj.save()
+    
+    return render(request, 'createdeal.html')
 
 
 def showdeal(request):
@@ -1326,7 +1330,7 @@ def roleupdate(request, id):
 
 def dealupdate(request, id):
     object = deals.objects.get(id=id)
-    form = DealsForm(request.POST, instance=object)
+    form = dealsForm(request.POST, instance=object)
     if form.is_valid:
         form.save()
         object = deals.objects.all()

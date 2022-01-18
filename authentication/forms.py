@@ -30,7 +30,7 @@ class BusinessForm(forms.Form):
     class Meta:
         model = business_details
         fields = "__all__"
-class DealsForm(forms.Form):
+class dealsForm(forms.Form):
    
     class Meta:
         model = deals

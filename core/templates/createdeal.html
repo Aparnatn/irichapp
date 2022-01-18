@@ -129,59 +129,33 @@
         </div>
 
       
-              <div class="row">
-                {% if m %}
-                 
-                  {% endif %}
-             
-                   {% for data in details %}
-                 
-                  
-                  <div class="col-12 col-md-4">
-                  <div class="card">
-                    <a href="edit/{{data.id}}">edit</a>
-                    <img src="{{data.image1.url}}" width="300" />
-                    <div class="card-body">
-                  
-                  
-                      Category Name: {{ data.categories.name }}<br />
-                      Business Description: {{ data.business_desc }}<br />
-                      Business Address {{ data.business_address }}<br />
-                      Business_name :{{data.business_name}}<br />
-                     
-                      Business_address: {{data.business_address}}<br />
-                      Email :{{data.email}}<br />
-                     
-                     
-                      Account_Details :{{data.Account_details}}<br />
-                      Account_number :{{data.account_number}}<br />
-                      business_contact :{{data.business_contact}}
-                     
-                      
-                     
-                     
-                      <hr>
-                      <a href="/business/{{data.id}}/payment">checkout</a>
-                  
-                      <a href="/business_favourite/{{data.id}}">Favourite</a>
-
-                    </div>
-                  </div> 
-                </div> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                 {% endfor %}
-                </div>
-              
-                      <!-- </div> 
-</div> -->
+        
                    
                       
                       <div class="row">
-                        
+                        <form method="post" action="createdeal">
+                            {%csrf_token%}
+                            <div class="inputBox">
+                                <label for="fname">Title</label>
+                                <br>
+                                <div class="d-flex">
+                                    <input type="text" id="bankname" name="title"  required>
+                                   
+                                </div>
+                                <div class="inputBox">
+                                    <label for="fname">Description</label>
+                                    <br>
+                                    <div class="d-flex">
+                                        <input type="text" id="bankname" name="description"  required>
+                                       
+                                    </div>
+                                    <br>
+                           <input type="submit" value="submit">
+                        </form>
 
-                        <!-- <div class="col-12 col-md-4">
-          </div> -->
+                       
                       </div>
-                     
+                   
 
 
                       

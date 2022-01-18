@@ -59,7 +59,7 @@ urlpatterns = [
     path('transactions', views.transactions, name="transactions"),
     path('role', views.role, name="role"),
     path('adduser',views.adduser.as_view()),
-    path('adddeal', views.adddeal, name="adddeal"),
+    path('createdeal', views.createdeal, name="createdeal"),
     path('wallets', views.wallets, name="wallets"),
     path('mybusiness', views.mybusiness, name="mybusiness"),
     path('business_favourite/<int:id>', views.business_favourite, name="business_favourite"),
