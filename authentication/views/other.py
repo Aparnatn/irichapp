@@ -215,7 +215,7 @@ def business_favourite(request, id):
     business = business_details.objects.all()
     cat = category.objects.all()
     payment = payments.objects.all()
-    movies = payments.objects.filter(business_id=id)
+    movies = payments.objects.filter(irich_id=id)
     return render(request, 'favourite.html', {"movies": movies, "cat": cat, "payment": payment})
 
 
