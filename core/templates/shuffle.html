@@ -141,7 +141,7 @@ tr:nth-child(even){background-color: #f2f2f2}
                 <table>
                     <thead>
                         <th width="50px;">#</th>
-                       
+                       <th  width="100px;">Username</th>
                         <th width="100px;">Share</th>
                         <th width="50px;">Order</th>
                         <th width="100px;">factor</th>
@@ -152,17 +152,19 @@ tr:nth-child(even){background-color: #f2f2f2}
                         {% for item in give_back %} 
                         <tr>
                             <td>{{ item.sl }}</td>
-                            <!-- <td>{{ Customer }}</td> -->
+                             <td>{{ item.username }}</td> 
                             <td>{{ item.share }}</td>
                             <td>{{ item.order }}</td>
                             <td>{{ item.factor }}</td>
                             <td>{{ item.multiplier }}</td>
                             <td>{{ item.to_give }}</td>
+                            <td> 
+                               <button type="submit" value="{{ item.to_give }}">Process Payment</button></td> 
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
-                <button type="button">Process Payment</button>
+              
             </div>
         </div>
         

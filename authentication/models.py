@@ -175,7 +175,7 @@ class payments(models.Model):
     )
     
 class wallet(models.Model):
-    earning=models.CharField(max_length=100)
+    earning=models.CharField(max_length=50)
     irich_bonus=models.CharField(max_length=100)
     user=models.ForeignKey(
         User,

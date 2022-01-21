@@ -160,7 +160,7 @@ def normaltransactions(request):
 
 def shuffle(request):
     transact = payments.objects.all()
-    transactions = payments.objects.filter().order_by('amount').select_related('irich')
+    transactions = payments.objects.filter().order_by('amount').select_related('irich','user')
 
     count = len(transactions)
     total = 0
@@ -175,7 +175,7 @@ def shuffle(request):
             "order": count,
             "share": int(item.amount)/10,
             "id": item.id,
-
+            "username":item.user.username,
             "to_give": 0,
             "multiplier": 0,
             "factor": factor,
@@ -192,12 +192,21 @@ def shuffle(request):
         count_shares = count_shares - 1
         count_sl += 1
     print(sorted(shares, key=lambda i: i['share'], reverse=True))
-
+    
     give_back = []
     for item in shares:
         item['to_give'] = item['order'] * multiplier
         item['multiplier'] = multiplier
         give_back.append(item)
+        # user=User.objects.get(username=item['username'])
+        
+        # wallets=wallet.objects.filter(user_id=user).update(earning=item['order'] * multiplier)
+        # for i in wallets:
+        #   i['earning'] = item['to_give']
+          
+        #   earning=item['order'] * multiplier
+        #   wallets=wallet(earning=earning)
+        #   wallets.save()
 
     return render(request, 'shuffle.html', {
         'transact': transact,
@@ -415,30 +424,26 @@ def walletsapi(request):
 
 def wallets(request):
         transactions = payments.objects.filter().order_by('amount').select_related('irich', 'user')
-        bonus=0
+        print(transactions)
+        bonus=500
         
         
         user_id=request.POST.get('user_id')
-        print(user_id)
+        # print(user_id)
     
         # print(item.user_id)
         wallet_user_ids = wallet.objects.all().values('user_id','irich_bonus')
-        print(wallet_user_ids)
+        # print(wallet_user_ids)
         Payment = payments.objects.all().select_related('irich', 'user').only('irich__business_name', 'irich__irich',
                                                                        'user__username')
-        for dicts in wallet_user_ids:
-            if dicts['user_id'] == user_id:
-                print(dicts['user_id'])
-                # print(item.user_id)
-                bonus = int(dicts['irich_bonus']) - 75
-                from_value = wallet.objects.get(user_id=user_id)
-                from_value.irich_bonus = bonus
+        
         # print(item.amount)
         total = 0
         shares = []
         count = len(transactions)
         factor = sum(range(count + 1))
         for i, item in enumerate(transactions, start=1):
+            
             total += int(item.amount)/ int(item.irich.irich) / 10*int(item.irich.irich) 
             shares.append({
 
@@ -450,6 +455,10 @@ def wallets(request):
                 "multiplier": 0,
                 "factor": factor,
             })
+            
+                    
+            from_value = wallet.objects.get(user_id=user_id)
+            from_value.irich_bonus = from_value.irich_bonus - 75
             count -= 1
 
         multiplier = (total * 0.5) / factor
@@ -474,20 +483,20 @@ def wallets(request):
         counter = 0
         for dict_share in shares:
 
-            print(to_give[counter])
+            # print(to_give[counter])
 
             dict_share['to_give'] = to_give[counter]
             # dict_share['spent'] = spent[counter]
             counter += 1
-        print(to_give)
-        print(spent)
-        print(shares)
+        # print(to_give)
+        # print(spent)
+        # print(shares)
         for dicts in wallet_user_ids:
             
                 
                 bonus = int(dicts['irich_bonus'])
         return render(request, 'wallet.html', {
-            'transact': transact,
+            # 'transact': transact,
             'give_back': give_back,
             "available_balance":int(bonus)
         })
@@ -558,51 +567,51 @@ def showrewards(request):
         'transact': transact,
         'give_back': give_back
     })
-def wallets(request):
-    transactions = payments.objects.filter().order_by('amount').select_related('irich', 'user')
-    bonus=500
-    count = len(transactions)
-    total = 0
-    shares = []
-    factor = sum(range(count + 1))
+# def wallets(request):
+#     transactions = payments.objects.filter().order_by('amount').select_related('irich', 'user')
+#     bonus=500
+#     count = len(transactions)
+#     total = 0
+#     shares = []
+#     factor = sum(range(count + 1))
 
-    for i, item in enumerate(transactions, start=1):
-        # print(item.amount)
-        total += int(item.amount)/ int(item.irich.irich) / 10*int(item.irich.irich) 
-        shares.append({
+#     for i, item in enumerate(transactions, start=1):
+#         # print(item.amount)
+#         total += int(item.amount)/ int(item.irich.irich) / 10*int(item.irich.irich) 
+#         shares.append({
 
-            "order": count,
-            "share": int(item.amount)/10,
-            "id": item.id,
+#             "order": count,
+#             "share": int(item.amount)/10,
+#             "id": item.id,
+#             "username":item.user.username,
+#             "to_give": 0,
+#             "multiplier": 0,
+#             "factor": factor,
+#         })
+#         count -= 1
 
-            "to_give": 0,
-            "multiplier": 0,
-            "factor": factor,
-        })
-        count -= 1
+#     count_sl = 1
+#     multiplier = (total * 0.125) / factor
+#     shares = sorted(shares, key=lambda i: i['share'], reverse=True)
+#     count_shares = len(shares)
+#     for dicts in shares:
+#         dicts['order'] = count_shares
+#         dicts['sl'] = count_sl
+#         count_shares = count_shares - 1
+#         count_sl += 1
+#     print(sorted(shares, key=lambda i: i['share'], reverse=True))
 
-    count_sl = 1
-    multiplier = (total * 0.125) / factor
-    shares = sorted(shares, key=lambda i: i['share'], reverse=True)
-    count_shares = len(shares)
-    for dicts in shares:
-        dicts['order'] = count_shares
-        dicts['sl'] = count_sl
-        count_shares = count_shares - 1
-        count_sl += 1
-    print(sorted(shares, key=lambda i: i['share'], reverse=True))
+#     give_back = []
+#     for item in shares:
+#         item['to_give'] = item['order'] * multiplier
+#         item['multiplier'] = multiplier
+#         give_back.append(item)
 
-    give_back = []
-    for item in shares:
-        item['to_give'] = item['order'] * multiplier
-        item['multiplier'] = multiplier
-        give_back.append(item)
-
-    return render(request, 'reward.html', {
-        'transact': transact,
-        'give_back': give_back,
-        "available_balance":int(bonus)
-    })
+#     return render(request, 'wallet.html', {
+       
+#         'give_back': give_back,
+#         "available_balance":int(bonus)
+#     })
 
   
 
@@ -673,16 +682,22 @@ class paysection(APIView):
     
     def post(self, request):
         Serializer = paymentSerializer(data=request.data)
+        data = request.data
+        print(data)
+        user_id = data.get("user")
+        print(data.get("user"))
         wallet_user_ids = wallet.objects.all().values('user_id','irich_bonus')
         Payment = payments.objects.all().select_related('irich', 'user').only('irich__business_name', 'irich__irich',
-                                                                       'user__username')
+                                                                      'user__username')
         for payment in Payment:
 
             for dicts in wallet_user_ids:
                 if dicts['user_id'] == payment.user_id:
-                
+                    amount=request.POST.get('amount')
+                    user=request.POST.get('user')
+                    print(user)
                     bonus = int(dicts['irich_bonus']) - 75
-                    from_value = wallet.objects.get(user_id=payment.user_id)
+                    from_value = wallet.objects.get(user_id=user_id)
                     from_value.irich_bonus = bonus
                     from_value.save()
         if Serializer.is_valid():
