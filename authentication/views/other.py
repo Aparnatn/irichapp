@@ -6,6 +6,7 @@ import json
 import re
 from django.db.models.aggregates import Max
 from django.http.request import HttpRequest
+import requests
 from requests.models import Response
 import random
 import string
@@ -19,6 +20,7 @@ from ..send_otp import send_otp
 from django.shortcuts import render
 import requests
 import json
+import rest_framework
 from rest_framework import generics
 from rest_framework.views import APIView
 from requests.auth import HTTPBasicAuth
