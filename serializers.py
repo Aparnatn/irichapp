@@ -60,7 +60,7 @@ class UserSerializer(serializers.ModelSerializer):
         # employee.user_id=user.id
         # employee.save()
         employees=Employee.objects.get(id=employee.id)
-        print(employees)
+        # print(employees)
         employees.user_id=user.id
         employees.save()
         return user
