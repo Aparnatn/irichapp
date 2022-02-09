@@ -120,12 +120,12 @@ def trans(request):
 @api_view(["GET"])
 @csrf_exempt
 def transact(request):
-    business_payments = payments.objects.all().select_related('business').only(
+    business_payments = payments.objects.all().select_related('irich').only(
         'id',
         'amount',
-        'business_id',
-        'business__business_name',
-        'business__categories__name',
+        'irich_id',
+        'irich__business_name',
+        'irich__categories__name',
     )
 
     details = []
@@ -134,9 +134,9 @@ def transact(request):
         details.append({
             'id': payment.id,
             'amount': payment.amount,
-            'business_id': payment.business_id,
-            'business': payment.business.business_name,
-            'categories': payment.business.categories.name,
+            'business_id': payment.irich_id,
+            'business': payment.irich.business_name,
+            'categories': payment.irich.categories.name,
         })
 
     return JsonResponse(details, safe=False)
@@ -459,7 +459,7 @@ def wallets(request):
             })
             
                     
-            from_value = wallet.objects.get(user_id=user_id)
+            from_value = wallet.objects.filter(user_id=user_id)
             from_value.irich_bonus = from_value.irich_bonus - 75
             count -= 1
 
