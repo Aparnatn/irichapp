@@ -13,14 +13,14 @@ from authentication import views
 router = routers.DefaultRouter()  # add this
 from authentication.views import (get_books)
                              
-from django.urls import path
+
 from authentication import views
 
 
 urlpatterns = [
-    path('admin/', admin.site.urls),          # Django admin route
-    path("", include("authentication.urls")), # Auth routes - login / register
-    path("", include("app.urls")),
+    url('admin/', admin.site.urls),          # Django admin route
+    url("", include("authentication.urls")), # Auth routes - login / register
+    url("", include("app.urls")),
     url(r'getbooks', include(router.urls)),
     # path('index', views.index, name='index'),
    
