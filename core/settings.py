@@ -58,7 +58,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -223,7 +223,7 @@ print(STATICFILES_DIRS)
 MEDIA_ROOT = os.path.join(CORE_DIR, 'media')
 print("++++++++++++++++", MEDIA_ROOT)
 MEDIA_URL = '/media/'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 PAYMENT_API_KEY = 'pk_test_51K1UzDC28elAkKFnzO563cwDKV7RESRNiNaP9Zb6ORvd8l3H8shfU4ootf3bKii3xD7G39wty93wqu6pRNEiqDFZ00xvV7Tdmo'
 PAYMENT_API_SECRET = 'sk_test_51K1UzDC28elAkKFn4MGLA1ogZ0XS1bdPp1a9KBTB24gpi6l0PhDOVcoUq7OxjMcNjspxsADfrZshFyN36rT9iwGn00k42geJ35'
 #############################################################
