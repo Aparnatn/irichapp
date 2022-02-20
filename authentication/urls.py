@@ -8,7 +8,7 @@ from django.urls import path
 
 
 from .views import Home,register_user
-from django.conf.urls import url
+from django.urls import re_path as url
 from django.contrib.auth.views import LogoutView
 
 
