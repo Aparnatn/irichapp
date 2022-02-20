@@ -13,7 +13,7 @@ from authentication import views
 router = routers.DefaultRouter()  # add this
 from authentication.views import (get_books)
                              
-from django.urls import path
+from django.conf.urls import path
 from authentication import views
 
 
