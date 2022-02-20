@@ -133,7 +133,7 @@ class business_details(models.Model):
         canvas.paste(qrcode_image)
         buffer = BytesIO()
         canvas.save(buffer, "PNG")
-        self.qr_code.save(f'code_{random.randint(0,9999)}.png', File(buffer), save=False)
+       
         canvas.close()
         super().save(*args, **kwargs)
 
