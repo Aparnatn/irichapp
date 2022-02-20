@@ -4,7 +4,7 @@ certifi==2021.5.30
 charset-normalizer==2.0.6
 Deprecated==1.2.13
 dj-database-url==0.5.0
-Django==2.2.10
+Django==1.1.29
 django-cors-headers==3.8.0
 django-phone-verify==2.0.1
 django-phonenumber-field==5.2.0
