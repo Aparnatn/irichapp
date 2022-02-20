@@ -124,8 +124,8 @@ DATABASES = {
      'default': {
          'ENGINE': 'django.db.backends.mysql',
          'NAME': 'irichapp',
-         'HOST': '127.0.0.1',
-         'PORT': '',
+         'HOST': 'localhost',
+        'PORT': '3306',
          'USER': 'root',
          'PASSWORD': '',
      }
