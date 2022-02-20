@@ -7,20 +7,20 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls import url
 from django.conf.urls.static import static
-from django.conf.urls import include
+from django.urls import include
 from rest_framework import routers
 from authentication import views
 router = routers.DefaultRouter()  # add this
 from authentication.views import (get_books)
                              
-
+from django.urls import path
 from authentication import views
 
 
 urlpatterns = [
-    url('admin/', admin.site.urls),          # Django admin route
-    url("", include("authentication.urls")), # Auth routes - login / register
-    url("", include("app.urls")),
+    path('admin/', admin.site.urls),          # Django admin route
+    path("", include("authentication.urls")), # Auth routes - login / register
+    path("", include("app.urls")),
     url(r'getbooks', include(router.urls)),
     # path('index', views.index, name='index'),
    

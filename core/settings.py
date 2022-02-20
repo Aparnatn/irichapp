@@ -55,6 +55,7 @@ INSTALLED_APPS = [
 # IOS_PLATFORM_APPLICATION_ARN=
 # ANDROID_PLATFORM_APPLICATION_ARN=
 CORS_ORIGIN_ALLOW_ALL = True
+ROOT_URLCONF = 'authentication.urls'
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
