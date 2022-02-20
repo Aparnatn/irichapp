@@ -45,7 +45,7 @@ INSTALLED_APPS = [
      
     
    
-      'crispy_forms',
+      
       
 ]
 # AWS_ACCESS_KEY_ID = 
