@@ -9,7 +9,7 @@ import base64
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 import datetime
-from django_celery_beat.models import MINUTES, PeriodicTask, CrontabSchedule, PeriodicTasks
+
 import os
 from .models import User
 import json
