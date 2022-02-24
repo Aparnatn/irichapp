@@ -17,6 +17,7 @@ from django.views.static import serve
 urlpatterns = [
     path('',views.index,name='index'),
     path('signin', views.signin, name="signin"),
+    path('register_page',views.register_page,name="register_page"),
     path('users',views.users,name="users"),
     path('bonus',views.bonus,name="bonus"),
     path('showrole',views.showrole,name="showrole"),
@@ -64,7 +65,7 @@ urlpatterns = [
     path('mybusiness', views.mybusiness, name="mybusiness"),
     path('business_favourite/<int:id>', views.business_favourite, name="business_favourite"),
     path('business_list', views.business_list, name="business_list"),
-    path('register_user', views.register_user, name="register_user"),
+    path('register_user/', views.register_user, name="register_user"),
     path('paysection', views.paysection.as_view()),
     path('business/<int:id>/payment', views.payment, name="payment"),
     path('walletsection', views.walletsection, name="walletsection"),

@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'app', # Enable the inner app
+    'app',
     'authentication',
     'django_google_maps',
    
@@ -125,8 +125,8 @@ DATABASES = {
      'default': {
          'ENGINE': 'django.db.backends.mysql',
          'NAME': 'irichapp',
-         'HOST': 'localhost',
-        'PORT': '3306',
+         'HOST': '127.0.0.1',
+         'PORT': '3306',
          'USER': 'root',
          'PASSWORD': '',
      }

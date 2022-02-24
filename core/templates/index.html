@@ -41,7 +41,7 @@
 
       <div class="logo">
         <!-- <h1 class="text-light"><a href="index.html"><span>iRICH</span></a></h1> -->
-        <a href="index.html"><image src="/static/assets/image/logo 5.png" alt="" class="image-fluid"></a>
+        <a href="index.html"><img src="/static/assets/image/logo 5.png" alt="" class="image-fluid"></a>
       </div>
 
       <nav id="navbar" class="navbar">
@@ -50,7 +50,7 @@
           <li><a href="#individual-member">Members</a></li>
           <li><a href="#how-works">How it works</a></li>
           <li><a href="#about">About us</a></li>
-          <li><a href="{% url 'authentication:signin' %}">Log In</a></li>
+          <li><a href="{% url 'signin' %}">Log In</a></li>
           <li><a href="#contact">Join Irich</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
@@ -70,7 +70,7 @@
           <p>iRICH benifits small business owners and consumers alike!</p>
         </div>
         <div class="col-12 col-md-5" style="text-align: center;">
-          <image src="/static/assets/image/Smartphone-irich 2.png" alt="mobile-image">
+          <img src="/static/assets/image/Smartphone-irich 2.png" alt="mobile-image">
        </div>
       </div>
   </div>
@@ -83,7 +83,7 @@
     <div class="container">
     <div class="row">
       <div class="col-12 col-md-5 order-2 order-md-1 business-image">
-        <image src="/static/assets/image/employee-shade.jpg" alt="image">
+        <img src="/static/assets/image/employee-shade.jpg" alt="image">
       </div>
       <div class="col-12 col-md-7 order-1 order-md-2 business-text">
         <h2>Business Member</h2>
@@ -117,7 +117,7 @@
          </div>
         </div>
        <div class="col-12 col-md-6 member-head-image">
-         <image src="/static/assets/image/business-members-1.png" alt="business-members">
+         <img src="/static/assets/image/business-members-1.png" alt="business-members">
       </div>
       </div>
     </div>
@@ -130,35 +130,35 @@
       <div class="row">
         <div class="col-12 col-md-4">
           <div class="how-works-contents">
-            <image src="/static/assets/image/svg/connections.svg" alt="how-it-works" width="200px">
+            <img src="/static/assets/image/svg/connections.svg" alt="how-it-works" width="200px">
               <h4><span class="how-works-span">1.</span> Join in iRICH</h4>
               <p>Network</p>
           </div>
         </div>
         <div class="col-12 col-md-4">
           <div class="how-works-contents">
-            <image src="/static/assets/image/svg/mobile-business.svg" alt="how-it-works"width="200px">
+            <img src="/static/assets/image/svg/mobile-business.svg" alt="how-it-works"width="200px">
               <h4><span class="how-works-span">2.</span> Browse for Business</h4>
               <p>in iRICH Network</p>
           </div>
         </div>
         <div class="col-12 col-md-4">
           <div class="how-works-contents">
-            <image src="/static/assets/image/svg/qr-scan.svg" alt="how-it-works"width="200px">
+            <img src="/static/assets/image/svg/qr-scan.svg" alt="how-it-works"width="200px">
               <h4><span class="how-works-span">3.</span> Pay instantly through</h4>
               <p>the iRICH App</p>
           </div>
         </div>
         <div class="col-12 col-md-6">
           <div class="how-works-contents">
-            <image src="/static/assets/image/svg/refer-to-friend.svg" alt="how-it-works"width="200px">
+            <img src="/static/assets/image/svg/refer-to-friend.svg" alt="how-it-works"width="200px">
               <h4><span class="how-works-span">4.</span> Refer to your</h4>
               <p>Friend or Family</p>
           </div>
         </div>
         <div class="col-12 col-md-6">
           <div class="how-works-contents">
-            <image src="/static/assets/image/svg/money-dollar.svg" alt="how-it-works"width="200px">
+            <img src="/static/assets/image/svg/money-dollar.svg" alt="how-it-works"width="200px">
               <h4><span class="how-works-span">5.</span> Be eligible for Major share</h4>
               <p>from iRICH pool, every month</p>
           </div>
@@ -180,7 +180,7 @@
          <p>iRICH aims to help business owners and individuals grow their relationships and networks for their personal as well as financial benefit.</p>
        </div>
        <div class="col-12 col-md-6 about-image">
-         <image src="/static/assets/image/Lap-and-mobile-1.png" alt="lap-and-mobile">
+         <img src="/static/assets/image/Lap-and-mobile-1.png" alt="lap-and-mobile">
       </div>
      </div>
      <div class="row about-row-2">
@@ -258,6 +258,7 @@
                 <h3>Join iRICH</h3>
               </div>
               <form action="forms/contact.php" method="post" role="form" class="php-email-form">
+                {% csrf_token %}
                 <div class="row">
                   <div class="col-md-6 form-group">
                     <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
@@ -273,8 +274,8 @@
                   <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
                 </div>
                 <div class="my-3">
-                  <div class="loading">Loading</div>
-                  <div class="error-message"></div>
+                  <!-- <div class="loading">Loading</div> -->
+                  <!-- <div class="error-message"></div> -->
                   <div class="sent-message">Your message has been sent. Thank you!</div>
                 </div>
                 <div class="text-center"><button type="submit">Send Request</button></div>
