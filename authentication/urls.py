@@ -13,7 +13,7 @@ from django.contrib.auth.views import LogoutView
 
 
 from django.views.static import serve
-
+app_name='authentication'
 urlpatterns = [
     path('',views.index,name='index'),
     path('signin', views.signin, name="signin"),

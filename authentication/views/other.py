@@ -425,83 +425,75 @@ def walletsapi(request):
 
 
 def wallets(request):
-        transactions = payments.objects.filter().order_by('amount').select_related('irich', 'user')
-        print(transactions)
-        bonus=500
-        
-        
-        user_id=request.POST.get('user_id')
-        # print(user_id)
-    
-        # print(item.user_id)
+    transactions = payments.objects.filter().order_by('amount').select_related('irich', 'user')
+    bonus=500
+    count = len(transactions)
+    total = 0
+    shares = []
+    factor = sum(range(count + 1))
+     
+    for i, item in enumerate(transactions, start=1):
         wallet_user_ids = wallet.objects.all().values('user_id','irich_bonus')
-        # print(wallet_user_ids)
         Payment = payments.objects.all().select_related('irich', 'user').only('irich__business_name', 'irich__irich',
                                                                        'user__username')
-        
-        # print(item.amount)
-        total = 0
-        shares = []
-        count = len(transactions)
-        factor = sum(range(count + 1))
-        for i, item in enumerate(transactions, start=1):
-            
-            total += int(item.amount)/ int(item.irich.irich) / 10*int(item.irich.irich) 
-            shares.append({
-
-                "order": count,
-                "spent": int(item.amount)/10,
-                "username": item.user.username,
-                "share": int(item.amount),
-                "to_give": 0,
-                "multiplier": 0,
-                "factor": factor,
-            })
-            
-                    
-            from_value = wallet.objects.filter(user_id=user_id)
-            from_value.irich_bonus = from_value.irich_bonus - 75
-            count -= 1
-
-        multiplier = (total * 0.5) / factor
-
-        give_back = []
-        for item in shares:
-            item['to_give'] = item['order'] * multiplier
-            item['multiplier'] = multiplier
-            give_back.append(item)
-        shares = sorted(shares, key=lambda i: i['spent'], reverse=True)
-        # print(shares)
-        shares_sort = sorted(shares, key=lambda i: i['to_give'], reverse=True)
-    # print(shares_sort)
-        to_give = []
-        spent = []
-
-        for dicts in shares_sort:
-            to_give.append(dicts['to_give'])
-        for dict in shares:
-            spent.append(dict['spent'])
-        # test_share = shares
-        counter = 0
-        for dict_share in shares:
-
-            # print(to_give[counter])
-
-            dict_share['to_give'] = to_give[counter]
-            # dict_share['spent'] = spent[counter]
-            counter += 1
-        # print(to_give)
-        # print(spent)
-        # print(shares)
         for dicts in wallet_user_ids:
+            if dicts['user_id'] == item.user_id:
+               
+                bonus = int(dicts['irich_bonus']) - 75
+                from_value = wallet.objects.get(user_id=item.user_id)
+                from_value.irich_bonus = bonus
+        # print(item.amount)
+        total += int(item.amount)/ int(item.irich.irich) / 10*int(item.irich.irich) 
+        shares.append({
+
+            "order": count,
+            "spent": int(item.amount),
+            "username": item.user.username,
+            # "share": int(item.amount),
+            "earning": 0,
+            # "multiplier": 0,
+            # "factor": factor,
+        })
+        count -= 1
+
+    multiplier = (total * 0.5) / factor
+
+    give_back = []
+    for item in shares:
+        item['earning'] = item['order'] * multiplier
+        item['multiplier'] = multiplier
+        give_back.append(item)
+    shares = sorted(shares, key=lambda i: i['spent'], reverse=True)
+    # print(shares)
+    shares_sort = sorted(shares, key=lambda i: i['earning'], reverse=True)
+    # print(shares_sort)
+    to_give = []
+    spent = []
+
+    for dicts in shares_sort:
+        to_give.append(dicts['earning'])
+    for dict in shares:
+        spent.append(dict['spent'])
+    # test_share = shares
+    counter = 0
+    for dict_share in shares:
+
+        print(to_give[counter])
+
+        dict_share['earning'] = to_give[counter]
+        # dict_share['spent'] = spent[counter]
+        counter += 1
+    print(to_give)
+    print(spent)
+    print(shares)
+    for dicts in wallet_user_ids:
             
                 
-                bonus = int(dicts['irich_bonus'])
-        return render(request, 'wallet.html', {
-            # 'transact': transact,
-            'give_back': give_back,
-            "available_balance":int(bonus)
-        })
+            bonus = int(dicts['irich_bonus'])
+    return render(request, "wallet.html", {
+        "shares": shares,
+        "give_back":give_back
+    })
 
 
 @api_view(["GET"])

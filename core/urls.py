@@ -19,7 +19,7 @@ from authentication import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),          # Django admin route
-    path("", include("authentication.urls")), # Auth routes - login / register
+    path("", include("authentication.urls",namespace='authentication')), # Auth routes - login / register
     path("", include("app.urls")),
     url(r'getbooks', include(router.urls)),
     # path('index', views.index, name='index'),

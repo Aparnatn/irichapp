@@ -222,7 +222,7 @@ STATICFILES_DIRS = (
 )
 print(STATICFILES_DIRS)
 MEDIA_ROOT = os.path.join(CORE_DIR, 'media')
-print("++++++++++++++++", MEDIA_ROOT)
+# print("++++++++++++++++", MEDIA_ROOT)
 MEDIA_URL = '/media/'
 
 PAYMENT_API_KEY = 'pk_test_51K1UzDC28elAkKFnzO563cwDKV7RESRNiNaP9Zb6ORvd8l3H8shfU4ootf3bKii3xD7G39wty93wqu6pRNEiqDFZ00xvV7Tdmo'
