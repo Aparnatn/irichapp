@@ -30,7 +30,7 @@ from django.shortcuts import (get_object_or_404,
 # Create your views here.
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, get_user, login
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,auth
 from django.forms.utils import ErrorList
 from django.http import HttpResponse
 from ..forms import dealsForm, LoginForm, dealsForm, rewardsForm, rolesForm
@@ -732,6 +732,7 @@ class adduser(APIView):
             
                 
                  ob.save()
+                #  return redirect('/signin')
                  return JsonResponse(Serializer.data)
         return JsonResponse(Serializer.errors)
            
@@ -1089,52 +1090,103 @@ def businesslist(request):
 
 
 def signin(request):
-    try:
-        m = request.POST['username']
-        p = request.POST['password']
-        user=request.user
-        print(user)
-        if m and p:
-            det = User.objects.get(username=m)
-            if det.is_superuser == True:
-                
-                if det.password == p:
-                    request.session['name'] = det.username
-                    return redirect('/categories')
-                
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
 
-            elif det.is_staff == True:
+        if username and password:
+
+            user = User.objects.get(username=username)
+            if user.is_staff == True:
 
                 request.session['name'] = "salesperson"
                 return redirect('/addsales')
-            elif m == "business owner":
-                username=request.POST.get('username')
-                print(m)
-                request.session['name'] = "business owner"
-                movies = business_details.objects.all()
-                print(movies)
-                details = []
-            # print (business.payments)
-            for movie in movies:
-                details.append({
-                    'business_name': movie.business_name,
-                    'name': movie.categories.name,
-                    'business_desc': movie.business_desc,
-                    'business_address': movie.business_address,
-                    'email': movie.email,
-                    'Account_details': movie.Account_details,
-                    'account_number': movie.account_number,
-                    'business_contact': movie.business_contact,
 
-                })
-                return render(request,'businesslist.html',{"m":m,"details":details})
+            elif user.is_superuser == True:
+                print(user)
+               
+                request.session['name'] = user.username
+                return redirect('/categories') 
+
+
+            # elif username == "business owner":
+    #             username=request.POST.get('username')
+    #             print(m)
+    #             request.session['name'] = "business owner"
+    #             movies = business_details.objects.all()
+    #             print(movies)
+    #             details = []
+    #         # print (business.payments)
+    #         for movie in movies:
+    #             details.append({
+    #                 'business_name': movie.business_name,
+    #                 'name': movie.categories.name,
+    #                 'business_desc': movie.business_desc,
+    #                 'business_address': movie.business_address,
+    #                 'email': movie.email,
+    #                 'Account_details': movie.Account_details,
+    #                 'account_number': movie.account_number,
+    #                 'business_contact': movie.business_contact,
+
+    #             })
+    #             return render(request,'businesslist.html',{"username":username,"details":details})    
 
             else:
+                print(user)
                 request.session['name'] = "username"
-                return normaluser(request)
-        return render(request, 'accounts/login.html', {'error': "please check the password", "m": m})
-    except:
+                return normaluser(request)    
+                
+           
+    else:
         return render(request, 'accounts/login.html', {'error': "please check the password"})
+              
+    # try:
+    #     m = request.POST['username']
+    #     p = request.POST['password']
+    #     user=request.user
+    #     print(user)
+    #     if m and p:
+    #         det = User.objects.get(username=m)
+    #         if det.is_superuser == True:
+                
+    #             if det.password == p:
+    #                 request.session['name'] = det.username
+    #                 return redirect('/categories')
+                
+
+    #         elif det.is_staff == True:
+
+    #             request.session['name'] = "salesperson"
+    #             return redirect('/addsales')
+
+    #         elif m == "business owner":
+    #             username=request.POST.get('username')
+    #             print(m)
+    #             request.session['name'] = "business owner"
+    #             movies = business_details.objects.all()
+    #             print(movies)
+    #             details = []
+    #         # print (business.payments)
+    #         for movie in movies:
+    #             details.append({
+    #                 'business_name': movie.business_name,
+    #                 'name': movie.categories.name,
+    #                 'business_desc': movie.business_desc,
+    #                 'business_address': movie.business_address,
+    #                 'email': movie.email,
+    #                 'Account_details': movie.Account_details,
+    #                 'account_number': movie.account_number,
+    #                 'business_contact': movie.business_contact,
+
+    #             })
+    #             return render(request,'businesslist.html',{"m":m,"details":details})
+
+    #         else:
+    #             request.session['name'] = "username"
+    #             return normaluser(request)
+    #     return render(request, 'accounts/login.html', {'error': "please check the password", "m": m})
+    # except:
+    #     return render(request, 'accounts/login.html', {'error': "please check the password"})
 
 
 def logout(request):
@@ -1149,6 +1201,9 @@ def users(request):
     employee = Employee.objects.select_related('user', 'designation', 'business').all()
 
     return render(request, "users.html", {"employee": employee})
+
+def register_page(request):
+    return render(request,'accounts/register.html')
 
 
 def register_user(request):
@@ -1196,8 +1251,12 @@ def register_user(request):
         
         obj.save()
         ob.save()
+        print('hello')
     object=Employee.objects.all()
-    return render(request, 'accounts/register.html',{'object':object})
+    return redirect('signin')
+
+
+
 def bonus(request):
     user_id=request.POST.get('user_id')
     movies = wallet.objects.filter(user_id=user_id).first()

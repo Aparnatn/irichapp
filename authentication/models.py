@@ -43,6 +43,7 @@ from django.db import models
 
 
 class Employee(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.OneToOneField(
         User, 
         on_delete=models.CASCADE,
@@ -69,6 +70,7 @@ class Employee(models.Model):
     
     
 class PaymentMethod(models.Model):
+    id = models.AutoField(primary_key=True)
     title = models.CharField(unique=True, max_length=150)
 
     def __str__(self):
@@ -79,7 +81,8 @@ class PaymentMethod(models.Model):
 
 
 
-class Transactions(models.Model):      
+class Transactions(models.Model): 
+        id = models.AutoField(primary_key=True)     
         price = models.CharField(max_length=200)
         session_id = models.CharField(max_length=200)
         Customer=models.CharField(max_length=200)
@@ -93,9 +96,13 @@ def __str__(self):
 
 
 class mobile(models.Model):
+    id = models.AutoField(primary_key=True)
     sId=models.IntegerField()
     phone=models.CharField(max_length=50)
+
+
 class business_details(models.Model):
+    id = models.AutoField(primary_key=True)
     categories=models.ForeignKey(
         'category',
         on_delete=models.CASCADE,
@@ -146,18 +153,28 @@ class business_details(models.Model):
     # qrcode = property(_get_qrcode)
 
 class category(models.Model):
+    id = models.AutoField(primary_key=True)
     name=models.TextField(max_length=500)
+
 class roles(models.Model):
+    id = models.AutoField(primary_key=True)
     designation=models.CharField(max_length=500)
+
+
 class deals(models.Model):
+    id = models.AutoField(primary_key=True)
     title=models.CharField(max_length=500)
     description=models.CharField(max_length=500)
+
 class rewards(models.Model):
+    id = models.AutoField(primary_key=True)
     start_date=models.DateField()
     end_date=models.DateField()
     targeted_amount=models.CharField(max_length=500)
     referral_member=models.CharField(max_length=500)
+
 class payments(models.Model):
+    id = models.AutoField(primary_key=True)
     amount=models.IntegerField()
     irich=models.ForeignKey(
         'business_details',
@@ -175,6 +192,7 @@ class payments(models.Model):
     )
     
 class wallet(models.Model):
+    id = models.AutoField(primary_key=True)
     earning=models.CharField(max_length=50)
     irich_bonus=models.CharField(max_length=100)
     user=models.ForeignKey(

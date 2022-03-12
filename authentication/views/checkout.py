@@ -14,6 +14,7 @@ import os
 import stripe
 
 
+
 def create_checkout_session(request):
     #  can fetch item and its price here . for now its jsut dumy data
     item_id = request.GET['item_id']
